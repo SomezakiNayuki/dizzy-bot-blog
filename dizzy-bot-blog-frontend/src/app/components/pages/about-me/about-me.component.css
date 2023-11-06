@@ -1,0 +1,24 @@
+.dzb-aboutMe-container {
+  padding: 2.5% !important;
+}
+
+.dzb-aboutMe-segment-black {
+  background-color: rgb(0, 0, 0, 0.5) !important;
+}
+
+.dzb-aboutMe-segment-white {
+  width: 200% !important;
+  background-color: rgb(256, 256, 256, 0.5) !important;
+}
+
+.dzb-aboutMe-content {
+  width: fit-content !important;
+  background-color: rgb(230, 256, 230, 0.7) !important;
+}
+
+.dzb-resume-section-header {
+  font-family: Impact !important;
+  font-weight: 100 !important;
+  font-size: 40px !important;
+  color:rgb(25, 85, 150) !important;
+}

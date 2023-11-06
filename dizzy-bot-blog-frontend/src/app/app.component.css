@@ -1,0 +1,11 @@
+@import url('https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css');
+
+.dzb-background {
+  background-image: url('../assets/images/background.jpg');
+  background-size: 1275px;
+}
+
+.dzb-welcome-title {
+  font-size: 60px !important;
+  color: rgb(35, 149, 249);
+}

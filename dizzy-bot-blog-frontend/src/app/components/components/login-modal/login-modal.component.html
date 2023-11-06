@@ -1,0 +1,45 @@
+<div class="modal fade" id="loginModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">Login/Register</h1>
+      </div>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="ui vertical segment">
+              <div class="ui input dzb-login-modal-input-box">
+                <input type="text" placeholder="Username" formControlName="username" required>
+              </div>
+            </div>
+            <div class="ui vertical segment">
+              <div class="ui input dzb-login-modal-input-box">
+                <input type="password" placeholder="Password" formControlName="password" required>
+              </div>
+            </div>
+            <div *ngIf="authenticationObservable$ | async as err">
+              <ng-container [ngSwitch]="err">
+                <div class="ui vertical segment" *ngSwitchCase="'404'">
+                  <div class="ui input dzb-login-modal-input-box">
+                    <input type="text" placeholder="Email" formControlName="email" required>
+                  </div>
+                  <div class="ui tertiary inverted red segment">
+                    <p>User not registered, please register</p>
+                  </div>
+                </div>
+                <div class="ui vertical segment" *ngSwitchCase="'500'">
+                  <div class="ui tertiary inverted red segment">
+                    <p>Wrong username/password</p>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button class="ui red basic button" type="button">Forgot password</button>
+          <button class="ui teal primary button" type="submit">Login</button>
+          <button class="ui button" type="button" (click)="onRegister()">Register</button>
+        </div>
+    </form>
+    </div>
+  </div>
+</div>

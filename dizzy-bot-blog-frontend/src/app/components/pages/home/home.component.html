@@ -1,0 +1,33 @@
+<!-- Temperarily disabled -->
+<div *ngIf="false">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="ui center aligned segment dzb-welcome-segment">
+    <h1 class="dzb-welcome">
+      Welcome to DIZZY BOT BLOG
+    </h1>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+
+<div class="ui container">
+  <div class="ui segment dzb-home-segment-black">
+    <div class="dzb-home-create-content-margin" *ngIf="isLoggedIn()">
+      <dzb-create-content></dzb-create-content>
+    </div>
+    <dzb-blog-item [blogs]="blogs$ | async"></dzb-blog-item>
+  </div>
+</div>

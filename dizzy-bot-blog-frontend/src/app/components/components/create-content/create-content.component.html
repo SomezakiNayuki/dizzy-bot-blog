@@ -1,0 +1,23 @@
+<button class="circular ui icon massive button dzb-create-content-button" *ngIf="!isCreating" (click)="create()">
+  <i class="plus icon"></i>
+</button>
+
+<div *ngIf="isCreating">
+  <div class="ui segment dzb-create-content-segment-white">
+    <div class="ui input icon dzb-content-input-box">
+      <input type="text" placeholder="Title">
+    </div>
+  </div>
+  <div class="ui segment dzb-create-content-segment-white">
+    <div class="ui input icon dzb-content-input-box">
+      <input type="text" placeholder="Subtitle">
+    </div>
+  </div>
+  <div class="ui segment dzb-create-content-segment-white">
+    <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10"></textarea>
+  </div>
+  <div class="dzb-create-content-confirmation-button-group">
+    <button class="ui teal primary button">Submit</button>
+    <button class="ui button" (click)="discard()">Discard</button>
+  </div>
+</div>

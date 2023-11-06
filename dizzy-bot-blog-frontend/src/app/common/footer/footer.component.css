@@ -1,0 +1,15 @@
+.dzb-footer-header {
+  font-size: 20px !important;
+  color: teal !important;
+}
+
+.dzb-footer-QR-code {
+  width: 150px !important;
+}
+
+@media screen and (max-width: 800px) {
+  .dzb-mobile-QR-code-centered {
+    position: relative !important;
+    left: 40% !important;
+  }
+}

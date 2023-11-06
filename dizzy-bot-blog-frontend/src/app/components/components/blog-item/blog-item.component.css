@@ -1,0 +1,19 @@
+.dzb-blog-item {
+  width: 1000px !important;
+}
+
+.dzb-blog-item-content-background {
+  background-color: rgb(230, 256, 230, 0.7) !important;
+}
+
+.dzb-blog-item-title {
+  font-size: 50px !important;
+}
+
+.dzb-blog-item-misc-text {
+  font-size: 20px !important;
+}
+
+.dzb-blog-item-content {
+  font-size: 30px !important;
+}

@@ -1,0 +1,25 @@
+<div *ngFor="let blog of blogs">
+  <div class="ui segment dzb-blog-item-content-background">
+    <div class="ui link cards">
+      <div class="card dzb-blog-item">
+        <div class="image">
+          <img src="assets/images/background.jpg">
+        </div>
+        <div class="content">
+          <div [innerText]="blog.title" class="header dzb-blog-item-title"></div>
+          <div class="meta dzb-blog-item-misc-text">
+            <span [innerText]="blog.subtitle"></span>
+          </div>
+          <div class="meta dzb-blog-item-misc-text">
+            <span [innerText]="blog.author"></span>
+          </div>
+          <div [innerText]="blog.content" class="description dzb-blog-item-content"></div>
+        </div>
+        <div class="extra content dzb-blog-item-misc-text">
+          <span [innerText]="blog.date" class="right floated"></span>
+          <a ><i class="heart icon"></i> {{ blog.likes }} likes </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

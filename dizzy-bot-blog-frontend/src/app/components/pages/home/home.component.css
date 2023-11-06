@@ -1,0 +1,19 @@
+.dzb-welcome-segment {
+  background-color: rgb(0, 0, 0, 0) !important;
+}
+
+.dzb-welcome {
+  font-size: 100px !important;
+  font-family: Impact !important;
+  font-weight: 100 !important;
+  color: rgb(40, 125, 250) !important;
+}
+
+.dzb-home-segment-black {
+  background-color: rgb(0, 0, 0, 0.5) !important;
+  margin: 50px !important;
+}
+
+.dzb-home-create-content-margin {
+  margin-bottom: 15px !important;
+}

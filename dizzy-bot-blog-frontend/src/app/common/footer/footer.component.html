@@ -1,0 +1,33 @@
+<div class="ui yellow inverted vertical segment">
+  <div class="ui center aligned container">
+      <div class="ui black divided stackable grid">
+          <div class="three wide column">
+              <img [src]="userContactQRCode" alt="" class="ui rounded image dzb-footer-QR-code dzb-mobile-QR-code-centered">
+          </div>
+          <div class="three wide column">
+              <h4 class="ui header dzb-footer-header">Latest blogs</h4>
+              <div class="ui inverted link list">
+                <!-- [TODO] To be replaced by *ngFor -->
+                  <a class="item">NULL</a>
+                  <a class="item">NULL</a>
+                  <a class="item">NULL</a>
+              </div>
+          </div>
+          <div class="three wide column">
+              <h4 class="ui header dzb-footer-header">Contact</h4>
+              <div class="ui inverted link list">
+                  <a class="item" [innerText]="userWechatId"></a>
+                  <a class="item" [innerText]="userEmail"></a>
+              </div>
+          </div>
+          <div class="seven wide column">
+              <h4 class="ui header dzb-footer-header" [innerText]="userName"></h4>
+              <div class="ui inverted link list">
+                  <a class="item" [innerText]="userDescription"></a>
+              </div>
+          </div>
+      </div>
+      <div class="ui inverted section divider"></div>
+      <p>Copyright @ 2020-2023 DizzyBot</p>
+  </div>
+</div>

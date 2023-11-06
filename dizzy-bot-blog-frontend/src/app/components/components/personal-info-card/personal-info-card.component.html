@@ -1,0 +1,24 @@
+<div class="ui segment dzb-profile">
+  <h1 [innerText]="personalInfo.userName" class="dzb-username"></h1>
+  <div class="ui stacked segments dzb-user-subtitle">
+    <div class="ui red segment dzb-user-subtitle-item">
+      <span [innerText]="personalInfo.userAcademicDegree"></span>
+      <div class="ui top attached segment dzb-user-inner-information"
+        [innerText]="personalInfo.userAcademicDescription1"></div>
+      <div class="ui bottom attached segment dzb-user-inner-information"
+        [innerText]="personalInfo.userAcademicDescription2"></div>
+    </div>
+    <div class="ui orange segment dzb-user-subtitle-item">
+      <span [innerText]="personalInfo.userUniversity"></span>
+    </div>
+    <div class="ui yellow segment dzb-user-subtitle-item">
+      <span [innerText]="personalInfo.userEmail"></span>
+    </div>
+    <div class="ui green segment dzb-user-subtitle-item">
+      <a [href]="personalInfo.userLinkedInUrl" class="dzb-user-LinkedIn">LinkedIn</a>
+    </div>
+    <div class="ui blue segment dzb-user-subtitle-item">
+      <span [innerText]="personalInfo.userPhoneNumber"></span>
+    </div>
+  </div>
+</div>
