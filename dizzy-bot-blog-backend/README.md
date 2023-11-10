@@ -1,3 +1,7 @@
+# Branch naming:
+- DZB-[date string]-purpose-of-branch. E.g., DZB-11112023-init-project
+### Commit format:
+- Just describe what has been done (all lower case).
 # Update:
 - H2 database is in use for development environment, change to other database for product environment.
 # Trouble shooting:
