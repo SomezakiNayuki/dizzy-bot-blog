@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blogs", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
@@ -28,9 +28,9 @@ public class Blog {
 
     private Integer likes;
 
-    private Date date;
+    private LocalDateTime date;
 
-    public Blog(String title, String subtitle, User author, String content, Integer likes, Date date) {
+    public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date) {
         this.title = title;
         this.subtitle = subtitle;
         this.author = author;
