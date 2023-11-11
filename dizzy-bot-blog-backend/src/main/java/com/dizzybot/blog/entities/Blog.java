@@ -1,5 +1,6 @@
 package com.dizzybot.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,15 +21,21 @@ public class Blog {
 
     private String subtitle;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
+
+    @Transient
+    private String username;
 
     private String content;
 
     private Integer likes;
 
     private LocalDateTime date;
+
+    public Blog() {}
 
     public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date) {
         this.title = title;

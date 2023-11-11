@@ -20,7 +20,14 @@ public class BlogServiceImpl implements BlogService {
         return blogRepository.findById(id);
     }
 
-    public List<Blog> findAll() { return blogRepository.findAll(); }
+    public List<Blog> findAll() {
+        List<Blog> blogs = blogRepository.findAll();
+        for (Blog blog : blogs) {
+            blog.setUsername(blog.getAuthor().getUsername());
+        }
+
+        return blogs;
+    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Blog saveBlog(Blog blog) { return blogRepository.save(blog); }

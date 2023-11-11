@@ -45,7 +45,7 @@ public class BlogController {
                 LocalDateTime.parse(date, formatter)
         );
         blogService.saveBlog(blog);
-        return new ResponseEntity<>(new Response(""), HttpStatus.OK);
+        return new ResponseEntity<>(new Response("Blog created"), HttpStatus.OK);
     }
 
 }
