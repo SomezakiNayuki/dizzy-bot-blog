@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
+import { UserService } from './user.service';
 declare var $: any;
 
 @Injectable({
@@ -9,6 +10,7 @@ declare var $: any;
 export class LoginService {
 
   // service configuration
+  // [TODO] To be replaced by server-configuration.json
   private rootURL: string = 'http://localhost:8080/user';
 
   // functional variables
@@ -20,7 +22,7 @@ export class LoginService {
   // observables
   private authenticationSubject = new Subject<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
 
   public login(username: string, password: string, email?: string): void {
     const targetURL = this.rootURL + (email ? '/register' : '/login');
@@ -42,6 +44,7 @@ export class LoginService {
       this.authenticationSubject.next('200');
       $('#loginModal').modal('hide');
       this.isLoggedIn = true;
+      this.userService.fetchUser(username);
     });
   }
 

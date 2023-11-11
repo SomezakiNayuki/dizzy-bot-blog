@@ -12,6 +12,7 @@ import { Blog } from '../models/blog';
 export class DataService {
 
   // service configuration
+  // [TODO] To be replaced by server-configuration.json
   private rootURL: string = 'assets/mock-data/';
 
   // about-me data
@@ -22,7 +23,7 @@ export class DataService {
   private skillListURL: string = `${this.rootURL}SkillListDataBase/skillList.json`;
 
   // home data
-  private blogURL: string = `${this.rootURL}BlogDataBase/blogs.json`;
+  private blogURL: string = `http://localhost:8080/blog/getAll`;
 
   constructor(private http: HttpClient) { }
 
