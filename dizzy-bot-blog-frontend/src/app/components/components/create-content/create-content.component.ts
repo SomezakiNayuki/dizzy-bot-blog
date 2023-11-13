@@ -30,6 +30,7 @@ export class CreateContentComponent implements OnInit {
   }
 
   protected create(): void {
+    this.ngOnInit();
     this.isCreating = true;
   }
 
