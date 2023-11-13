@@ -4,5 +4,5 @@ export interface Blog {
   username: string;
   content: string;
   likes: number;
-  date: Date;
+  date: string;
 }
