@@ -1,8 +1,8 @@
 export interface Blog {
   title: string;
   subtitle: string;
-  author: string;
+  username: string;
   content: string;
   likes: number;
-  date: Date;
+  date: string;
 }

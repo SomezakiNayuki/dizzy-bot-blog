@@ -39,4 +39,16 @@ public class UserController {
         return new ResponseEntity<>(new Response("User registered"), HttpStatus.OK);
     }
 
+    @PostMapping("/getInfo")
+    public ResponseEntity<User> getInfo(@RequestBody Map<String, String> body) {
+        User user = userService.findByUsername(body.get("username"));
+        User sanitisedUser = new User();
+        sanitisedUser.setId(user.getId());
+        sanitisedUser.setUsername(user.getUsername());
+        sanitisedUser.setEmail(user.getEmail());
+        sanitisedUser.setBlogs(user.getBlogs());
+        sanitisedUser.setExperiences(user.getExperiences());
+        return new ResponseEntity<>(sanitisedUser, HttpStatus.OK);
+    }
+
 }

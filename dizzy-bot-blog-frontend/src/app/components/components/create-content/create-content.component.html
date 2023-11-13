@@ -2,22 +2,24 @@
   <i class="plus icon"></i>
 </button>
 
-<div *ngIf="isCreating">
-  <div class="ui segment dzb-create-content-segment-white">
-    <div class="ui input icon dzb-content-input-box">
-      <input type="text" placeholder="Title">
+<form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+  <div *ngIf="isCreating">
+    <div class="ui segment dzb-create-content-segment-white">
+      <div class="ui input icon dzb-content-input-box">
+        <input type="text" placeholder="Title" formControlName="title" required>
+      </div>
+    </div>
+    <div class="ui segment dzb-create-content-segment-white">
+      <div class="ui input icon dzb-content-input-box">
+        <input type="text" placeholder="Subtitle" formControlName="subtitle">
+      </div>
+    </div>
+    <div class="ui segment dzb-create-content-segment-white">
+      <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10" formControlName="content" required></textarea>
+    </div>
+    <div class="dzb-create-content-confirmation-button-group">
+      <button class="ui teal primary button" type="submit">Submit</button>
+      <button class="ui button" (click)="discard()" type="button">Discard</button>
     </div>
   </div>
-  <div class="ui segment dzb-create-content-segment-white">
-    <div class="ui input icon dzb-content-input-box">
-      <input type="text" placeholder="Subtitle">
-    </div>
-  </div>
-  <div class="ui segment dzb-create-content-segment-white">
-    <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10"></textarea>
-  </div>
-  <div class="dzb-create-content-confirmation-button-group">
-    <button class="ui teal primary button">Submit</button>
-    <button class="ui button" (click)="discard()">Discard</button>
-  </div>
-</div>
+</form>

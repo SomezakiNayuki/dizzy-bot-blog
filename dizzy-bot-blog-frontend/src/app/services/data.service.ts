@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, interval, startWith, switchMap, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Experience } from '../models/experience';
 import { PersonalInfo } from '../models/personal-info';
 import { Blog } from '../models/blog';
@@ -12,6 +12,7 @@ import { Blog } from '../models/blog';
 export class DataService {
 
   // service configuration
+  // [TODO] To be replaced by server-configuration.json
   private rootURL: string = 'assets/mock-data/';
 
   // about-me data
@@ -22,7 +23,7 @@ export class DataService {
   private skillListURL: string = `${this.rootURL}SkillListDataBase/skillList.json`;
 
   // home data
-  private blogURL: string = `${this.rootURL}BlogDataBase/blogs.json`;
+  private blogURL: string = 'http://localhost:8080/blog';
 
   constructor(private http: HttpClient) { }
 
@@ -47,7 +48,32 @@ export class DataService {
   }
 
   public getBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(this.blogURL);
+    return interval(1000).pipe(
+      startWith(0),
+      switchMap(() => this.fetchBlogs())
+    );
+  }
+
+  private fetchBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(this.blogURL + '/getAll');
+  }
+
+  public createBlogs(blog: Blog): void {
+    this.http.post<any>(this.blogURL + '/create', blog).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe(data => {
+      console.log(data);
+    });
+  }
+
+  private serverErrorHandler(err: HttpErrorResponse): Observable<any> {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+      errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.error.message}`;
+    }
+    return throwError(() => errorMessage);
   }
 
 }
