@@ -11,4 +11,11 @@ export class BlogItemComponent {
   // inputted variables
   @Input() public blogs: Blog[];
 
+  constructor() {}
+
+  // To avoid re-rendering list causing animation flickering
+  protected detectChange(index: number, item: any): any {
+    return item.id;
+  }
+
 }

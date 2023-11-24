@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Blog } from 'src/app/models/blog';
+import { FormDefinition } from 'src/app/models/form-definition';
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,22 +13,26 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CreateContentComponent implements OnInit {
 
+  // form definitions
+  @Input() public formFields: FormDefinition[];
+
   // functional variables
   protected isCreating: boolean = false;
 
   // form
   protected blogForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private userService: UserService) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService, private userService: UserService, private http: HttpClient) { }
 
   public ngOnInit(): void {
     this.isCreating = false;
 
-    this.blogForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      subtitle: [''],
-      content: ['', Validators.required],
+    let formGroup = {};
+    this.formFields.forEach(definition => {
+      formGroup[definition.formName as string] = definition.isRequired ? ['',  Validators.required] : [''];
     });
+
+    this.blogForm = this.formBuilder.group(formGroup);
   }
 
   protected create(): void {
@@ -45,7 +51,6 @@ export class CreateContentComponent implements OnInit {
       const content = this.blogForm.get('content').value;
       const date = new Date();
       const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
-
 
       const blog: Blog = {
         title: title,

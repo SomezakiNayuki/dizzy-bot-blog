@@ -1,4 +1,4 @@
-<div class="ui segment dzb-profile">
+<div *ngIf="personalInfo !== null" class="ui segment dzb-profile">
   <h1 [innerText]="personalInfo.userName" class="dzb-username"></h1>
   <div class="ui stacked segments dzb-user-subtitle">
     <div class="ui red segment dzb-user-subtitle-item">

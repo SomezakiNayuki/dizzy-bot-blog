@@ -7,12 +7,15 @@
           <a class="item dzb-header-menu"><i class="black tags icon"></i>Tags</a>
           <a *ngIf="isLoggedIn()" class="item dzb-header-menu"><i class="black clone icon"></i>Archive</a>
           <a *ngIf="isLoggedIn()" class="item dzb-header-menu {{isAboutMeActive() ? 'active' : undefined}}" (click)="switchAboutMeActive()"><i class="black info icon"></i>About me</a>
-          <div class="item">
+          <!--
+            [TODO] Complete search function
+            <div class="item">
               <div class="ui input icon">
                   <input type="text" [placeholder]="searchBoxPlaceHolder">
                   <i class="search link icon"></i>
               </div>
-          </div>
+            </div>
+          -->
           <a class="item dzb-header-menu" *ngIf="!isLoggedIn()" (click)="login()"><i class="teal user icon"></i>Login</a>
           <a class="item dzb-header-menu" *ngIf="isLoggedIn()" (click)="logout()"><i class="teal user icon"></i>Logout</a>
       </div>
