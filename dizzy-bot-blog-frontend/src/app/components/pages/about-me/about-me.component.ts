@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Experience } from "src/app/models/experience";
+import { FormDefinition } from "src/app/models/form-definition";
 import { PersonalInfo } from "src/app/models/personal-info";
 import { DataService } from "src/app/services/data.service";
+import { FormDefinitionService } from "src/app/services/form-definition.service";
 
 @Component({
   selector: 'dzb-about-me',
@@ -18,7 +20,10 @@ export class AboutMeComponent implements OnInit {
   protected userEducationHistory$: Observable<Experience[]>;
   protected userSkillList$: Observable<Experience[]>;
 
-  constructor(private dataService: DataService) { }
+  // form definition for creating blog
+  protected employmentFormFields: FormDefinition[];
+
+  constructor(private dataService: DataService, private formService: FormDefinitionService) { }
 
   public ngOnInit(): void {
     this.userPersonalInfo$ = this.dataService.getPersonalInfo();
@@ -26,6 +31,10 @@ export class AboutMeComponent implements OnInit {
     this.userExperienceHistory$ = this.dataService.getExperienceHistory();
     this.userEducationHistory$ = this.dataService.getEducationHistory();
     this.userSkillList$ = this.dataService.getSkillList();
+
+    this.formService.getEmploymentFormDefinitions().subscribe(formFields => {
+      this.employmentFormFields = formFields;
+    });
   }
   
 }

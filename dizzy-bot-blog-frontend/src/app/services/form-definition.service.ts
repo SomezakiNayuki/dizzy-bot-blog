@@ -14,4 +14,8 @@ export class FormDefinitionService {
     return this.http.get<FormDefinition[]>('assets/form-definitions/blogFormDefinitions.json');
   }
 
+  public getEmploymentFormDefinitions(): Observable<FormDefinition[]> {
+    return this.http.get<FormDefinition[]>('assets/form-definitions/employmentFormDefinitions.json');
+  }
+
 }

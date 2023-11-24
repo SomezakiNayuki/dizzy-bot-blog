@@ -1,0 +1,31 @@
+[
+  {
+    "formName": "peroid",
+    "htmlType": "input",
+    "placeholder": "Peroid",
+    "isRequired": true
+  },
+  {
+    "formName": "title",
+    "htmlType": "input",
+    "placeholder": "Title",
+    "isRequired": true
+  },
+  {
+    "formName": "company",
+    "htmlType": "input",
+    "placeholder": "Company",
+    "isRequired": true
+  },
+  {
+    "formName": "location",
+    "htmlType": "input",
+    "placeholder": "Location",
+    "isRequired": true
+  },
+  {
+    "formName": "description",
+    "htmlType": "textarea",
+    "isRequired": true
+  }
+]

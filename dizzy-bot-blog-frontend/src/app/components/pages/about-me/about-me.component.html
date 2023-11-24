@@ -6,6 +6,7 @@
           <h1 class="dzb-resume-section-header">
             EMPLOYMENT
           </h1>
+          <dzb-create-content *ngIf="employmentFormFields !== undefined" [formFields]="employmentFormFields"></dzb-create-content>
           <dzb-experience-card [experiences]="userEmploymentHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached orange segment dzb-aboutMe-content">
