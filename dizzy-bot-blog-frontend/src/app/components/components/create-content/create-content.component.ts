@@ -45,6 +45,7 @@ export class CreateContentComponent implements OnInit {
   }
 
   protected onSubmit(): void {
+    // [TODO] Generalize submission
     if (this.blogForm.valid) {
       const title = this.blogForm.get('title').value;
       const subtitle = this.blogForm.get('subtitle').value;

@@ -15,7 +15,11 @@ export class FormDefinitionService {
   }
 
   public getEmploymentFormDefinitions(): Observable<FormDefinition[]> {
-    return this.http.get<FormDefinition[]>('assets/form-definitions/employmentFormDefinitions.json');
+    return this.http.get<FormDefinition[]>('assets/form-definitions/experienceFormDefinitions.json');
+  }
+
+  public getPersonalInformationFormDefinitions(): Observable<FormDefinition[]> {
+    return this.http.get<FormDefinition[]>('assets/form-definitions/personalInformationFormDefinitions.json');
   }
 
 }
