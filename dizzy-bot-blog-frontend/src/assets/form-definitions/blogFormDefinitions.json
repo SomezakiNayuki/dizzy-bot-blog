@@ -1,0 +1,19 @@
+[
+  {
+    "formName": "title",
+    "htmlType": "input",
+    "placeholder": "Title",
+    "isRequired": true
+  },
+  {
+    "formName": "subtitle",
+    "htmlType": "input",
+    "placeholder": "Subtitle",
+    "isRequired": false
+  },
+  {
+    "formName": "content",
+    "htmlType": "textarea",
+    "isRequired": true
+  }
+]

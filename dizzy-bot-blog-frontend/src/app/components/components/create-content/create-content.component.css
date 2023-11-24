@@ -13,6 +13,8 @@
 }
 
 .dzb-create-content-segment-white {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
   background-color: rgb(256, 256, 256, 0.7) !important;
 }
 

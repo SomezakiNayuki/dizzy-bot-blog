@@ -1,4 +1,4 @@
-<div *ngFor="let blog of blogs">
+<div *ngFor="let blog of blogs; trackBy: detectChange">
   <div class="ui segment dzb-blog-item-content-background">
     <div class="ui link cards">
       <div class="card dzb-blog-item">
