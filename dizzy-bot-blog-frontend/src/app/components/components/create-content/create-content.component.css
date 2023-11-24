@@ -1,6 +1,7 @@
 .dzb-create-content-button {
-  position: relative !important;
+  position: absolute !important;
   left: 50% !important;
+  transform: translate(-50%, -50%);
 }
 
 .dzb-content-input-box {
@@ -20,4 +21,14 @@
 
 .dzb-create-content-confirmation-button-group {
   text-align: right !important;
+}
+
+.dzb-create-content-margin {
+  margin-bottom: 15px !important;
+}
+
+.dzb-create-content-button-container {
+  height: 50px !important;
+  background-color: transparent !important;
+  padding-top: 25px !important;
 }
