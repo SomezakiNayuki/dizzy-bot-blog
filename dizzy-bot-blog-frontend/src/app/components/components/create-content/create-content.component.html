@@ -5,7 +5,7 @@
 </div>
 
 <div class="dzb-create-content-margin">
-  <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div *ngIf="isCreating">
       <div *ngFor="let definition of formFields">
         <ng-container [ngSwitch]="definition.htmlType">

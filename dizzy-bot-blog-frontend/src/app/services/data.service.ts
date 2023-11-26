@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Experience } from '../models/experience';
 import { PersonalInfo } from '../models/personal-info';
 import { Blog } from '../models/blog';
+import { UserService } from './user.service';
 
 
 @Injectable({
@@ -25,7 +26,23 @@ export class DataService {
   // home data
   private blogURL: string = 'http://localhost:8080/blog';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userService: UserService) { }
+
+  public submit(obj: Object, type: string): void {
+    switch (type) {
+      case 'Blog':
+        const date = new Date();
+        const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
+
+        obj['username'] = this.userService.getUser().username;
+        obj['likes'] = 0;
+        obj['date'] = formattedDate;
+        this.createBlogs(obj as Blog);
+        break;
+      default:
+        console.log("Unknow type");
+    }
+  }
 
   public getEmploymentHistory(): Observable<Experience[]> {
     return this.http.get<Experience[]>(this.employmentHistoryURL);
