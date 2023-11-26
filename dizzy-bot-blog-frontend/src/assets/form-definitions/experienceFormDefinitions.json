@@ -12,9 +12,9 @@
     "isRequired": true
   },
   {
-    "formName": "company",
+    "formName": "insititution",
     "htmlType": "input",
-    "placeholder": "Company",
+    "placeholder": "Insititution",
     "isRequired": true
   },
   {

@@ -16,13 +16,16 @@ export class CreateContentComponent implements OnInit {
   // form definitions
   @Input() public formFields: FormDefinition[];
 
+  // submission type
+  @Input() public submissionType: string;
+
   // functional variables
   protected isCreating: boolean = false;
 
   // form
-  protected blogForm: FormGroup;
+  protected form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService, private userService: UserService, private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
 
   public ngOnInit(): void {
     this.isCreating = false;
@@ -32,7 +35,7 @@ export class CreateContentComponent implements OnInit {
       formGroup[definition.formName as string] = definition.isRequired ? ['',  Validators.required] : [''];
     });
 
-    this.blogForm = this.formBuilder.group(formGroup);
+    this.form = this.formBuilder.group(formGroup);
   }
 
   protected create(): void {
@@ -45,23 +48,14 @@ export class CreateContentComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    if (this.blogForm.valid) {
-      const title = this.blogForm.get('title').value;
-      const subtitle = this.blogForm.get('subtitle').value;
-      const content = this.blogForm.get('content').value;
-      const date = new Date();
-      const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
-
-      const blog: Blog = {
-        title: title,
-        subtitle: subtitle,
-        username: this.userService.getUser().username,
-        content: content,
-        likes: 0,
-        date: formattedDate
+    let obj = {};
+    if (this.form.valid) {
+      for (let key in this.form.value) {
+        obj[key] = this.form.value[key];
       }
+      console.log(obj);
 
-      this.dataService.createBlogs(blog);
+      this.dataService.submit(obj, this.submissionType);
       this.isCreating = false;
     }
   }
