@@ -31,10 +31,21 @@ public class Experience {
     @Nullable
     private String description;
 
+    private String type;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public Experience() {}
+
+    public Experience(String period, String title, String institution, String location, String description, String type) {
+        this.period = period;
+        this.title = title;
+        this.institution = institution;
+        this.location = location;
+        this.description = description;
+        this.type = type;
+    }
 
 }

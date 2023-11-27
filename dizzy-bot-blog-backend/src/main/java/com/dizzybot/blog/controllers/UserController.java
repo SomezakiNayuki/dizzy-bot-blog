@@ -19,6 +19,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody Map<String, String> body) {
+        // [TODO] Code logic to be moved to service
         User user = userService.findByUsername(body.get("username"));
         if (user == null) {
             return new ResponseEntity<>(new Response("User not registered"), HttpStatus.NOT_FOUND);
