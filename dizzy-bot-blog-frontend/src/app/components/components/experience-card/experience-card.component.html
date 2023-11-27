@@ -1,4 +1,4 @@
-<div *ngFor="let item of experiences">
+<div *ngFor="let item of experiences; trackBy: detectChange">
   <div class="ui segment">
     <div *ngIf="item.period" class="ui top attached left aligned teal segment dzb-experience-inner-information">
       <i class="big calendar alternate outline icon"></i>

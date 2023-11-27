@@ -10,7 +10,7 @@
           <h1 class="dzb-resume-section-header">
             EMPLOYMENT
           </h1>
-          <dzb-create-content *ngIf="employmentFormFields !== undefined && isCreating" [formFields]="employmentFormFields" [submissionType]="'Experience'"></dzb-create-content>
+          <dzb-create-content *ngIf="employmentFormFields !== undefined && isCreating" [formFields]="employmentFormFields" [submissionType]="'Employment'"></dzb-create-content>
           <dzb-experience-card [experiences]="userEmploymentHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached orange segment dzb-aboutMe-content">
@@ -24,7 +24,7 @@
           <h1 class="dzb-resume-section-header">
             EDUCATION
           </h1>
-          <dzb-create-content *ngIf="employmentFormFields !== undefined && isCreating" [formFields]="employmentFormFields" [submissionType]="'Experience'"></dzb-create-content>
+          <dzb-create-content *ngIf="employmentFormFields !== undefined && isCreating" [formFields]="employmentFormFields" [submissionType]="'Education'"></dzb-create-content>
           <dzb-experience-card [experiences]="userEducationHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui bottom attached green segment dzb-aboutMe-content">

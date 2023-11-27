@@ -25,6 +25,7 @@ export class DataService {
 
   // home data
   private blogURL: string = 'http://localhost:8080/blog';
+  private experienceURL: string = 'http://localhost:8080/experience';
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -37,7 +38,19 @@ export class DataService {
         obj['username'] = this.userService.getUser().username;
         obj['likes'] = 0;
         obj['date'] = formattedDate;
-        this.createBlogs(obj as Blog);
+        this.createBlog(obj as Blog);
+        break;
+      case 'Experience':
+        obj['type'] = 'Experience';
+        this.createExperience(obj);
+        break;
+      case 'Employment':
+        obj['type'] = 'Employment';
+        this.createExperience(obj);
+        break;
+      case 'Education':
+        obj['type'] = 'Education';
+        this.createExperience(obj);
         break;
       default:
         console.log("Unknow type");
@@ -75,12 +88,27 @@ export class DataService {
     return this.http.get<Blog[]>(this.blogURL + '/getAll');
   }
 
-  public createBlogs(blog: Blog): void {
+  public createBlog(blog: Blog): void {
     this.http.post<any>(this.blogURL + '/create', blog).pipe(
       catchError(this.serverErrorHandler),
-    ).subscribe(data => {
-      console.log(data);
-    });
+    ).subscribe();
+  }
+
+  public getExperiences(): Observable<Experience[]> {
+    return interval(1000).pipe(
+      startWith(0),
+      switchMap(() => this.fetchExperiences())
+    );
+  }
+
+  private fetchExperiences(): Observable<Experience[]> {
+    return this.http.post<Experience[]>(this.experienceURL + '/getAll', this.userService.getUser().username);
+  }
+
+  public createExperience(experience: Object): void {
+    this.http.post<any>(this.experienceURL + '/create', experience).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
   private serverErrorHandler(err: HttpErrorResponse): Observable<any> {

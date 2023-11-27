@@ -10,5 +10,12 @@ export class ExperienceCard {
 
   // inputted variables
   @Input() public experiences: Experience[];
+
+  constructor() {}
+
+  // To avoid re-rendering list causing animation flickering
+  protected detectChange(index: number, item: any): any {
+    return item.id;
+  }
   
 }
