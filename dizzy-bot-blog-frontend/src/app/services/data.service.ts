@@ -94,6 +94,12 @@ export class DataService {
     ).subscribe();
   }
 
+  public deleteBlog(id: number): void {
+    this.http.delete(this.blogURL + '/delete/' + id).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
   private getExperiences(type: String): Observable<Experience[]> {
     return interval(1000).pipe(
       startWith(0),

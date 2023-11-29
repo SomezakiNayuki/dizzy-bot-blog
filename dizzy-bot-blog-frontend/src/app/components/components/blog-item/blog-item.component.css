@@ -17,3 +17,7 @@
 .dzb-blog-item-content {
   font-size: 30px !important;
 }
+
+.dzb-blog-delete-button {
+  margin-bottom: 10px !important;
+}
