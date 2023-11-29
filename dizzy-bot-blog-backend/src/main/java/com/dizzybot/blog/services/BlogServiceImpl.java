@@ -16,10 +16,6 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogRepository blogRepository;
 
-    public Blog findById(String id) {
-        return blogRepository.findById(id);
-    }
-
     public List<Blog> findAll() {
         List<Blog> blogs = blogRepository.findAll();
         for (Blog blog : blogs) {

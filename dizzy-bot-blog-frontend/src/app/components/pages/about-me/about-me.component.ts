@@ -26,7 +26,7 @@ export class AboutMeComponent implements OnInit {
   protected userSkillList$: Observable<Experience[]>;
 
   // functional variables
-  protected isCreating: boolean = false;
+  protected isEditting: boolean = false;
 
   // form definition for creating about-me page
   protected employmentFormFields: FormDefinition[];
@@ -35,7 +35,7 @@ export class AboutMeComponent implements OnInit {
   constructor(private dataService: DataService, private formService: FormDefinitionService) { }
 
   public ngOnInit(): void {
-    this.isCreating = false;
+    this.isEditting = false;
 
     this.userPersonalInfo$ = this.dataService.getPersonalInfo();
     this.userEmploymentHistory$ = this.dataService.getEmploymentHistory();
@@ -53,11 +53,11 @@ export class AboutMeComponent implements OnInit {
 
   protected edit(): void {
     this.ngOnInit();
-    this.isCreating = true;
+    this.isEditting = true;
   }
 
   protected cancel(): void {
-    this.isCreating = false;
+    this.isEditting = false;
   }
   
 }

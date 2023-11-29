@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, interval, startWith, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, filter, interval, of, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Experience } from '../models/experience';
 import { PersonalInfo } from '../models/personal-info';
@@ -17,14 +17,12 @@ export class DataService {
   private rootURL: string = 'assets/mock-data/';
 
   // about-me data
-  private employmentHistoryURL: string = `${this.rootURL}EmploymentHistoryDataBase/employmentHistory.json`;
   private personalInfoURL: string = `${this.rootURL}PersonalInfoDataBase/personalInfo.json`;
-  private experienceHistoryURL: string = `${this.rootURL}ExperienceHistoryDataBase/experienceHistory.json`;
-  private educationHistoryURL: string = `${this.rootURL}EducationHistoryDataBase/educationHistory.json`;
   private skillListURL: string = `${this.rootURL}SkillListDataBase/skillList.json`;
 
   // home data
   private blogURL: string = 'http://localhost:8080/blog';
+  private experienceURL: string = 'http://localhost:8080/experience';
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -37,7 +35,22 @@ export class DataService {
         obj['username'] = this.userService.getUser().username;
         obj['likes'] = 0;
         obj['date'] = formattedDate;
-        this.createBlogs(obj as Blog);
+        this.createBlog(obj as Blog);
+        break;
+      case 'Experience':
+        obj['type'] = 'Experience';
+        obj['username'] = this.userService.getUser().username;
+        this.createExperience(obj);
+        break;
+      case 'Employment':
+        obj['type'] = 'Employment';
+        obj['username'] = this.userService.getUser().username;
+        this.createExperience(obj);
+        break;
+      case 'Education':
+        obj['type'] = 'Education';
+        obj['username'] = this.userService.getUser().username;
+        this.createExperience(obj);
         break;
       default:
         console.log("Unknow type");
@@ -45,7 +58,7 @@ export class DataService {
   }
 
   public getEmploymentHistory(): Observable<Experience[]> {
-    return this.http.get<Experience[]>(this.employmentHistoryURL);
+    return this.getExperiences('Employment');
   }
 
   public getPersonalInfo(): Observable<PersonalInfo> {
@@ -53,11 +66,11 @@ export class DataService {
   }
 
   public getExperienceHistory(): Observable<Experience[]> {
-    return this.http.get<Experience[]>(this.experienceHistoryURL);
+    return this.getExperiences('Experience');
   }
 
   public getEducationHistory(): Observable<Experience[]> {
-    return this.http.get<Experience[]>(this.educationHistoryURL);
+    return this.getExperiences('Education');
   }
 
   public getSkillList(): Observable<Experience[]> {
@@ -75,12 +88,35 @@ export class DataService {
     return this.http.get<Blog[]>(this.blogURL + '/getAll');
   }
 
-  public createBlogs(blog: Blog): void {
+  public createBlog(blog: Blog): void {
     this.http.post<any>(this.blogURL + '/create', blog).pipe(
       catchError(this.serverErrorHandler),
-    ).subscribe(data => {
-      console.log(data);
-    });
+    ).subscribe();
+  }
+
+  private getExperiences(type: String): Observable<Experience[]> {
+    return interval(1000).pipe(
+      startWith(0),
+      switchMap(() => this.fetchExperiences().pipe(
+        switchMap(experiences => of(experiences.filter(experience => experience.type === type)))
+      ))
+    );
+  }
+
+  private fetchExperiences(): Observable<Experience[]> {
+    return this.http.post<Experience[]>(this.experienceURL + '/getAll', { username: this.userService.getUser().username });
+  }
+
+  public createExperience(experience: Object): void {
+    this.http.post<any>(this.experienceURL + '/create', experience).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
+  public deleteExperience(id: number): void {
+    this.http.delete(this.experienceURL + '/delete/' + id).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
   private serverErrorHandler(err: HttpErrorResponse): Observable<any> {
