@@ -16,7 +16,7 @@
       <i class="big location arrow icon"></i>
       <span [innerText]="experience.location" class="dzb-experience-location"></span>
     </div>
-    <div *ngIf="experience.description" class="ui bottom attached left aligned teal segment dzb-experience-inner-information">
+    <div *ngIf="experience.description" class="ui bottom {{ experience.type === 'DescriptionOnly' ? '' : 'attached' }} left aligned teal segment dzb-experience-inner-information">
       <div>
         <i class="big file alternate outline icon"></i>
       </div>
