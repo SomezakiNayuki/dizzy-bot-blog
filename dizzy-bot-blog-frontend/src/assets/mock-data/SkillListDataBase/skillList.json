@@ -4,6 +4,7 @@
     "title": "",
     "institution": "",
     "location": "",
-    "description": "TypeScript - Angular\nJavaScript - AngularJS\nJava - SpringBoot\nMySQL"
+    "description": "TypeScript - Angular\nJavaScript - AngularJS\nJava - SpringBoot\nMySQL",
+    "type": "DescriptionOnly"
   }
 ]
