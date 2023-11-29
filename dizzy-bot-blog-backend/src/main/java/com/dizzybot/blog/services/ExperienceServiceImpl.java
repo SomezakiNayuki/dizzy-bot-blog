@@ -1,7 +1,6 @@
 package com.dizzybot.blog.services;
 
 import com.dizzybot.blog.entities.Experience;
-import com.dizzybot.blog.entities.User;
 import com.dizzybot.blog.repositories.ExperienceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,15 +16,20 @@ public class ExperienceServiceImpl implements ExperienceService {
     @Autowired
     private ExperienceRepository experienceRepository;
 
-    public Experience findById(String id) {
-        return experienceRepository.findById(id);
-    }
-
-    public List<Experience> findByUser(User user) {
-        return experienceRepository.findByUser(user);
+    public List<Experience> findByUserId(Integer userId) {
+        List<Experience> sanitizedExperiences = experienceRepository.findByUserId(userId);
+        for (Experience experience : sanitizedExperiences) {
+            experience.setUser(null);
+        }
+        return sanitizedExperiences;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Experience saveExperience(Experience experience) { return experienceRepository.save(experience); }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteById(Integer id) {
+        experienceRepository.deleteById(id);
+    }
 
 }

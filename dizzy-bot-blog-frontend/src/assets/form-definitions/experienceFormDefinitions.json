@@ -1,8 +1,8 @@
 [
   {
-    "formName": "peroid",
+    "formName": "period",
     "htmlType": "input",
-    "placeholder": "Peroid",
+    "placeholder": "Period",
     "isRequired": true
   },
   {
@@ -12,9 +12,9 @@
     "isRequired": true
   },
   {
-    "formName": "insititution",
+    "formName": "institution",
     "htmlType": "input",
-    "placeholder": "Insititution",
+    "placeholder": "Institution",
     "isRequired": true
   },
   {

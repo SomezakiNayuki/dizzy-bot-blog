@@ -53,7 +53,6 @@ export class CreateContentComponent implements OnInit {
       for (let key in this.form.value) {
         obj[key] = this.form.value[key];
       }
-      console.log(obj);
 
       this.dataService.submit(obj, this.submissionType);
       this.isCreating = false;

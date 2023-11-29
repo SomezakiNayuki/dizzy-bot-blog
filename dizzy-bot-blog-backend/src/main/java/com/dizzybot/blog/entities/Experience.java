@@ -1,5 +1,6 @@
 package com.dizzybot.blog.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
@@ -33,19 +34,21 @@ public class Experience {
 
     private String type;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public Experience() {}
 
-    public Experience(String period, String title, String institution, String location, String description, String type) {
+    public Experience(String period, String title, String institution, String location, String description, String type, User user) {
         this.period = period;
         this.title = title;
         this.institution = institution;
         this.location = location;
         this.description = description;
         this.type = type;
+        this.user = user;
     }
 
 }
