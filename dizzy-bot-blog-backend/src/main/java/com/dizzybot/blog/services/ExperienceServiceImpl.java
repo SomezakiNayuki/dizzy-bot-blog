@@ -28,8 +28,6 @@ public class ExperienceServiceImpl implements ExperienceService {
     public Experience saveExperience(Experience experience) { return experienceRepository.save(experience); }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void deleteById(Integer id) {
-        experienceRepository.deleteById(id);
-    }
+    public void deleteById(Integer id) { experienceRepository.deleteById(id); }
 
 }

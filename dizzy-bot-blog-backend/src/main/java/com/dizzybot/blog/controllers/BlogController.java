@@ -48,4 +48,10 @@ public class BlogController {
         return new ResponseEntity<>(new Response("Blog created"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Response> deleteBlog(@PathVariable Integer id) {
+        blogService.deleteById(id);
+        return new ResponseEntity<>(new Response("Blog " + id + " deleted"), HttpStatus.OK);
+    }
+
 }

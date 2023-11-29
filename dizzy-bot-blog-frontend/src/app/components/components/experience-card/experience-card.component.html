@@ -1,27 +1,27 @@
-<div *ngFor="let item of experiences; trackBy: detectChange">
+<div *ngFor="let experience of experiences; trackBy: detectChange">
   <div class="ui segment">
-    <button class="ui red button" *ngIf="isEditting" (click)="delete(item.id)">delete</button>
-    <div *ngIf="item.period" class="ui top attached left aligned teal segment dzb-experience-inner-information">
+    <button class="ui red button" *ngIf="isEditting" (click)="delete(experience.id)">delete</button>
+    <div *ngIf="experience.period" class="ui top attached left aligned teal segment dzb-experience-inner-information">
       <i class="big calendar alternate outline icon"></i>
-      <span [innerText]="item.period" class="dzb-experience-period"></span>
+      <span [innerText]="experience.period" class="dzb-experience-period"></span>
     </div>
-    <div *ngIf="item.title" class="ui attached teal segment dzb-experience-inner-information">
-      <span [innerText]="item.title" class="dzb-experience-title"></span>
+    <div *ngIf="experience.title" class="ui attached teal segment dzb-experience-inner-information">
+      <span [innerText]="experience.title" class="dzb-experience-title"></span>
     </div>
-    <div *ngIf="item.institution" class="ui attached left aligned teal segment dzb-experience-inner-information">
+    <div *ngIf="experience.institution" class="ui attached left aligned teal segment dzb-experience-inner-information">
       <i class="big building outline icon"></i>
-      <span [innerText]="item.institution" class="dzb-experience-institution"></span>
+      <span [innerText]="experience.institution" class="dzb-experience-institution"></span>
     </div>
-    <div *ngIf="item.location" class="ui attached left aligned teal segment dzb-experience-inner-information">
+    <div *ngIf="experience.location" class="ui attached left aligned teal segment dzb-experience-inner-information">
       <i class="big location arrow icon"></i>
-      <span [innerText]="item.location" class="dzb-experience-location"></span>
+      <span [innerText]="experience.location" class="dzb-experience-location"></span>
     </div>
-    <div *ngIf="item.description" class="ui bottom attached left aligned teal segment dzb-experience-inner-information">
+    <div *ngIf="experience.description" class="ui bottom attached left aligned teal segment dzb-experience-inner-information">
       <div>
         <i class="big file alternate outline icon"></i>
       </div>
       <div class="dzb-experience-description-container">
-        <span [innerText]="item.description" class="dzb-experience-description"></span>
+        <span [innerText]="experience.description" class="dzb-experience-description"></span>
       </div>
     </div>
   </div>

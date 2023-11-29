@@ -28,4 +28,7 @@ public class BlogServiceImpl implements BlogService {
     @Transactional(propagation = Propagation.REQUIRED)
     public Blog saveBlog(Blog blog) { return blogRepository.save(blog); }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteById(Integer id) { blogRepository.deleteById(id); }
+
 }

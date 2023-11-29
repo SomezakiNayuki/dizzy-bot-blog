@@ -10,4 +10,6 @@ public interface BlogService {
 
     public Blog saveBlog(Blog blog);
 
+    public void deleteById(Integer id);
+
 }
