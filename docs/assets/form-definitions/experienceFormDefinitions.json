@@ -1,0 +1,31 @@
+[
+  {
+    "formName": "period",
+    "htmlType": "input",
+    "placeholder": "Period",
+    "isRequired": true
+  },
+  {
+    "formName": "title",
+    "htmlType": "input",
+    "placeholder": "Title",
+    "isRequired": true
+  },
+  {
+    "formName": "institution",
+    "htmlType": "input",
+    "placeholder": "Institution",
+    "isRequired": true
+  },
+  {
+    "formName": "location",
+    "htmlType": "input",
+    "placeholder": "Location",
+    "isRequired": true
+  },
+  {
+    "formName": "description",
+    "htmlType": "textarea",
+    "isRequired": true
+  }
+]
