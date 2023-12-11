@@ -2,6 +2,7 @@ package com.dizzybot.blog.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +23,15 @@ public class User {
     private String password;
 
     private String email;
+
+    @Nullable
+    private String linkedInURL;
+
+    @Nullable
+    private String phone;
+
+    @Nullable
+    private String university;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Blog> blogs = new ArrayList<Blog>();

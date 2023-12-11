@@ -49,6 +49,9 @@ public class UserController {
         sanitisedUser.setEmail(user.getEmail());
         sanitisedUser.setBlogs(user.getBlogs());
         sanitisedUser.setExperiences(user.getExperiences());
+        sanitisedUser.setLinkedInURL(user.getLinkedInURL());
+        sanitisedUser.setPhone(user.getPhone());
+        sanitisedUser.setUniversity(user.getUniversity());
         return new ResponseEntity<>(sanitisedUser, HttpStatus.OK);
     }
 

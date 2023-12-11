@@ -8,7 +8,7 @@ import { Component } from "@angular/core";
 export class FooterComponent {
 
   // screen contents
-  protected userName: string = 'Dizzy Bot';
+  protected username: string = 'Dizzy Bot';
   protected userDescription: string = 'The strongest Artificial Idiot in the world';
   protected userWechatId: string = 'wechat: SomezakiNayuki';
   protected userEmail: string = 'Email: 123456789@gmail.com';

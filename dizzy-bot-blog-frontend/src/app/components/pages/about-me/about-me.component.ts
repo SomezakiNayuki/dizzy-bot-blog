@@ -31,6 +31,7 @@ export class AboutMeComponent implements OnInit {
   // form definition for creating about-me page
   protected employmentFormFields: FormDefinition[];
   protected personalInformationFields: FormDefinition[];
+  protected skillFields: FormDefinition[];
 
   constructor(private dataService: DataService, private formService: FormDefinitionService) { }
 
@@ -49,6 +50,9 @@ export class AboutMeComponent implements OnInit {
     this.formService.getPersonalInformationFormDefinitions().subscribe(formFields => {
       this.personalInformationFields = formFields;
     });
+    this.formService.getSkillFormDefinitions().subscribe(formFields => {
+      this.skillFields = formFields;
+    })
   }
 
   protected edit(): void {

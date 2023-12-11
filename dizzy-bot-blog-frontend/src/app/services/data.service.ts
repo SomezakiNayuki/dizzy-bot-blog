@@ -18,7 +18,6 @@ export class DataService {
 
   // about-me data
   private personalInfoURL: string = `${this.rootURL}PersonalInfoDataBase/personalInfo.json`;
-  private skillListURL: string = `${this.rootURL}SkillListDataBase/skillList.json`;
 
   // home data
   private blogURL: string = 'http://localhost:8080/blog';
@@ -52,8 +51,17 @@ export class DataService {
         obj['username'] = this.userService.getUser().username;
         this.createExperience(obj);
         break;
+      case 'Skill':
+        obj['type'] = 'Skill';
+        obj['username'] = this.userService.getUser().username;
+        this.createExperience(obj);
+        break;
+      case 'PersonalInfo':
+        obj['username'] = this.userService.getUser().username;
+        this.updatePersonalInfo(obj);
+        break;
       default:
-        console.log("Unknow type");
+        throwError(() => new Error('Unknown type'));
     }
   }
 
@@ -62,7 +70,23 @@ export class DataService {
   }
 
   public getPersonalInfo(): Observable<PersonalInfo> {
-    return this.http.get<PersonalInfo>(this.personalInfoURL);
+    return interval(1000).pipe(
+      startWith(0),
+      switchMap(() => {
+        this.userService.fetchUser(this.userService.getUser().username);
+        let personalInfo: PersonalInfo = {
+          username: this.userService.getUser().username,
+          userEmail: this.userService.getUser().email,
+          userLinkedInUrl: this.userService.getUser().linkedInURL,
+          userPhoneNumber: this.userService.getUser().phone,
+          userAcademicDegree: undefined,
+          userAcademicDescription1: undefined,
+          userAcademicDescription2: undefined,
+          userUniversity: this.userService.getUser().university
+        };
+        return of(personalInfo);
+      })
+    )
   }
 
   public getExperienceHistory(): Observable<Experience[]> {
@@ -74,7 +98,7 @@ export class DataService {
   }
 
   public getSkillList(): Observable<Experience[]> {
-    return this.http.get<Experience[]>(this.skillListURL);
+    return this.getExperiences('Skill');
   }
 
   public getBlogs(): Observable<Blog[]> {
@@ -115,6 +139,12 @@ export class DataService {
 
   public createExperience(experience: Object): void {
     this.http.post<any>(this.experienceURL + '/create', experience).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
+  public updatePersonalInfo(personalInfo: Object): void {
+    this.http.post<any>(this.experienceURL + '/updatePersonalInfo', personalInfo).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }

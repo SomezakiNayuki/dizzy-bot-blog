@@ -22,4 +22,8 @@ export class FormDefinitionService {
     return this.http.get<FormDefinition[]>('assets/form-definitions/personalInformationFormDefinitions.json');
   }
 
+  public getSkillFormDefinitions(): Observable<FormDefinition[]> {
+    return this.http.get<FormDefinition[]>('assets/form-definitions/skillFormDefinitions.json');
+  }
+
 }
