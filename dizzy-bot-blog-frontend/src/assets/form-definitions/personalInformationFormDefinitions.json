@@ -1,12 +1,6 @@
 [
   {
-    "formName": "email",
-    "htmlType": "input",
-    "placeholder": "Email",
-    "isRequired": true
-  },
-  {
-    "formName": "linkedIn",
+    "formName": "linkedInURL",
     "htmlType": "input",
     "placeholder": "LinkedIn URL",
     "isRequired": true
@@ -21,12 +15,6 @@
     "formName": "university",
     "htmlType": "input",
     "placeholder": "University",
-    "isRequired": true
-  },
-  {
-    "formName": "academicDegree",
-    "htmlType": "input",
-    "placeholder": "Academic degree",
     "isRequired": true
   }
 ]

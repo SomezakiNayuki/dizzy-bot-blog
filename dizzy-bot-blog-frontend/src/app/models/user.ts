@@ -6,5 +6,8 @@ export interface User {
   username: string,
   email: string,
   blogs: Blog[],
-  experiences: Experience[]
+  experiences: Experience[],
+  linkedInURL?: string,
+  phone?: string,
+  university?: string
 }

@@ -31,6 +31,7 @@
           <h1 class="dzb-resume-section-header">
             TECHNICAL SKILLS
           </h1>
+          <dzb-create-content *ngIf="skillFields !== undefined && isEditting" [formFields]="skillFields" [submissionType]="'Skill'"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userSkillList$ | async"></dzb-experience-card>
         </div>
       </div>

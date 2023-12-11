@@ -39,6 +39,16 @@ public class ExperienceController {
         );
     }
 
+    @PostMapping("/updatePersonalInfo")
+    public ResponseEntity<Response> updatePersonalInfo(@RequestBody Map<String, String> body) {
+        User user = userService.findByUsername(body.get("username"));
+        user.setLinkedInURL(body.get("linkedInURL"));
+        user.setUniversity(body.get("university"));
+        user.setPhone(body.get("phone"));
+        userService.saveUser(user);
+        return new ResponseEntity<>(new Response("Personal information updated"), HttpStatus.OK);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteExperience(@PathVariable Integer id) {
         experienceService.deleteById(id);
