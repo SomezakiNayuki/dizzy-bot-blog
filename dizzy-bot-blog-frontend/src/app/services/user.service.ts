@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../models/user';
+import { DataCollector } from './demo/data.collector';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +19,18 @@ export class UserService {
   // singleton user observable
   private user$: Observable<User>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dataCollector: DataCollector) { }
 
   public getUser(): User {
     return this.user;
   }
 
   public fetchUser(username: string): void {
-    this.user$ = this.getInfo(username);
+    this.dataCollector.users.forEach(user => {
+      if (user.username == username) {
+        this.user$ = of(user);
+      }
+    });
     this.user$.subscribe(data => {
       this.user = data;
     });

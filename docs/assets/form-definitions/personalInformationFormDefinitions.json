@@ -1,0 +1,20 @@
+[
+  {
+    "formName": "linkedInURL",
+    "htmlType": "input",
+    "placeholder": "LinkedIn URL",
+    "isRequired": true
+  },
+  {
+    "formName": "phone",
+    "htmlType": "input",
+    "placeholder": "Phone number",
+    "isRequired": true
+  },
+  {
+    "formName": "university",
+    "htmlType": "input",
+    "placeholder": "University",
+    "isRequired": true
+  }
+]

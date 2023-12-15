@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { UserService } from './user.service';
+import { DataCollector } from './demo/data.collector';
 declare var $: any;
 
 @Injectable({
@@ -22,30 +23,48 @@ export class LoginService {
   // observables
   private authenticationSubject = new Subject<any>();
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private dataCollector: DataCollector) { }
 
   public login(username: string, password: string, email?: string): void {
-    const targetURL = this.rootURL + (email ? '/register' : '/login');
-    const payload = email ? 
-    {
-      username: username,
-      password: password,
-      email: email,
+    if (email) {
+      let user = this.dataCollector.users.find(user => user.username == username && user.email == email);
+      if (user) {
+        this.loginErrorHandler(new HttpErrorResponse({
+          status: 500,
+          error: {
+            message: 'User already exists'
+          },
+        }));
+      } else {
+        this.dataCollector.users.push({
+          id: this.dataCollector.users.length,
+          username: username,
+          password: password,
+          email: email,
+          blogs: [],
+          experiences: []
+        });
+        this.authenticationSubject.next('200');
+        $('#loginModal').modal('hide');
+        this.isLoggedIn = true;
+        this.userService.fetchUser(username);
+      }
+    } else {
+      let user = this.dataCollector.users.find(user => user.username == username && user.password == password);
+      if (user) {
+        this.authenticationSubject.next('200');
+        $('#loginModal').modal('hide');
+        this.isLoggedIn = true;
+        this.userService.fetchUser(username);
+      } else {
+        this.loginErrorHandler(new HttpErrorResponse({
+          status: 404,
+          error: {
+            message: 'Credential error or user not exists'
+          },
+        }));
+      }
     }
-    :
-    {
-      username: username,
-      password: password,
-    };
-
-    this.http.post<any>(targetURL, payload).pipe(
-      catchError(error => this.loginErrorHandler(error)),
-    ).subscribe(() => {
-      this.authenticationSubject.next('200');
-      $('#loginModal').modal('hide');
-      this.isLoggedIn = true;
-      this.userService.fetchUser(username);
-    });
   }
 
   public logout(): void {

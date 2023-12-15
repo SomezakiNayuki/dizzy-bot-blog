@@ -5,12 +5,15 @@ import { Experience } from '../models/experience';
 import { PersonalInfo } from '../models/personal-info';
 import { Blog } from '../models/blog';
 import { UserService } from './user.service';
+import { DataCollector } from './demo/data.collector';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+
+  private blogId: number = 0;
 
   // service configuration
   // [TODO] To be replaced by server-configuration.json
@@ -23,7 +26,7 @@ export class DataService {
   private blogURL: string = 'http://localhost:8080/blog';
   private experienceURL: string = 'http://localhost:8080/experience';
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  constructor(private http: HttpClient, private userService: UserService, private dataCollector: DataCollector) { }
 
   public submit(obj: Object, type: string): void {
     switch (type) {
@@ -31,10 +34,13 @@ export class DataService {
         const date = new Date();
         const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
 
+        obj['id'] = this.blogId;
         obj['username'] = this.userService.getUser().username;
         obj['likes'] = 0;
         obj['date'] = formattedDate;
         this.createBlog(obj as Blog);
+
+        this.blogId++;
         break;
       case 'Experience':
         obj['type'] = 'Experience';
@@ -109,19 +115,24 @@ export class DataService {
   }
 
   private fetchBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(this.blogURL + '/getAll');
+    let blogs = new Array<Blog>();
+    this.dataCollector.users.forEach(user => {
+      user.blogs.forEach(blog => {
+        blogs.push(blog);
+      });
+    });
+    return of(blogs);
   }
 
   public createBlog(blog: Blog): void {
-    this.http.post<any>(this.blogURL + '/create', blog).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == blog.username);
+    user.blogs.push(blog);
   }
 
   public deleteBlog(id: number): void {
-    this.http.delete(this.blogURL + '/delete/' + id).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    this.dataCollector.users.forEach(user => {
+      user.blogs = user.blogs.filter(blog => blog.id !== id);
+    });
   }
 
   private getExperiences(type: String): Observable<Experience[]> {
@@ -134,25 +145,23 @@ export class DataService {
   }
 
   private fetchExperiences(): Observable<Experience[]> {
-    return this.http.post<Experience[]>(this.experienceURL + '/getAll', { username: this.userService.getUser().username });
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getUser().username);
+    return of(user.experiences);
   }
 
   public createExperience(experience: Object): void {
-    this.http.post<any>(this.experienceURL + '/create', experience).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == experience['username']);
+    user.experiences.push(experience as Experience);
   }
 
   public updatePersonalInfo(personalInfo: Object): void {
-    this.http.post<any>(this.experienceURL + '/updatePersonalInfo', personalInfo).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    // [TODO]
   }
 
   public deleteExperience(id: number): void {
-    this.http.delete(this.experienceURL + '/delete/' + id).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    this.dataCollector.users.forEach(user => {
+      user.experiences = user.experiences.filter(experience => experience.id !== id);
+    });
   }
 
   private serverErrorHandler(err: HttpErrorResponse): Observable<any> {

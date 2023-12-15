@@ -4,6 +4,7 @@ import { Experience } from "./experience";
 export interface User {
   id: number,
   username: string,
+  password: string,
   email: string,
   blogs: Blog[],
   experiences: Experience[],
