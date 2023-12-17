@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Blog } from 'src/app/models/blog';
 import { DataService } from 'src/app/services/data.service';
 import { LoginService } from 'src/app/services/login.service';
+import { PageNavigationService } from 'src/app/services/page-navigation.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +15,12 @@ export class BlogItemComponent {
   // inputted variables
   @Input() public blogs: Blog[];
 
-  constructor(private dataService: DataService, private userService: UserService, private loginService: LoginService) {}
+  constructor(
+    private dataService: DataService, 
+    private userService: UserService, 
+    private loginService: LoginService,
+    private pageNavigationService: PageNavigationService
+    ) {}
 
   // To avoid re-rendering list causing animation flickering
   protected detectChange(index: number, item: any): any {
@@ -26,7 +32,11 @@ export class BlogItemComponent {
   }
 
   protected isBlogOwner(blog: Blog): boolean {
-    return this.loginService.getIsLoggedIn() && blog.username === this.userService.getUser().username;
+    return this.loginService.getIsLoggedIn() && blog.username === this.userService.getHost()?.username;
+  }
+
+  protected viewProfile(username: string): void {
+    this.userService.fetchUser(username, false, () => { this.pageNavigationService.setActive('AboutMe'); });
   }
 
 }

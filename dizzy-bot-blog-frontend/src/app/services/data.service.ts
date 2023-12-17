@@ -35,7 +35,7 @@ export class DataService {
         const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
 
         obj['id'] = this.blogId;
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         obj['likes'] = 0;
         obj['date'] = formattedDate;
         this.createBlog(obj as Blog);
@@ -44,26 +44,26 @@ export class DataService {
         break;
       case 'Experience':
         obj['type'] = 'Experience';
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
         break;
       case 'Employment':
         obj['type'] = 'Employment';
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
         break;
       case 'Education':
         obj['type'] = 'Education';
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
         break;
       case 'Skill':
         obj['type'] = 'Skill';
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
         break;
       case 'PersonalInfo':
-        obj['username'] = this.userService.getUser().username;
+        obj['username'] = this.userService.getHost().username;
         this.updatePersonalInfo(obj);
         break;
       default:
@@ -135,7 +135,7 @@ export class DataService {
     });
   }
 
-  private getExperiences(type: String): Observable<Experience[]> {
+  private getExperiences(type: string): Observable<Experience[]> {
     return interval(1000).pipe(
       startWith(0),
       switchMap(() => this.fetchExperiences().pipe(

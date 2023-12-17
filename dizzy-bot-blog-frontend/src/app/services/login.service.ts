@@ -47,7 +47,7 @@ export class LoginService {
         this.authenticationSubject$.next('200');
         $('#loginModal').modal('hide');
         this.isLoggedIn = true;
-        this.userService.fetchUser(username);
+        this.userService.fetchUser(username, true);
       }
     } else {
       let user = this.dataCollector.users.find(user => user.username == username && user.password == password);
@@ -55,7 +55,7 @@ export class LoginService {
         this.authenticationSubject$.next('200');
         $('#loginModal').modal('hide');
         this.isLoggedIn = true;
-        this.userService.fetchUser(username);
+        this.userService.fetchUser(username, true);
       } else {
         this.loginErrorHandler(new HttpErrorResponse({
           status: 404,
@@ -69,6 +69,8 @@ export class LoginService {
 
   public logout(): void {
     this.isLoggedIn = false;
+    this.userService.setHost(undefined);
+    this.userService.setUser(undefined);
   }
 
   private loginErrorHandler(err: HttpErrorResponse): Observable<any> {
