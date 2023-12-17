@@ -12,6 +12,6 @@ export class FooterComponent {
   protected userDescription: string = 'The strongest Artificial Idiot in the world';
   protected userWechatId: string = 'wechat: SomezakiNayuki';
   protected userEmail: string = 'Email: 123456789@gmail.com';
-  protected userContactQRCode: string = '/assets/images/wechat-QR-code.jpg';
+  protected userContactQRCode: string = 'assets/images/wechat-QR-code.jpg';
 
 }
