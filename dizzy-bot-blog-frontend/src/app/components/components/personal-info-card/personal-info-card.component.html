@@ -18,7 +18,7 @@
       <span [innerText]="personalInfo.userEmail"></span>
     </div>
     <div *ngIf="personalInfo.userLinkedInUrl" class="ui green segment dzb-user-subtitle-item">
-      <a [href]="personalInfo.userLinkedInUrl" class="dzb-user-LinkedIn">LinkedIn</a>
+      <a [href]="personalInfo.userLinkedInUrl" target="_blank" class="dzb-user-LinkedIn">LinkedIn</a>
     </div>
     <div *ngIf="personalInfo.userPhoneNumber" class="ui blue segment dzb-user-subtitle-item">
       <span [innerText]="personalInfo.userPhoneNumber"></span>
