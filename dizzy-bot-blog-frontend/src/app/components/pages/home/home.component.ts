@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Observable, filter, map } from "rxjs";
+import { Observable, map } from "rxjs";
 import { Blog } from "src/app/models/blog";
 import { FormDefinition } from "src/app/models/form-definition";
 import { DataService } from "src/app/services/data.service";
