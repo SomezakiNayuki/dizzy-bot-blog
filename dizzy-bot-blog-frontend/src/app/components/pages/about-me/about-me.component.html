@@ -1,5 +1,5 @@
 <div class="ui container dzb-aboutMe-container">
-  <div class="dzb-aboutMe-page-edit-button-group">
+  <div class="dzb-aboutMe-page-edit-button-group" *ngIf="isHost()">
     <button class="ui teal primary button" (click)="edit()" *ngIf="!isEditting">edit</button>
     <button class="ui button" (click)="cancel()" *ngIf="isEditting">cancel</button>
   </div>

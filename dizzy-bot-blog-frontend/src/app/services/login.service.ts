@@ -44,12 +44,14 @@ export class LoginService {
       this.authenticationSubject$.next('200');
       $('#loginModal').modal('hide');
       this.isLoggedIn = true;
-      this.userService.fetchUser(username);
+      this.userService.fetchUser(username, true);
     });
   }
 
   public logout(): void {
     this.isLoggedIn = false;
+    this.userService.setHost(undefined);
+    this.userService.setUser(undefined);
   }
 
   private loginErrorHandler(err: HttpErrorResponse): Observable<any> {
