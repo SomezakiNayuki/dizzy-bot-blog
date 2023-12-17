@@ -27,7 +27,7 @@ export class LoginService {
 
   public login(username: string, password: string, email?: string): void {
     if (email) {
-      let user = this.dataCollector.users.find(user => user.username == username && user.email == email);
+      let user = this.dataCollector.users.find(user => user.username == username);
       if (user) {
         this.loginErrorHandler(new HttpErrorResponse({
           status: 500,
