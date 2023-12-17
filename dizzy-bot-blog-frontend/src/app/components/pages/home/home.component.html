@@ -27,6 +27,12 @@
   <div class="ui segment dzb-home-segment-black">
     <div *ngIf="isLoggedIn()">
       <dzb-create-content *ngIf="formFields !== undefined" [formFields]="formFields" [submissionType]="'Blog'"></dzb-create-content>
+      <div class="dzb-home-page-manage-my-blog-button" *ngIf="!isManaging" (click)="manageMyBlogs()">
+        <button class="ui teal primary button">manage my blogs</button>
+      </div>
+      <div class="dzb-home-page-manage-my-blog-button" *ngIf="isManaging" (click)="ngOnInit()">
+        <button class="ui button">cancel</button>
+      </div>
     </div>
     <dzb-blog-item [blogs]="blogs$ | async"></dzb-blog-item>
   </div>
