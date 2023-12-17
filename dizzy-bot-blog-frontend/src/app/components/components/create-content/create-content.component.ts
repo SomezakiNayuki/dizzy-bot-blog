@@ -1,10 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Blog } from 'src/app/models/blog';
 import { FormDefinition } from 'src/app/models/form-definition';
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'dzb-create-content',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, filter, interval, of, startWith, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Experience } from '../models/experience';
 import { PersonalInfo } from '../models/personal-info';
