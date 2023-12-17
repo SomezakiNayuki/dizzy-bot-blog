@@ -46,7 +46,7 @@ export class HomeComponent {
   protected manageMyBlogs(): void {
     this.isManaging = true;
     this.blogs$ = this.dataService.getBlogs().pipe(
-      map(blogs => blogs.filter(blog => blog.username === this.userService.getUser().username)),
+      map(blogs => blogs.filter(blog => blog.username === this.userService.getUser()?.username)),
     );
   }
 

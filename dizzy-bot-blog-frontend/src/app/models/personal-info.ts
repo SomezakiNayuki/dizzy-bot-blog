@@ -1,10 +1,10 @@
 export interface PersonalInfo {
-  username: String,
-  userEmail: String,
-  userLinkedInUrl: String,
-  userPhoneNumber: String,
-  userAcademicDegree: String,
-  userAcademicDescription1: String,
-  userAcademicDescription2: String,
-  userUniversity: String
+  username: string,
+  userEmail: string,
+  userLinkedInUrl: string,
+  userPhoneNumber: string,
+  userAcademicDegree: string,
+  userAcademicDescription1: string,
+  userAcademicDescription2: string,
+  userUniversity: string
 }

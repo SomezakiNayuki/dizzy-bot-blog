@@ -1,9 +1,9 @@
 export interface Experience {
   id: number,
-  period?: String,
-  title?: String,
-  institution?: String,
-  location?: String,
-  description?: String,
-  type: String
+  period?: string,
+  title?: string,
+  institution?: string,
+  location?: string,
+  description?: string,
+  type: string
 }

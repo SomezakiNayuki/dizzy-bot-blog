@@ -5,6 +5,8 @@ import { FormDefinition } from "src/app/models/form-definition";
 import { PersonalInfo } from "src/app/models/personal-info";
 import { DataService } from "src/app/services/data.service";
 import { FormDefinitionService } from "src/app/services/form-definition.service";
+import { LoginService } from "src/app/services/login.service";
+import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: 'dzb-about-me',
@@ -33,7 +35,12 @@ export class AboutMeComponent implements OnInit {
   protected personalInformationFields: FormDefinition[];
   protected skillFields: FormDefinition[];
 
-  constructor(private dataService: DataService, private formService: FormDefinitionService) { }
+  constructor(
+    private dataService: DataService, 
+    private formService: FormDefinitionService, 
+    private loginService: LoginService,
+    private userService: UserService
+    ) { }
 
   public ngOnInit(): void {
     this.isEditting = false;
@@ -62,6 +69,10 @@ export class AboutMeComponent implements OnInit {
 
   protected cancel(): void {
     this.isEditting = false;
+  }
+
+  protected isHost(): boolean {
+    return this.loginService.getIsLoggedIn() && this.userService.getUser()?.username === this.userService.getHost()?.username;
   }
   
 }
