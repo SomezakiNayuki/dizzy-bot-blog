@@ -11,6 +11,13 @@
   background-color: rgb(256, 256, 256, 0.5) !important;
 }
 
+@media screen and (max-width: 800px) {
+  .dzb-aboutMe-segment-white {
+    width: auto !important;
+    background-color: rgb(256, 256, 256, 0.5) !important;
+  }
+}
+
 .dzb-aboutMe-content {
   width: fit-content !important;
   background-color: rgb(230, 256, 230, 0.7) !important;
