@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -11,16 +11,16 @@ import { LoginService } from 'src/app/services/login.service';
 export class LoginModalComponent implements OnInit {
 
   // functional variables
-  protected isRegistered: boolean = true;
+  protected isRegistering: boolean = false;
 
   // form
   protected loginForm: FormGroup;
 
   // event observables
-  private loginEventObservable$: Observable<any> = this.loginService.getLoginServiceEventSubject();
+  private loginEventObservable$: Subject<any> = this.loginService.getLoginServiceEventSubject$();
 
   // observables
-  protected authenticationObservable$: Observable<any> = this.loginService.getAuthenticationSubject();
+  protected authenticationObservable$: Subject<any> = this.loginService.getAuthenticationSubject$();
 
   constructor(private formBuilder: FormBuilder, private loginService: LoginService) { }
 
@@ -35,9 +35,8 @@ export class LoginModalComponent implements OnInit {
   }
 
   private init(): void {
-    this.isRegistered = true;
+    this.isRegistering = false;
 
-    // [TODO] Set up event listener to clear username and password every time modal gets opened
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -46,19 +45,23 @@ export class LoginModalComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    const emailControl = this.loginForm.get('email');
-    emailControl.clearValidators();
-    emailControl.updateValueAndValidity();
+    if (this.isRegistering) {
+      this.onRegister();
+    } else {
+      const emailControl = this.loginForm.get('email');
+      emailControl.clearValidators();
+      emailControl.updateValueAndValidity();
 
-    if (this.loginForm.valid) {
-      const username = this.loginForm.get('username').value;
-      const password = this.loginForm.get('password').value;
-      
-      this.loginService.login(username, password);
+      if (this.loginForm.valid) {
+        const username = this.loginForm.get('username').value;
+        const password = this.loginForm.get('password').value;
+        
+        this.loginService.login(username, password);
+      }
     }
   }
 
-  protected onRegister(): void {
+  private onRegister(): void {
     const emailControl = this.loginForm.get('email');
     emailControl.clearValidators();
     emailControl.setValidators([Validators.email, Validators.required]);
@@ -71,6 +74,10 @@ export class LoginModalComponent implements OnInit {
       
       this.loginService.login(username, password, email);
     }
+  }
+
+  protected register(): void {
+    this.isRegistering = !this.isRegistering;
   }
 
 }

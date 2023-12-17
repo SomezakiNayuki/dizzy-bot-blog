@@ -16,19 +16,21 @@
                 <input type="password" placeholder="Password" formControlName="password" required>
               </div>
             </div>
+            <div class="ui vertical segment" *ngIf="isRegistering">
+              <div class="ui input dzb-login-modal-input-box">
+                <input type="text" placeholder="Email" formControlName="email" required>
+              </div>
+            </div>
             <div *ngIf="authenticationObservable$ | async as err">
               <ng-container [ngSwitch]="err">
                 <div class="ui vertical segment" *ngSwitchCase="'404'">
-                  <div class="ui input dzb-login-modal-input-box">
-                    <input type="text" placeholder="Email" formControlName="email" required>
-                  </div>
                   <div class="ui tertiary inverted red segment">
                     <p>User not registered, please register</p>
                   </div>
                 </div>
                 <div class="ui vertical segment" *ngSwitchCase="'500'">
                   <div class="ui tertiary inverted red segment">
-                    <p>Wrong username/password</p>
+                    <p>User already exists, wrong credentials</p>
                   </div>
                 </div>
               </ng-container>
@@ -36,8 +38,8 @@
         </div>
         <div class="modal-footer">
           <button class="ui red basic button" type="button">Forgot password</button>
-          <button class="ui teal primary button" type="submit">Login</button>
-          <button class="ui button" type="button" (click)="onRegister()">Register</button>
+          <button class="ui teal primary button" type="submit">{{ isRegistering ? 'Submit' : 'Login' }}</button>
+          <button class="ui button" type="button" (click)="register()">Register</button>
         </div>
     </form>
     </div>

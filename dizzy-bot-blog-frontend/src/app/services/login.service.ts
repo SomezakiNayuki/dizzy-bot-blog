@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { DataCollector } from './demo/data.collector';
@@ -18,10 +18,10 @@ export class LoginService {
   private isLoggedIn: boolean = false;
 
   // event observables
-  private loginServiceEventSubject = new Subject<any>();
+  private loginServiceEventSubject$ = new Subject<any>();
 
   // observables
-  private authenticationSubject = new Subject<any>();
+  private authenticationSubject$ = new Subject<any>();
 
   constructor(private http: HttpClient, private userService: UserService, private dataCollector: DataCollector) { }
 
@@ -44,7 +44,7 @@ export class LoginService {
           blogs: [],
           experiences: []
         });
-        this.authenticationSubject.next('200');
+        this.authenticationSubject$.next('200');
         $('#loginModal').modal('hide');
         this.isLoggedIn = true;
         this.userService.fetchUser(username);
@@ -52,7 +52,7 @@ export class LoginService {
     } else {
       let user = this.dataCollector.users.find(user => user.username == username && user.password == password);
       if (user) {
-        this.authenticationSubject.next('200');
+        this.authenticationSubject$.next('200');
         $('#loginModal').modal('hide');
         this.isLoggedIn = true;
         this.userService.fetchUser(username);
@@ -77,7 +77,7 @@ export class LoginService {
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.error.message}`;
-      this.authenticationSubject.next(err.status);
+      this.authenticationSubject$.next(err.status);
     }
     return throwError(() => errorMessage);
   }
@@ -87,16 +87,16 @@ export class LoginService {
   }
 
   public reinitLoginModal(): void {
-    this.loginServiceEventSubject.next('reinit');
-    this.authenticationSubject.next('200');
+    this.loginServiceEventSubject$.next('reinit');
+    this.authenticationSubject$.next('200');
   }
 
-  public getLoginServiceEventSubject(): Observable<any> {
-    return this.loginServiceEventSubject.asObservable();
+  public getLoginServiceEventSubject$(): Subject<any> {
+    return this.loginServiceEventSubject$;
   }
 
-  public getAuthenticationSubject(): Observable<any> {
-    return this.authenticationSubject.asObservable();
+  public getAuthenticationSubject$(): Subject<any> {
+    return this.authenticationSubject$;
   }
 
 }
