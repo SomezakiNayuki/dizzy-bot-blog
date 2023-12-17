@@ -36,8 +36,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Response> register(@RequestBody Map<String, String> body) {
         User user = new User(body.get("username"), body.get("password"), body.get("email"));
-        userService.saveUser(user);
+        try {
+            userService.saveUser(user);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new Response("User exists"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(new Response("User registered"), HttpStatus.OK);
+
     }
 
     @PostMapping("/getInfo")
