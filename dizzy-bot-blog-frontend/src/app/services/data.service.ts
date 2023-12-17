@@ -155,7 +155,10 @@ export class DataService {
   }
 
   public updatePersonalInfo(personalInfo: Object): void {
-    // [TODO]
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getUser().username);
+    user.linkedInURL = personalInfo['linkedInURL'];
+    user.phone = personalInfo['phone'];
+    user.university = personalInfo['university'];
   }
 
   public deleteExperience(id: number): void {
