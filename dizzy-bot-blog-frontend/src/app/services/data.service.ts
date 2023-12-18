@@ -14,6 +14,7 @@ import { DataCollector } from './demo/data.collector';
 export class DataService {
 
   private blogId: number = 0;
+  private experienceId: number = 0;
 
   // service configuration
   // [TODO] To be replaced by server-configuration.json
@@ -43,24 +44,32 @@ export class DataService {
         this.blogId++;
         break;
       case 'Experience':
+        obj['id'] = this.experienceId;
         obj['type'] = 'Experience';
         obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
+        this.experienceId++;
         break;
       case 'Employment':
+        obj['id'] = this.experienceId;
         obj['type'] = 'Employment';
         obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
+        this.experienceId++;
         break;
       case 'Education':
+        obj['id'] = this.experienceId;
         obj['type'] = 'Education';
         obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
+        this.experienceId++;
         break;
       case 'Skill':
+        obj['id'] = this.experienceId;
         obj['type'] = 'Skill';
         obj['username'] = this.userService.getHost().username;
         this.createExperience(obj);
+        this.experienceId++;
         break;
       case 'PersonalInfo':
         obj['username'] = this.userService.getHost().username;
