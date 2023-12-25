@@ -3,9 +3,6 @@
       <div class="ui yellow inverted secondary stackable menu">
           <h1 class="ui item dzb-header-title" [innerText]="blogTitle"></h1>
           <a class="item dzb-header-menu {{isHomeActive() ? 'active' : undefined}}" (click)="switchHomeActive()"><i class="black home icon"></i>Home</a>
-          <a class="item dzb-header-menu"><i class="black idea icon"></i>Classify</a>
-          <a class="item dzb-header-menu"><i class="black tags icon"></i>Tags</a>
-          <a *ngIf="isLoggedIn()" class="item dzb-header-menu"><i class="black clone icon"></i>Archive</a>
           <a *ngIf="isLoggedIn()" class="item dzb-header-menu {{isAboutMeActive() ? 'active' : undefined}}" (click)="switchAboutMeActive()"><i class="black info icon"></i>About me</a>
           <!--
             [TODO] Complete search function
