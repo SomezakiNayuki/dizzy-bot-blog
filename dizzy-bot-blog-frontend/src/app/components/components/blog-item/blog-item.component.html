@@ -1,4 +1,4 @@
-<div *ngFor="let blog of blogs; trackBy: detectChange">
+<div *ngFor="let blog of blogs.reverse(); trackBy: detectChange">
   <div class="ui segment dzb-blog-item-content-background">
     <button class="ui red button dzb-blog-delete-button" *ngIf="isBlogOwner(blog)" (click)="delete(blog.id)">delete</button>
     <div class="ui link cards">
