@@ -12,6 +12,12 @@
     "isRequired": false
   },
   {
+    "formName": "image",
+    "htmlType": "input",
+    "placeholder": "image URL",
+    "isRequired": false
+  },
+  {
     "formName": "content",
     "htmlType": "textarea",
     "isRequired": true
