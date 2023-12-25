@@ -36,13 +36,15 @@ public class BlogController {
         int likes = Integer.parseInt(body.get("likes"));
         String date = body.get("date");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String image = body.get("image");
         Blog blog = new Blog(
                 body.get("title"),
                 body.get("subtitle"),
                 user,
                 body.get("content"),
                 likes,
-                LocalDateTime.parse(date, formatter)
+                LocalDateTime.parse(date, formatter),
+                image
         );
         blogService.saveBlog(blog);
         return new ResponseEntity<>(new Response("Blog created"), HttpStatus.OK);
