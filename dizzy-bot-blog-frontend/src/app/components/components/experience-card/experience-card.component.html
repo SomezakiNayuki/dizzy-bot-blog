@@ -1,4 +1,4 @@
-<div *ngFor="let experience of experiences; trackBy: detectChange">
+<div *ngFor="let experience of experiences.reverse(); trackBy: detectChange">
   <div class="ui segment">
     <button class="ui red button" *ngIf="isEditting" (click)="delete(experience.id)">delete</button>
     <div *ngIf="experience.period" class="ui top attached left aligned teal segment dzb-experience-inner-information">
