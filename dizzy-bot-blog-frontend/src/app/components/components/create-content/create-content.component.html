@@ -11,11 +11,11 @@
         <ng-container [ngSwitch]="definition.htmlType">
           <div class="ui segment dzb-create-content-segment-white" *ngSwitchCase="'input'">
             <div class="ui input icon dzb-content-input-box">
-              <input type="text" placeholder="{{ definition.placeholder ? definition.placeholder : '' }}" [formControlName]="definition.formName" required="definition.isRequired">
+              <input type="text" placeholder="{{ definition.placeholder ? definition.placeholder : '' }}" [formControlName]="definition.formName" [required]="definition.isRequired">
             </div>
           </div>
           <div class="ui segment dzb-create-content-segment-white" *ngSwitchCase="'textarea'">
-            <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10" [formControlName]="definition.formName" required="definition.isRequired"></textarea>
+            <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10" [formControlName]="definition.formName" [required]="definition.isRequired"></textarea>
           </div>
         </ng-container>
       </div>
