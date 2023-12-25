@@ -5,5 +5,6 @@ export interface Blog {
   username: string,
   content: string,
   likes: number,
-  date: string
+  date: string,
+  image: string
 }

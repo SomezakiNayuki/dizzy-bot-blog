@@ -3,6 +3,7 @@ package com.dizzybot.blog.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,17 +34,21 @@ public class Blog {
 
     private Integer likes;
 
+    @Nullable
+    private String image;
+
     private LocalDateTime date;
 
     public Blog() {}
 
-    public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date) {
+    public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date, String image) {
         this.title = title;
         this.subtitle = subtitle;
         this.author = author;
         this.content = content;
         this.likes = likes;
         this.date = date;
+        this.image = image;
     }
 
 }
