@@ -1,24 +1,37 @@
 <div class="ui yellow inverted vertical segment">
   <div class="ui container dzb-header">
-      <div class="ui yellow inverted secondary stackable menu">
-          <h1 class="ui item dzb-header-title" [innerText]="blogTitle"></h1>
-          <a class="item dzb-header-menu {{isHomeActive() ? 'active' : undefined}}" (click)="switchHomeActive()"><i class="black home icon"></i>Home</a>
-          <a class="item dzb-header-menu"><i class="black idea icon"></i>Classify</a>
-          <a class="item dzb-header-menu"><i class="black tags icon"></i>Tags</a>
-          <a *ngIf="isLoggedIn()" class="item dzb-header-menu"><i class="black clone icon"></i>Archive</a>
-          <a *ngIf="isLoggedIn()" class="item dzb-header-menu {{isAboutMeActive() ? 'active' : undefined}}" (click)="switchAboutMeActive()"><i class="black info icon"></i>About me</a>
-          <!--
-            [TODO] Complete search function
-            <div class="item">
-              <div class="ui input icon">
-                  <input type="text" [placeholder]="searchBoxPlaceHolder">
-                  <i class="search link icon"></i>
-              </div>
-            </div>
-          -->
-          <a class="item dzb-header-menu" *ngIf="!isLoggedIn()" (click)="login()"><i class="teal user icon"></i>Login</a>
-          <a class="item dzb-header-menu" *ngIf="isLoggedIn()" (click)="logout()"><i class="teal user icon"></i>Logout</a>
-      </div>
+    <div class="ui yellow inverted secondary stackable menu">
+      <h1 class="ui item dzb-header-title">{{ "header.blog.title" | translate }}</h1>
+      <a class="item dzb-header-menu {{ isHomeActive() }}" (click)="setHomeActive()">
+        <i class="black home icon"></i>
+        {{ "header.menu.home" | translate }}
+      </a>
+      <a class="item dzb-header-menu" *ngIf="isLoggedIn()">
+        <i class="black clone icon"></i>
+        {{ "header.menu.archive" | translate }}
+      </a>
+      <a class="item dzb-header-menu {{ isAboutMeActive() }}" *ngIf="isLoggedIn()" (click)="setAboutMeActive()">
+        <i class="black info icon"></i>
+        {{ "header.menu.aboutMe" | translate }}
+      </a>
+      <!--
+        [TODO] Complete search function
+        <div class="item">
+          <div class="ui input icon">
+              <input type="text" [placeholder]="searchBoxPlaceHolder">
+              <i class="search link icon"></i>
+          </div>
+        </div>
+      -->
+      <a class="item dzb-header-menu" *ngIf="!isLoggedIn()" (click)="login()">
+        <i class="teal user icon"></i>
+        {{ "header.menu.login" | translate }}
+      </a>
+      <a class="item dzb-header-menu" *ngIf="isLoggedIn()" (click)="logout()">
+        <i class="teal user icon"></i>
+        {{ "header.menu.logout" | translate }}
+      </a>
+    </div>
   </div>
 </div>
 

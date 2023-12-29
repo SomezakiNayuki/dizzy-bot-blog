@@ -1,51 +1,34 @@
 import { Injectable } from '@angular/core';
+import { PageEnum } from 'src/app/enumerations/page.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageNavigationService {
 
-  // functional variables
-  private isAboutMeActive: boolean = false;
-  private isHomeActive: boolean = true;
+  private activeScreen: PageEnum = PageEnum.HOME;
 
   constructor() { }
 
-  private init(): void {
-    this.isAboutMeActive = false;
-    this.isHomeActive = false;
-  }
-
-  public setActive(screen: string): void {
+  public setActive(screen: PageEnum): void {
     switch (screen) {
-      case 'AboutMe': {
-        this.init();
-        this.isAboutMeActive = true;
+      case PageEnum.ABOUT_ME: {
+        this.activeScreen = PageEnum.ABOUT_ME;
         break;
       }
-      case 'Home': {
-        this.init();
-        this.isHomeActive = true;
+      case PageEnum.HOME: {
+        this.activeScreen = PageEnum.HOME;
         break;
       }
       default: {
+        this.activeScreen = PageEnum.HOME;
         break;
       }
     }
   }
 
-  public isActive(screen: string): boolean {
-    switch (screen) {
-      case 'AboutMe': {
-        return this.isAboutMeActive;
-      }
-      case 'Home': {
-        return this.isHomeActive;
-      }
-      default: {
-        return false;
-      }
-    }
+  public isActive(screen: PageEnum): boolean {
+    return screen === this.activeScreen;
   }
 
 }

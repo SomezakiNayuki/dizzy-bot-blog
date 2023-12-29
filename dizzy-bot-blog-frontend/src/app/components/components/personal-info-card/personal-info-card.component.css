@@ -6,7 +6,9 @@
 .dzb-username {
   color: rgba(25, 85, 150, 1) !important;
   font-size: 50px !important;
+  font-family: Impact !important;
   font-style: oblique !important;
+  font-weight: 100 !important;
 }
 
 .dzb-user-subtitle {

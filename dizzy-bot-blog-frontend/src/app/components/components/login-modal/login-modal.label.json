@@ -1,0 +1,9 @@
+{
+  "login-modal.button.forgotPassword": "forgot password",
+  "login-modal.button.login": "login",
+  "login-modal.button.register": "register",
+  "login-modal.button.submit": "submit",
+  "login-modal.error.404": "User not registered, please register",
+  "login-modal.error.500": "User already exists, wrong credentials",
+  "login-modal.header.title": "Login/Register"
+}

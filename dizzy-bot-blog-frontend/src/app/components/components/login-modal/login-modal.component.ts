@@ -1,36 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { AuthenticationStatus } from 'src/app/enumerations/authentication.enum';
+import { LabelService } from 'src/app/pipes/label.service';
 import { LoginService } from 'src/app/services/login.service';
+import * as label from 'src/app/components/components/login-modal/login-modal.label.json';
 
 @Component({
   selector: 'dzb-login-modal',
   templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.css']
+  styleUrls: ['./login-modal.component.css'],
+  providers: [LabelService]
 })
 export class LoginModalComponent implements OnInit {
 
-  // functional variables
-  protected isRegistering: boolean = false;
+  protected AUTH_NOT_FOUND: AuthenticationStatus = AuthenticationStatus.NOT_FOUND;
+  protected AUTH_ERROR: AuthenticationStatus = AuthenticationStatus.ERROR;
 
-  // form
+  protected authenticationResponse$: Subject<any> = this.loginService.getAuthenticationResponse$();
+  protected isRegistering: boolean = false;
   protected loginForm: FormGroup;
 
-  // event observables
-  private loginEventObservable$: Subject<any> = this.loginService.getLoginServiceEventSubject$();
-
-  // observables
-  protected authenticationObservable$: Subject<any> = this.loginService.getAuthenticationSubject$();
-
-  constructor(private formBuilder: FormBuilder, private loginService: LoginService) { }
+  constructor(
+    private formBuilder: FormBuilder, 
+    private labelService: LabelService,
+    private loginService: LoginService
+  ) {}
 
   public ngOnInit(): void {
-    this.loginEventObservable$.subscribe(data => {
-      if (data == 'reinit') {
-        this.init();
-      }
+    this.loginService.getInitLoginModal$().subscribe(() => {
+      this.init();
     });
 
+    this.labelService.loadScreenLabelConfiguration(label);
     this.init();
   }
 
@@ -40,8 +42,12 @@ export class LoginModalComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      email: [''],
+      email: ['', [Validators.email, Validators.required]],
     });
+  }
+
+  protected register(): void {
+    this.isRegistering = !this.isRegistering;
   }
 
   protected onSubmit(): void {
@@ -62,22 +68,13 @@ export class LoginModalComponent implements OnInit {
   }
 
   private onRegister(): void {
-    const emailControl = this.loginForm.get('email');
-    emailControl.clearValidators();
-    emailControl.setValidators([Validators.email, Validators.required]);
-    emailControl.updateValueAndValidity();
-
     if (this.loginForm.valid) {
       const username = this.loginForm.get('username').value;
       const password = this.loginForm.get('password').value;
       const email = this.loginForm.get('email').value;
       
-      this.loginService.login(username, password, email);
+      this.loginService.register(username, password, email);
     }
-  }
-
-  protected register(): void {
-    this.isRegistering = !this.isRegistering;
   }
 
 }

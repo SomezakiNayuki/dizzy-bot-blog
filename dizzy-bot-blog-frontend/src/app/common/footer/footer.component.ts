@@ -1,17 +1,21 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
+import { LabelService } from 'src/app/pipes/label.service';
+import * as label from 'src/app/common/footer/footer.label.json';
 
 @Component({
   selector: 'dzb-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
+  providers: [LabelService]
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
 
-  // screen contents
-  protected username: string = 'Dizzy Bot';
-  protected userDescription: string = 'The strongest Artificial Idiot in the world';
-  protected userWechatId: string = 'wechat: SomezakiNayuki';
-  protected userEmail: string = 'Email: 123456789@gmail.com';
-  protected userContactQRCode: string = 'assets/images/wechat-QR-code.jpg';
+  constructor(
+    private labelService: LabelService
+  ) {}
+
+  public ngOnInit(): void {
+    this.labelService.loadScreenLabelConfiguration(label);
+  }
 
 }

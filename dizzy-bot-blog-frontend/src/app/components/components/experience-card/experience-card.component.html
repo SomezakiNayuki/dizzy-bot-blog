@@ -1,7 +1,9 @@
-<div *ngFor="let experience of experiences.reverse(); trackBy: detectChange">
+<div *ngFor="let experience of getSortedExperiences(); trackBy: detectChange">
   <div class="ui segment">
-    <button class="ui red button" *ngIf="isEditting" (click)="delete(experience.id)">delete</button>
-    <div *ngIf="experience.period" class="ui top attached left aligned teal segment dzb-experience-inner-information">
+    <button class="ui red button dzb-experience-delete-button" *ngIf="isEditting" (click)="delete(experience.id)">
+      {{ "experience-card.experience.delete" | translate }}
+    </button>
+    <div *ngIf="experience.period" class="ui attached left aligned teal segment dzb-experience-inner-information">
       <i class="big calendar alternate outline icon"></i>
       <span [innerText]="experience.period" class="dzb-experience-period"></span>
     </div>
@@ -16,7 +18,7 @@
       <i class="big location arrow icon"></i>
       <span [innerText]="experience.location" class="dzb-experience-location"></span>
     </div>
-    <div *ngIf="experience.description" class="ui bottom {{ experience.type === 'Skill' ? '' : 'attached' }} left aligned teal segment dzb-experience-inner-information">
+    <div *ngIf="experience.description" class="ui attached left aligned teal segment dzb-experience-inner-information">
       <div>
         <i class="big file alternate outline icon"></i>
       </div>

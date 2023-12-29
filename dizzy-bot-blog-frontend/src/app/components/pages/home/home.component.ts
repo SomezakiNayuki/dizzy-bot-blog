@@ -1,53 +1,67 @@
-import { Component } from "@angular/core";
-import { Observable, map } from "rxjs";
-import { Blog } from "src/app/models/blog";
-import { FormDefinition } from "src/app/models/form-definition";
-import { DataService } from "src/app/services/data.service";
-import { FormDefinitionService } from "src/app/services/form-definition.service";
-import { LoginService } from "src/app/services/login.service";
-import { UserService } from "src/app/services/user.service";
+import { Component, Injector } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { Blog } from 'src/app/models/blog';
+import { FormDefinition } from 'src/app/models/form-definition';
+import { LabelService } from 'src/app/pipes/label.service';
+import { DataService } from 'src/app/services/data.service';
+import { FormDefinitionService } from 'src/app/services/form-definition.service';
+import { LoginService } from 'src/app/services/login.service';
+import { UserService } from 'src/app/services/user.service';
+import * as label from 'src/app/components/pages/home/home.label.json';
 
 @Component({
   selector: 'dzb-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [LabelService]
 })
 export class HomeComponent {
 
-  // functional variables
-  protected isManaging: boolean = false;
-
-  // observables
   protected blogs$: Observable<Blog[]>;
-
-  // form definition for creating blog
+  protected filtered: boolean = false;
   protected formFields: FormDefinition[];
 
   constructor(
     private dataService: DataService, 
-    private loginService: LoginService, 
     private formService: FormDefinitionService,
+    private injector: Injector,
+    private labelService: LabelService,
+    private loginService: LoginService, 
     private userService: UserService
-    ) { }
+  ) {}
 
   public ngOnInit(): void {
-    this.isManaging = false;
-    this.blogs$ = this.dataService.getBlogs();
+    this.filtered = false;
+    this.labelService.loadScreenLabelConfiguration(label);
+    this.fetchFormDefinition();
+    this.fetchData();
+  }
 
+  private fetchData(): void {
+    this.blogs$ = this.dataService.getBlogs();
+  }
+
+  private fetchFormDefinition(): void {
     this.formService.getBlogFormDefinitions().subscribe(formFields => {
       this.formFields = formFields;
     });
   }
 
   protected isLoggedIn(): boolean {
-    return this.loginService.getIsLoggedIn();
+    return this.loginService.isLoggedIn();
   }
 
-  protected manageMyBlogs(): void {
-    this.isManaging = true;
-    this.blogs$ = this.dataService.getBlogs().pipe(
-      map(blogs => blogs.filter(blog => blog.username === this.userService.getUser()?.username)),
+  protected filterMyBlogs(): void {
+    this.filtered = true;
+
+    this.blogs$ = this.dataService.getBlogs()
+    .pipe(
+      map(blogs => blogs.filter(blog => blog.username === this.userService.getCashedHost()?.username)),
     );
+  }
+
+  protected Blog(): Blog {
+    return this.injector.get(Blog);
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormDefinition } from 'src/app/models/form-definition';
+import { Submitable } from 'src/app/models/submitable';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -10,26 +11,23 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class CreateContentComponent implements OnInit {
 
-  // form definitions
   @Input() public formFields: FormDefinition[];
+  @Input() public submitable: Submitable;
 
-  // submission type
-  @Input() public submissionType: string;
-
-  // functional variables
   protected isCreating: boolean = false;
-
-  // form
   protected form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private dataService: DataService) { }
+  constructor(
+    private formBuilder: FormBuilder, 
+    private dataService: DataService
+  ) {}
 
   public ngOnInit(): void {
     this.isCreating = false;
 
     let formGroup = {};
     this.formFields.forEach(definition => {
-      formGroup[definition.formName as string] = definition.isRequired ? ['',  Validators.required] : [''];
+      formGroup[definition.formName as string] = definition.isRequired ? ['',  Validators.required] : ['', null];
     });
 
     this.form = this.formBuilder.group(formGroup);
@@ -45,13 +43,12 @@ export class CreateContentComponent implements OnInit {
   }
 
   protected onSubmit(): void {
-    let obj = {};
     if (this.form.valid) {
       for (let key in this.form.value) {
-        obj[key] = this.form.value[key];
+        this.submitable[key] = this.form.value[key];
       }
 
-      this.dataService.submit(obj, this.submissionType);
+      this.dataService.submit(this.submitable);
       this.isCreating = false;
     }
   }

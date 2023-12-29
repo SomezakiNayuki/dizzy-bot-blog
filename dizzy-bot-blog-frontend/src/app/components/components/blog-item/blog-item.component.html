@@ -1,6 +1,8 @@
-<div *ngFor="let blog of blogs.reverse(); trackBy: detectChange">
+<div *ngFor="let blog of getSortedBlogs(); trackBy: detectChange">
   <div class="ui segment dzb-blog-item-content-background">
-    <button class="ui red button dzb-blog-delete-button" *ngIf="isBlogOwner(blog)" (click)="delete(blog.id)">delete</button>
+    <button class="ui red button dzb-blog-delete-button" *ngIf="isBlogOwner(blog)" (click)="delete(blog.id)">
+      {{ "blog-item.blog.delete" | translate }}
+    </button>
     <div class="ui link cards">
       <div class="card dzb-blog-item">
         <div class="image">
@@ -17,8 +19,8 @@
           <div [innerText]="blog.content" class="description dzb-blog-item-content"></div>
         </div>
         <div class="extra content dzb-blog-item-misc-text">
-          <span [innerText]="blog.date.replace('T', ' ')" class="right floated"></span>
-          <a ><i class="heart icon"></i> {{ blog.likes }} likes </a>
+          <span [innerText]="blog.date | time" class="right floated"></span>
+          <a><i class="heart icon"></i>{{ blog.likes }}</a>
         </div>
       </div>
     </div>
