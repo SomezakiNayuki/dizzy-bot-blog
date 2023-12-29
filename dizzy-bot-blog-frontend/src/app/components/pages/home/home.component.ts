@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Blog } from 'src/app/models/blog';
 import { FormDefinition } from 'src/app/models/form-definition';
@@ -24,6 +24,7 @@ export class HomeComponent {
   constructor(
     private dataService: DataService, 
     private formService: FormDefinitionService,
+    private injector: Injector,
     private labelService: LabelService,
     private loginService: LoginService, 
     private userService: UserService
@@ -57,6 +58,10 @@ export class HomeComponent {
     .pipe(
       map(blogs => blogs.filter(blog => blog.username === this.userService.getCashedHost()?.username)),
     );
+  }
+
+  protected Blog(): Blog {
+    return this.injector.get(Blog);
   }
 
 }

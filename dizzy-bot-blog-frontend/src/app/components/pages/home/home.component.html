@@ -26,7 +26,7 @@
 <div class="ui container">
   <div class="ui segment dzb-home-segment-black">
     <div *ngIf="isLoggedIn()">
-      <dzb-create-content *ngIf="formFields !== undefined" [formFields]="formFields" [submissionType]="'Blog'"></dzb-create-content>
+      <dzb-create-content *ngIf="formFields" [formFields]="formFields" [submitable]="Blog()"></dzb-create-content>
       <div class="dzb-home-page-manage-my-blog-button" *ngIf="!filtered" (click)="filterMyBlogs()">
         <button class="ui teal primary button">
           {{ "home.blogFilter.mine" | translate }}
