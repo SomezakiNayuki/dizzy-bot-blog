@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, catchError, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { AuthenticationStatus } from 'src/app/enumerations/authentication.enum';
+import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
 declare var $: any;
 
 @Injectable({
@@ -10,14 +11,12 @@ declare var $: any;
 })
 export class LoginService {
 
-  // [TODO] To be replaced by server-configuration.json
-  private rootURL: string = 'http://localhost:8080/user';
-
   private initLoginModal$ = new BehaviorSubject<undefined>(undefined);
   private authenticationResponse$ = new Subject<AuthenticationStatus>();
 
   constructor(
     private http: HttpClient, 
+    private serverConfigService: ServerConfigurationService,
     private userService: UserService
   ) {}
 
@@ -35,7 +34,7 @@ export class LoginService {
       () => { this.userService.fetchUser(username); },
     ];
 
-    this.authentication('/register', payload, callbacks);
+    this.authentication(this.serverConfigService.getRegisterURL(), payload, callbacks);
   }
 
   public login(username: string, password: string): void {
@@ -51,7 +50,7 @@ export class LoginService {
       () => { this.userService.fetchUser(username); },
     ];
 
-    this.authentication('/login', payload, callbacks);
+    this.authentication(this.serverConfigService.getLoginURL(), payload, callbacks);
   }
 
   public logout(): void {
@@ -60,7 +59,7 @@ export class LoginService {
   }
 
   private authentication(path: string, payload: Object, callbacks?: Function[]): void {
-    this.http.post<any>(this.rootURL + path, payload).pipe(
+    this.http.post<any>(path, payload).pipe(
       catchError(error => this.authenticationErrorHandler(error)),
     ).subscribe(() => {
       callbacks?.forEach(fn => { fn(); });

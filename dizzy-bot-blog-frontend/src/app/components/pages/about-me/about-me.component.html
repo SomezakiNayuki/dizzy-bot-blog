@@ -12,28 +12,28 @@
       <div class="ui segment dzb-aboutMe-segment-black">
         <div class="ui top attached red segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
-            EMPLOYMENT
+            {{ "about-me.sectionHeader.employment" | translate }}
           </h1>
           <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submitable]="Employment()"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userEmploymentHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached orange segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
-            EXPERIENCE
+            {{ "about-me.sectionHeader.experience" | translate }}
           </h1>
           <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submitable]="Experience()"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userExperienceHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached yellow segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
-            EDUCATION
+            {{ "about-me.sectionHeader.education" | translate }}
           </h1>
           <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submitable]="Education()"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userEducationHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui bottom attached green segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
-            TECHNICAL SKILLS
+            {{ "about-me.sectionHeader.skill" | translate }}
           </h1>
           <dzb-create-content *ngIf="skillFields && isEditting" [formFields]="skillFields" [submitable]="Skill()"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userSkillList$ | async"></dzb-experience-card>
