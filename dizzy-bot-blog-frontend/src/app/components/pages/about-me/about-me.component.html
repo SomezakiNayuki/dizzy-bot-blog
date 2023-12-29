@@ -1,7 +1,11 @@
 <div class="ui container dzb-aboutMe-container">
   <div class="dzb-aboutMe-page-edit-button-group" *ngIf="isHost()">
-    <button class="ui teal primary button" (click)="edit()" *ngIf="!isEditting">edit</button>
-    <button class="ui button" (click)="cancel()" *ngIf="isEditting">cancel</button>
+    <button class="ui teal primary button" (click)="edit()" *ngIf="!isEditting">
+      {{ "about-me.editButton.edit" | translate }}
+    </button>
+    <button class="ui button" (click)="cancel()" *ngIf="isEditting">
+      {{ "about-me.editButton.cancel" | translate }}
+    </button>
   </div>
   <div class="ui stackable two column grid">
     <div class="ui ten wide center aligned column">
@@ -10,35 +14,35 @@
           <h1 class="dzb-resume-section-header">
             EMPLOYMENT
           </h1>
-          <dzb-create-content *ngIf="employmentFormFields !== undefined && isEditting" [formFields]="employmentFormFields" [submissionType]="'Employment'"></dzb-create-content>
+          <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submissionType]="'Employment'"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userEmploymentHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached orange segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
             EXPERIENCE
           </h1>
-          <dzb-create-content *ngIf="employmentFormFields !== undefined && isEditting" [formFields]="employmentFormFields" [submissionType]="'Experience'"></dzb-create-content>
+          <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submissionType]="'Experience'"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userExperienceHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui attached yellow segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
             EDUCATION
           </h1>
-          <dzb-create-content *ngIf="employmentFormFields !== undefined && isEditting" [formFields]="employmentFormFields" [submissionType]="'Education'"></dzb-create-content>
+          <dzb-create-content *ngIf="employmentFormFields && isEditting" [formFields]="employmentFormFields" [submissionType]="'Education'"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userEducationHistory$ | async"></dzb-experience-card>
         </div>
         <div class="ui bottom attached green segment dzb-aboutMe-content">
           <h1 class="dzb-resume-section-header">
             TECHNICAL SKILLS
           </h1>
-          <dzb-create-content *ngIf="skillFields !== undefined && isEditting" [formFields]="skillFields" [submissionType]="'Skill'"></dzb-create-content>
+          <dzb-create-content *ngIf="skillFields && isEditting" [formFields]="skillFields" [submissionType]="'Skill'"></dzb-create-content>
           <dzb-experience-card [isEditting]="isEditting" [experiences]="userSkillList$ | async"></dzb-experience-card>
         </div>
       </div>
     </div>
     <div class="ui three wide center aligned column">
       <div class="ui segment dzb-aboutMe-segment-white">
-        <dzb-create-content *ngIf="personalInformationFields !== undefined && isEditting" [formFields]="personalInformationFields" [submissionType]="'PersonalInfo'"></dzb-create-content>
+        <dzb-create-content *ngIf="personalInformationFields && isEditting" [formFields]="personalInformationFields" [submissionType]="'PersonalInfo'"></dzb-create-content>
         <dzb-personal-info-card [personalInfo]="userPersonalInfo$ | async"></dzb-personal-info-card>
       </div>
     </div>

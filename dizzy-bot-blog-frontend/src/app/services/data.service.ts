@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Experience } from '../models/experience';
-import { PersonalInfo } from '../models/personal-info';
-import { Blog } from '../models/blog';
-import { UserService } from './user.service';
+import { Experience } from 'src/app/models/experience';
+import { PersonalInfo } from 'src/app/models/personal-info';
+import { Blog } from 'src/app/models/blog';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Injectable({
@@ -15,9 +15,6 @@ export class DataService {
   // service configuration
   // [TODO] To be replaced by server-configuration.json
   private rootURL: string = 'assets/mock-data/';
-
-  // about-me data
-  private personalInfoURL: string = `${this.rootURL}PersonalInfoDataBase/personalInfo.json`;
 
   // home data
   private blogURL: string = 'http://localhost:8080/blog';
@@ -31,33 +28,33 @@ export class DataService {
         const date = new Date();
         const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
 
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         obj['likes'] = 0;
         obj['date'] = formattedDate;
         this.createBlog(obj as Blog);
         break;
       case 'Experience':
         obj['type'] = 'Experience';
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         this.createExperience(obj);
         break;
       case 'Employment':
         obj['type'] = 'Employment';
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         this.createExperience(obj);
         break;
       case 'Education':
         obj['type'] = 'Education';
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         this.createExperience(obj);
         break;
       case 'Skill':
         obj['type'] = 'Skill';
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         this.createExperience(obj);
         break;
       case 'PersonalInfo':
-        obj['username'] = this.userService.getHost().username;
+        obj['username'] = this.userService.getCashedHost().username;
         this.updatePersonalInfo(obj);
         break;
       default:
@@ -73,16 +70,16 @@ export class DataService {
     return interval(1000).pipe(
       startWith(0),
       switchMap(() => {
-        this.userService.fetchUser(this.userService.getUser().username);
+        this.userService.fetchUser(this.userService.getCashedUser().username);
         let personalInfo: PersonalInfo = {
-          username: this.userService.getUser().username,
-          userEmail: this.userService.getUser().email,
-          userLinkedInUrl: this.userService.getUser().linkedInURL,
-          userPhoneNumber: this.userService.getUser().phone,
+          username: this.userService.getCashedUser().username,
+          userEmail: this.userService.getCashedUser().email,
+          userLinkedInUrl: this.userService.getCashedUser().linkedInURL,
+          userPhoneNumber: this.userService.getCashedUser().phone,
           userAcademicDegree: undefined,
           userAcademicDescription1: undefined,
           userAcademicDescription2: undefined,
-          userUniversity: this.userService.getUser().university
+          userUniversity: this.userService.getCashedUser().university
         };
         return of(personalInfo);
       })
@@ -134,7 +131,7 @@ export class DataService {
   }
 
   private fetchExperiences(): Observable<Experience[]> {
-    return this.http.post<Experience[]>(this.experienceURL + '/getAll', { username: this.userService.getUser().username });
+    return this.http.post<Experience[]>(this.experienceURL + '/getAll', { username: this.userService.getCashedUser().username });
   }
 
   public createExperience(experience: Object): void {

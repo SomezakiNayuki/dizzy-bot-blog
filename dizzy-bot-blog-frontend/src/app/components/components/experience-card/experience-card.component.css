@@ -45,3 +45,7 @@
 .dzb-experience-information-item {
   background-color: rgb(256, 256, 256, 0.5) !important;
 }
+
+.dzb-experience-delete-button {
+  margin-bottom: 10px !important;
+}

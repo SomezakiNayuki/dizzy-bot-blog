@@ -1,26 +1,32 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { PageEnum } from 'src/app/enumerations/page.enum';
 import { Blog } from 'src/app/models/blog';
+import { LabelService } from 'src/app/pipes/label.service';
 import { DataService } from 'src/app/services/data.service';
-import { LoginService } from 'src/app/services/login.service';
 import { PageNavigationService } from 'src/app/services/page-navigation.service';
 import { UserService } from 'src/app/services/user.service';
+import * as label from 'src/app/components/components/blog-item/blog-item.label.json';
 
 @Component({
   selector: 'dzb-blog-item',
   templateUrl: './blog-item.component.html',
-  styleUrls: ['./blog-item.component.css']
+  styleUrls: ['./blog-item.component.css'],
+  providers: [LabelService]
 })
-export class BlogItemComponent {
+export class BlogItemComponent implements OnInit {
 
-  // inputted variables
   @Input() public blogs: Blog[];
 
   constructor(
-    private dataService: DataService, 
-    private userService: UserService, 
-    private loginService: LoginService,
-    private pageNavigationService: PageNavigationService
-    ) {}
+    private dataService: DataService,
+    private labelService: LabelService,
+    private pageNavigationService: PageNavigationService,
+    private userService: UserService
+  ) {}
+  
+  public ngOnInit(): void {
+    this.labelService.loadScreenLabelConfiguration(label);
+  }
 
   // To avoid re-rendering list causing animation flickering
   protected detectChange(index: number, item: any): any {
@@ -32,11 +38,15 @@ export class BlogItemComponent {
   }
 
   protected isBlogOwner(blog: Blog): boolean {
-    return this.loginService.getIsLoggedIn() && blog.username === this.userService.getHost()?.username;
+    return blog.username === this.userService.getCashedHost()?.username;
   }
 
   protected viewProfile(username: string): void {
-    this.userService.fetchUser(username, false, () => { this.pageNavigationService.setActive('AboutMe'); });
+    this.userService.fetchUser(username, () => { this.pageNavigationService.setActive(PageEnum.ABOUT_ME); });
+  }
+
+  protected getSortedBlogs(): Blog[] {
+    return this.blogs?.reverse();
   }
 
 }

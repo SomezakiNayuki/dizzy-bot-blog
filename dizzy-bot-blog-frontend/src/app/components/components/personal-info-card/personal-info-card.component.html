@@ -1,4 +1,4 @@
-<div *ngIf="personalInfo !== null" class="ui segment dzb-profile">
+<div *ngIf="personalInfo" class="ui segment dzb-profile">
   <h1 [innerText]="personalInfo.username" class="dzb-username"></h1>
   <div class="ui stacked segments dzb-user-subtitle">
     <!--
@@ -18,7 +18,9 @@
       <span [innerText]="personalInfo.userEmail"></span>
     </div>
     <div *ngIf="personalInfo.userLinkedInUrl" class="ui green segment dzb-user-subtitle-item">
-      <a [href]="personalInfo.userLinkedInUrl" target="_blank" class="dzb-user-LinkedIn">LinkedIn</a>
+      <a [href]="personalInfo.userLinkedInUrl" target="_blank" class="dzb-user-LinkedIn">
+        {{ "personal-info-card.description.linkedIn" | translate }}
+      </a>
     </div>
     <div *ngIf="personalInfo.userPhoneNumber" class="ui blue segment dzb-user-subtitle-item">
       <span [innerText]="personalInfo.userPhoneNumber"></span>

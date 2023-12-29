@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, catchError, throwError } from 'rxjs';
-import { UserService } from './user.service';
+import { BehaviorSubject, Observable, Subject, catchError, throwError } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { AuthenticationStatus } from 'src/app/enumerations/authentication.enum';
 declare var $: any;
 
 @Injectable({
@@ -9,77 +10,98 @@ declare var $: any;
 })
 export class LoginService {
 
-  // service configuration
   // [TODO] To be replaced by server-configuration.json
   private rootURL: string = 'http://localhost:8080/user';
 
-  // functional variables
-  private isLoggedIn: boolean = false;
+  private initLoginModal$ = new BehaviorSubject<undefined>(undefined);
+  private authenticationResponse$ = new Subject<AuthenticationStatus>();
 
-  // event observables
-  private loginServiceEventSubject$ = new Subject<any>();
+  constructor(
+    private http: HttpClient, 
+    private userService: UserService
+  ) {}
 
-  // observables
-  private authenticationSubject$ = new Subject<any>();
-
-  constructor(private http: HttpClient, private userService: UserService) { }
-
-  public login(username: string, password: string, email?: string): void {
-    const targetURL = this.rootURL + (email ? '/register' : '/login');
-    const payload = email ? 
-    {
+  public register(username: string, password: string, email: string) {
+    const payload = {
       username: username,
       password: password,
       email: email,
-    }
-    :
-    {
+    };
+
+    const callbacks = [
+      () => { this.authenticationResponse$.next(AuthenticationStatus.OK); },
+      () => { this.closeLoginModal() },
+      () => { this.userService.fetchHost(username); },
+      () => { this.userService.fetchUser(username); },
+    ];
+
+    this.authentication('/register', payload, callbacks);
+  }
+
+  public login(username: string, password: string): void {
+    const payload = {
       username: username,
       password: password,
     };
 
-    this.http.post<any>(targetURL, payload).pipe(
-      catchError(error => this.loginErrorHandler(error)),
-    ).subscribe(() => {
-      this.authenticationSubject$.next('200');
-      $('#loginModal').modal('hide');
-      this.isLoggedIn = true;
-      this.userService.fetchUser(username, true);
-    });
+    const callbacks = [
+      () => { this.authenticationResponse$.next(AuthenticationStatus.OK); },
+      () => { this.closeLoginModal() },
+      () => { this.userService.fetchHost(username); },
+      () => { this.userService.fetchUser(username); },
+    ];
+
+    this.authentication('/login', payload, callbacks);
   }
 
   public logout(): void {
-    this.isLoggedIn = false;
-    this.userService.setHost(undefined);
-    this.userService.setUser(undefined);
+    this.userService.clearCashedHost();
+    this.userService.clearCashedUser();
   }
 
-  private loginErrorHandler(err: HttpErrorResponse): Observable<any> {
+  private authentication(path: string, payload: Object, callbacks?: Function[]): void {
+    this.http.post<any>(this.rootURL + path, payload).pipe(
+      catchError(error => this.authenticationErrorHandler(error)),
+    ).subscribe(() => {
+      callbacks?.forEach(fn => { fn(); });
+    });
+  }
+
+  private authenticationErrorHandler(err: HttpErrorResponse): Observable<any> {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.error.message}`;
-      this.authenticationSubject$.next(err.status);
+      this.authenticationResponse$.next(err.status);
     }
     return throwError(() => errorMessage);
   }
 
-  public getIsLoggedIn(): boolean {
-    return this.isLoggedIn;
+  public isLoggedIn(): boolean {
+    return this.userService.getCashedHost() !== undefined;
   }
 
-  public reinitLoginModal(): void {
-    this.loginServiceEventSubject$.next('reinit');
-    this.authenticationSubject$.next('200');
+  public getInitLoginModal$(): Subject<any> {
+    return this.initLoginModal$;
   }
 
-  public getLoginServiceEventSubject$(): Subject<any> {
-    return this.loginServiceEventSubject$;
+  public getAuthenticationResponse$(): Subject<any> {
+    return this.authenticationResponse$;
   }
 
-  public getAuthenticationSubject$(): Subject<any> {
-    return this.authenticationSubject$;
+  private reinitLoginModal(): void {
+    this.initLoginModal$.next(undefined);
+    this.authenticationResponse$.next(AuthenticationStatus.OK);
+  }
+
+  public openLoginModal(): void {
+    this.reinitLoginModal();
+    $('#loginModal').modal('show');
+  }
+
+  public closeLoginModal(): void {
+    $('#loginModal').modal('hide');
   }
 
 }

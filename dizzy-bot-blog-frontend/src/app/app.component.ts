@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PageNavigationService } from './services/page-navigation.service';
+import { PageEnum } from 'src/app/enumerations/page.enum';
 
 @Component({
   selector: 'dzb-app',
@@ -14,11 +15,11 @@ export class AppComponent {
   constructor(private pageNavigationService: PageNavigationService) { }
 
   protected isAboutMeActive(): boolean {
-    return this.pageNavigationService.isActive('AboutMe');
+    return this.pageNavigationService.isActive(PageEnum.ABOUT_ME);
   }
 
   protected isHomeActive(): boolean {
-    return this.pageNavigationService.isActive('Home');
+    return this.pageNavigationService.isActive(PageEnum.HOME);
   }
 
 }
