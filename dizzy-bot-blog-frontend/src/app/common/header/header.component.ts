@@ -51,12 +51,10 @@ export class HeaderComponent implements OnInit {
   }
 
   protected login(): void {
-    // [TODO] To be moved into pageNavigationService for consistency
     this.loginService.openLoginModal();
   }
 
   protected logout(): void {
-    // [TODO] To be moved into pageNavigationService for consistency
     this.loginService.logout();
     this.setHomeActive();
   }

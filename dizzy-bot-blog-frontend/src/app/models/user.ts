@@ -1,5 +1,5 @@
-import { Blog } from "./blog";
-import { Experience } from "./experience";
+import { Blog } from 'src/app/models/blog';
+import { Experience } from 'src/app/models/experience';
 
 export interface User {
   id: number,

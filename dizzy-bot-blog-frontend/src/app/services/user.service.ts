@@ -2,20 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
+import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  // [TODO] To be replaced by server-configuration.json
-  private rootURL: string = 'http://localhost:8080/user';
-
   private host: User;
 
   private user: User;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private serverConfigService: ServerConfigurationService
+  ) {}
 
   public getCashedHost(): User {
     return this.host;
@@ -48,7 +49,7 @@ export class UserService {
   }
 
   private getUserInfo(username: string): Observable<User> {
-    return this.http.post<User>(this.rootURL + '/getInfo', { username: username, });
+    return this.http.post<User>(this.serverConfigService.getUserInfoURL(), { username: username, });
   }
 
 }

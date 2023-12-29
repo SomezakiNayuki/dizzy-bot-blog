@@ -7,6 +7,7 @@ import { Blog } from 'src/app/models/blog';
 import { UserService } from 'src/app/services/user.service';
 import { Submitable } from 'src/app/models/submitable';
 import { ExperienceType } from 'src/app/enumerations/experience.enum';
+import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
 
 
 @Injectable({
@@ -14,13 +15,9 @@ import { ExperienceType } from 'src/app/enumerations/experience.enum';
 })
 export class DataService {
 
-  // service configuration
-  // [TODO] To be replaced by server-configuration.json
-  private blogURL: string = 'http://localhost:8080/blog';
-  private experienceURL: string = 'http://localhost:8080/experience';
-
   constructor(
     private http: HttpClient, 
+    private serverConfigService: ServerConfigurationService,
     private userService: UserService
   ) {}
 
@@ -29,13 +26,13 @@ export class DataService {
   }
 
   public createBlog(blog: Object): void {
-    this.http.post<any>(this.blogURL + '/create', blog).pipe(
+    this.http.post<any>(this.serverConfigService.getCreateBlogURL(), blog).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }
 
   public deleteBlog(id: number): void {
-    this.http.delete(this.blogURL + '/delete/' + id).pipe(
+    this.http.delete(this.serverConfigService.getDeleteBlogURL(id)).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }
@@ -45,17 +42,17 @@ export class DataService {
   }
 
   private fetchBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(this.blogURL + '/getAll');
+    return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL());
   }
 
   public createExperience(experience: Object): void {
-    this.http.post<any>(this.experienceURL + '/create', experience).pipe(
+    this.http.post<any>(this.serverConfigService.getCreateExperienceURL(), experience).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }
 
   public deleteExperience(id: number): void {
-    this.http.delete(this.experienceURL + '/delete/' + id).pipe(
+    this.http.delete(this.serverConfigService.getDeleteExperienceURL(id)).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }
@@ -83,7 +80,7 @@ export class DataService {
   }
 
   private fetchExperiences(): Observable<Experience[]> {
-    return this.http.post<Experience[]>(this.experienceURL + '/getAll', { username: this.userService.getCashedUser().username });
+    return this.http.post<Experience[]>(this.serverConfigService.getAllExperiencesURL(), { username: this.userService.getCashedUser().username });
   }
 
   public getPersonalInfo(): Observable<PersonalInfo> {
@@ -101,7 +98,7 @@ export class DataService {
   }
 
   public updatePersonalInfo(personalInfo: Object): void {
-    this.http.post<any>(this.experienceURL + '/updatePersonalInfo', personalInfo).pipe(
+    this.http.post<any>(this.serverConfigService.getUpdatePersonalInfoURL(), personalInfo).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe(data => {
       console.log(data)
