@@ -102,6 +102,12 @@ export class AboutMeComponent implements OnInit {
     return exp;
   }
 
+  /* 
+    All injectable model is provided similar to service,
+    which means all model is a singleton pattern,
+    to prevent type being overriden by last instance change
+    a copy of original model instance is needed
+  */
   private getSolidExperienceInstance(): Experience {
     let exp = {};
     let sourceExp: Experience = this.getExperienceInstance();
