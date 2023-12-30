@@ -80,32 +80,32 @@ export class AboutMeComponent implements OnInit {
 
   protected Education(): Experience {
     let exp = this.getSolidExperienceInstance();
-    exp['type'] = ExperienceType.EDUCATION;
+    exp.type = ExperienceType.EDUCATION;
     return exp;
   }
 
   protected Employment(): Experience {
     let exp = this.getSolidExperienceInstance();
-    exp['type'] = ExperienceType.EMPLOYMENT;
+    exp.type = ExperienceType.EMPLOYMENT;
     return exp;
   }
 
   protected Experience(): Experience {
     let exp = this.getSolidExperienceInstance();
-    exp['type'] = ExperienceType.EXPERIENCE;
+    exp.type = ExperienceType.EXPERIENCE;
     return exp;
   }
 
   protected Skill(): Experience {
     let exp = this.getSolidExperienceInstance();
-    exp['type'] = ExperienceType.SKILL;
+    exp.type = ExperienceType.SKILL;
     return exp;
   }
 
   /* 
-    All injectable model is provided similar to service,
-    which means all model is a singleton pattern,
-    to prevent type being overriden by last instance change
+    All injectable models are provided in a way similar to services,
+    which means all models are in singleton pattern,
+    to prevent attribute 'type' being overriden by last instance change,
     a copy of original model instance is needed
   */
   private getSolidExperienceInstance(): Experience {
