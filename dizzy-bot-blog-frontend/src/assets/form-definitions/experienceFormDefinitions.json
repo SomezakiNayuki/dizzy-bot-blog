@@ -1,31 +1,66 @@
 [
   {
-    "formName": "period",
-    "htmlType": "input",
-    "placeholder": "Period",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "period"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Period",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "title",
-    "htmlType": "input",
-    "placeholder": "Title",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "title"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Job title",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "institution",
-    "htmlType": "input",
-    "placeholder": "Institution",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "institution"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Institution",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "location",
-    "htmlType": "input",
-    "placeholder": "Location",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "location"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Location",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "description",
-    "htmlType": "textarea",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "description"
+    },
+    "templateDefinition": {
+      "htmlType": "textarea",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "dzb-formmy-content-input-box dzb-formmy-create-content-segment-white",
+      "rows": 8
+    }
   }
 ]

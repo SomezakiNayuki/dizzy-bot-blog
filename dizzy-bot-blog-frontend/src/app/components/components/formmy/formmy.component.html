@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div *ngFor="let definition of formFields">
+    <div #formContainer>
+    </div>
+  </div>
+  
+  <div class="dzb-formmy-create-content-confirmation-button-group">
+    <button class="ui teal primary button" type="submit">{{ "formmy.button.submit" | translate }}</button>
+    <button class="ui button" (click)="discard()" type="button">{{ "formmy.button.discard" | translate }}</button>
+  </div>
+</form>

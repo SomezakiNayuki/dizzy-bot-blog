@@ -1,7 +1,14 @@
 [
   {
-    "formName": "description",
-    "htmlType": "textarea",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "description"
+    },
+    "templateDefinition": {
+      "htmlType": "textarea",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "dzb-formmy-content-input-box dzb-formmy-create-content-segment-white",
+      "rows": 8
+    }
   }
 ]
