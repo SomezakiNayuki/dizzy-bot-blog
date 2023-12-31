@@ -31,10 +31,10 @@ import { FormmyComponent } from './components/components/formmy/formmy.component
     CreateContentComponent,
     BlogItemComponent,
     LoginModalComponent,
+    FormmyComponent,
     
     LabelPipe,
-    TimePipe,
-    FormmyComponent
+    TimePipe
   ],
   imports: [
     BrowserModule,
