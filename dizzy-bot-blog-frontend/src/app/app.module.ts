@@ -17,6 +17,7 @@ import { LoginModalComponent } from 'src/app/components/components/login-modal/l
 import { ReactiveFormsModule } from '@angular/forms';
 import { LabelPipe } from 'src/app/pipes/label.pipe';
 import { TimePipe } from 'src/app/pipes/time.pipe';
+import { FormmyComponent } from './components/components/formmy/formmy.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TimePipe } from 'src/app/pipes/time.pipe';
     LoginModalComponent,
     
     LabelPipe,
-    TimePipe
+    TimePipe,
+    FormmyComponent
   ],
   imports: [
     BrowserModule,

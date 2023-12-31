@@ -11,7 +11,7 @@ declare var $: any;
 })
 export class LoginService {
 
-  private initLoginModal$ = new BehaviorSubject<undefined>(undefined);
+  private initLoginModal$ = new BehaviorSubject<void>(undefined);
   private authenticationResponse$ = new Subject<AuthenticationStatus>();
 
   constructor(
@@ -90,7 +90,7 @@ export class LoginService {
   }
 
   private reinitLoginModal(): void {
-    this.initLoginModal$.next(undefined);
+    this.initLoginModal$.next();
     this.authenticationResponse$.next(AuthenticationStatus.OK);
   }
 

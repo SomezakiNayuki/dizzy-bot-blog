@@ -117,7 +117,7 @@ export class AboutMeComponent implements OnInit {
   }
 
   private getExperienceInstance(): Experience {
-    return this.injector.get(Experience);;
+    return this.injector.get(Experience);
   }
 
   private copyMethods(source: any, destination: any) {
