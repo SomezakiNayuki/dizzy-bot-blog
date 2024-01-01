@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Experience } from 'src/app/models/experience';
 import { FormDefinition } from 'src/app/models/form-definition';
@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 import * as label from 'src/app/components/pages/about-me/about-me.label.json';
 import { LabelService } from 'src/app/pipes/label.service';
 import { ExperienceType } from 'src/app/enumerations/experience.enum';
+import { SubmitablFactory } from 'src/app/factories/submitable.factory';
 
 @Component({
   selector: 'dzb-about-me',
@@ -33,8 +34,8 @@ export class AboutMeComponent implements OnInit {
   constructor(
     private dataService: DataService, 
     private formService: FormDefinitionService,
-    private injector: Injector,
     private labelService: LabelService,
+    private submitableFactory: SubmitablFactory,
     private userService: UserService
   ) {}
 
@@ -79,59 +80,31 @@ export class AboutMeComponent implements OnInit {
   }
 
   protected Education(): Experience {
-    let exp = this.getSolidExperienceInstance();
+    let exp = this.submitableFactory.getExperienceInstance();
     exp.type = ExperienceType.EDUCATION;
     return exp;
   }
 
   protected Employment(): Experience {
-    let exp = this.getSolidExperienceInstance();
+    let exp = this.submitableFactory.getExperienceInstance();
     exp.type = ExperienceType.EMPLOYMENT;
     return exp;
   }
 
   protected Experience(): Experience {
-    let exp = this.getSolidExperienceInstance();
+    let exp = this.submitableFactory.getExperienceInstance();
     exp.type = ExperienceType.EXPERIENCE;
     return exp;
   }
 
   protected Skill(): Experience {
-    let exp = this.getSolidExperienceInstance();
+    let exp = this.submitableFactory.getExperienceInstance();
     exp.type = ExperienceType.SKILL;
     return exp;
   }
 
-  /* 
-    All injectable models are provided in a way similar to services,
-    which means all models are in singleton pattern,
-    to prevent attribute 'type' being overriden by last instance change,
-    a copy of original model instance is needed
-  */
-  private getSolidExperienceInstance(): Experience {
-    let exp = {};
-    let sourceExp: Experience = this.getExperienceInstance();
-    Object.assign(exp, sourceExp);
-    this.copyMethods(sourceExp, exp);
-    return exp as Experience;
-  }
-
-  private getExperienceInstance(): Experience {
-    return this.injector.get(Experience);
-  }
-
-  private copyMethods(source: any, destination: any) {
-    const sourcePrototype = Object.getPrototypeOf(source);
-
-    Object.getOwnPropertyNames(sourcePrototype).forEach((methodName) => {
-      if (typeof sourcePrototype[methodName] === 'function') {
-        destination[methodName] = sourcePrototype[methodName].bind(destination);
-      }
-    });
-  }
-
   protected PersonalInfo(): PersonalInfo {
-    return this.injector.get(PersonalInfo);
+    return this.submitableFactory.getPersonalInfoInstance();
   }
   
 }

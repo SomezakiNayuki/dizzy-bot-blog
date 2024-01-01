@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Blog } from 'src/app/models/blog';
 import { FormDefinition } from 'src/app/models/form-definition';
@@ -8,6 +8,7 @@ import { FormDefinitionService } from 'src/app/services/form-definition.service'
 import { LoginService } from 'src/app/services/login.service';
 import { UserService } from 'src/app/services/user.service';
 import * as label from 'src/app/components/pages/home/home.label.json';
+import { SubmitablFactory } from 'src/app/factories/submitable.factory';
 
 @Component({
   selector: 'dzb-home',
@@ -24,9 +25,9 @@ export class HomeComponent {
   constructor(
     private dataService: DataService, 
     private formService: FormDefinitionService,
-    private injector: Injector,
     private labelService: LabelService,
     private loginService: LoginService, 
+    private submitableFactory: SubmitablFactory,
     private userService: UserService
   ) {}
 
@@ -61,7 +62,7 @@ export class HomeComponent {
   }
 
   protected Blog(): Blog {
-    return this.injector.get(Blog);
+    return this.submitableFactory.getBlogInstance();
   }
 
 }
