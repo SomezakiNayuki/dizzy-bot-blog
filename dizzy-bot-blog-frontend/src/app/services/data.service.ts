@@ -100,9 +100,13 @@ export class DataService {
   public updatePersonalInfo(personalInfo: Object): void {
     this.http.post<any>(this.serverConfigService.getUpdatePersonalInfoURL(), personalInfo).pipe(
       catchError(this.serverErrorHandler),
-    ).subscribe(data => {
-      console.log(data)
-    });
+    ).subscribe();
+  }
+
+  public resetPersonalInfo(username: string): void {
+    this.http.delete<any>(this.serverConfigService.getResetPersonalInfoURL(username)).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
   private continuallyFetch<T>(period: number, fn: () => Observable<T>): any {

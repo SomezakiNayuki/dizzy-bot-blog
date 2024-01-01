@@ -1,4 +1,7 @@
 <div *ngIf="personalInfo" class="ui segment dzb-profile">
+  <button class="ui red button" *ngIf="isEditting" (click)="delete(personalInfo.username)">
+    {{ "personal-info-card.description.reset" | translate }}
+  </button>
   <h1 [innerText]="personalInfo.username" class="dzb-username"></h1>
   <div class="ui stacked segments dzb-user-subtitle">
     <!--
@@ -12,9 +15,11 @@
       </div>
     -->
     <div *ngIf="personalInfo.userUniversity" class="ui orange segment dzb-user-subtitle-item">
+      <i class="university icon"></i>
       <span [innerText]="personalInfo.userUniversity"></span>
     </div>
     <div class="ui yellow segment dzb-user-subtitle-item">
+      <i class="envelope outline icon"></i>
       <span [innerText]="personalInfo.userEmail"></span>
     </div>
     <div *ngIf="personalInfo.userLinkedInUrl" class="ui green segment dzb-user-subtitle-item">
@@ -23,6 +28,7 @@
       </a>
     </div>
     <div *ngIf="personalInfo.userPhoneNumber" class="ui blue segment dzb-user-subtitle-item">
+      <i class="phone icon"></i>
       <span [innerText]="personalInfo.userPhoneNumber"></span>
     </div>
   </div>

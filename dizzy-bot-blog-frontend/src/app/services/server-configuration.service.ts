@@ -47,6 +47,10 @@ export class ServerConfigurationService {
     return this.getExperienceURL() + '/updatePersonalInfo';
   }
 
+  public getResetPersonalInfoURL(username: string): string {
+    return this.getExperienceURL() + '/resetPersonalInfo/' + username;
+  }
+
   /* ---------------- User URL ---------------- */
 
   private getUserURL(): string {
