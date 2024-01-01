@@ -43,7 +43,7 @@
     <div class="ui three wide center aligned column">
       <div class="ui segment dzb-aboutMe-segment-white">
         <dzb-create-content *ngIf="personalInformationFields && isEditting" [formFields]="personalInformationFields" [submitable]="PersonalInfo()"></dzb-create-content>
-        <dzb-personal-info-card [personalInfo]="userPersonalInfo$ | async"></dzb-personal-info-card>
+        <dzb-personal-info-card [isEditting]="isEditting" [personalInfo]="userPersonalInfo$ | async"></dzb-personal-info-card>
       </div>
     </div>
   </div>
