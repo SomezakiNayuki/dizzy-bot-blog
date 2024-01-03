@@ -11,5 +11,8 @@ export interface FormDefinition {
     cssClass: string,
     rows?: number,
     additionalAttrs?: []
+  },
+  wrapper?: {
+    cssClass: string
   }
 }

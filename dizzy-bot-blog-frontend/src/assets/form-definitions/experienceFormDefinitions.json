@@ -10,6 +10,9 @@
       "validator": "",
       "isRequired": true,
       "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
   {
@@ -22,6 +25,9 @@
       "placeholder": "Job title",
       "validator": "",
       "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
       "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
@@ -36,6 +42,9 @@
       "validator": "",
       "isRequired": true,
       "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
   {
@@ -48,6 +57,9 @@
       "placeholder": "Location",
       "validator": "",
       "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
       "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },

@@ -17,16 +17,8 @@
           </div>
           <div *ngIf="authenticationResponse$ | async as err">
             <ng-container [ngSwitch]="err">
-              <div class="ui vertical segment" *ngSwitchCase="AUTH_NOT_FOUND">
-                <div class="ui tertiary inverted red segment">
-                  <p>{{ "login-modal.error.404" | translate }}</p>
-                </div>
-              </div>
-              <div class="ui vertical segment" *ngSwitchCase="AUTH_ERROR">
-                <div class="ui tertiary inverted red segment">
-                  <p>{{ "login-modal.error.500" | translate }}</p>
-                </div>
-              </div>
+              <dzb-error-message *ngSwitchCase="AUTH_NOT_FOUND" [message]="'login-modal.error.404' | translate"></dzb-error-message>
+              <dzb-error-message *ngSwitchCase="AUTH_ERROR" [message]="'login-modal.error.500' | translate"></dzb-error-message>
             </ng-container>
           </div>
         </div>

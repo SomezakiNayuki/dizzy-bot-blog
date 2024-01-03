@@ -10,6 +10,9 @@
       "validator": "",
       "isRequired": true,
       "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
   {
@@ -23,6 +26,9 @@
       "validator": "",
       "isRequired": false,
       "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
   {
@@ -35,6 +41,9 @@
       "placeholder": "Image URL",
       "validator": "",
       "isRequired": false,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
       "cssClass": "ui input icon dzb-formmy-content-input-box"
     }
   },
