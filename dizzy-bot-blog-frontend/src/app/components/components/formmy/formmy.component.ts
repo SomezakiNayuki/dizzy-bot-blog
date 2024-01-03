@@ -5,7 +5,7 @@ import { Submitable } from 'src/app/models/submitable';
 import { LabelService } from 'src/app/pipes/label.service';
 import { DataService } from 'src/app/services/data.service';
 import * as label from 'src/app/components/components/formmy/formmy.label.json';
-import { ErrorMessageComponent } from '../error-message/error-message.component';
+import { ErrorMessageComponent } from 'src/app/components/components/error-message/error-message.component';
 
 @Component({
   selector: 'formmy',
