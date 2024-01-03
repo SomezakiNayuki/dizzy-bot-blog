@@ -1,6 +1,18 @@
 export interface FormDefinition {
-  formName: string,
-  htmlType: string,
-  placeholder?: string,
-  isRequired: boolean
+  formDefinition: {
+    formName: string
+  },
+  templateDefinition: {
+    htmlType: string,
+    inputType?: string,
+    placeholder?: string,
+    validator?: string,
+    isRequired: boolean,
+    cssClass: string,
+    rows?: number,
+    additionalAttrs?: []
+  },
+  wrapper?: {
+    cssClass: string
+  }
 }

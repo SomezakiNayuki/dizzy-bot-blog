@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Experience } from '../models/experience';
-import { PersonalInfo } from '../models/personal-info';
-import { Blog } from '../models/blog';
-import { UserService } from './user.service';
-import { DataCollector } from './demo/data.collector';
+import { Experience } from 'src/app/models/experience';
+import { PersonalInfo } from 'src/app/models/personal-info';
+import { Blog } from 'src/app/models/blog';
+import { UserService } from 'src/app/services/user.service';
+import { Submitable } from 'src/app/models/submitable';
+import { ExperienceType } from 'src/app/enumerations/experience.enum';
+import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
 
 
 @Injectable({
@@ -13,167 +15,105 @@ import { DataCollector } from './demo/data.collector';
 })
 export class DataService {
 
-  private blogId: number = 0;
-  private experienceId: number = 0;
+  constructor(
+    private http: HttpClient, 
+    private serverConfigService: ServerConfigurationService,
+    private userService: UserService
+  ) {}
 
-  // service configuration
-  // [TODO] To be replaced by server-configuration.json
-  private rootURL: string = 'assets/mock-data/';
-
-  // about-me data
-  private personalInfoURL: string = `${this.rootURL}PersonalInfoDataBase/personalInfo.json`;
-
-  // home data
-  private blogURL: string = 'http://localhost:8080/blog';
-  private experienceURL: string = 'http://localhost:8080/experience';
-
-  constructor(private http: HttpClient, private userService: UserService, private dataCollector: DataCollector) { }
-
-  public submit(obj: Object, type: string): void {
-    switch (type) {
-      case 'Blog':
-        const date = new Date();
-        const formattedDate = date.toISOString().slice(0, 16).replace('T', ' ');
-
-        obj['id'] = this.blogId;
-        obj['username'] = this.userService.getHost().username;
-        obj['likes'] = 0;
-        obj['date'] = formattedDate;
-        this.createBlog(obj as Blog);
-
-        this.blogId++;
-        break;
-      case 'Experience':
-        obj['id'] = this.experienceId;
-        obj['type'] = 'Experience';
-        obj['username'] = this.userService.getHost().username;
-        this.createExperience(obj);
-        this.experienceId++;
-        break;
-      case 'Employment':
-        obj['id'] = this.experienceId;
-        obj['type'] = 'Employment';
-        obj['username'] = this.userService.getHost().username;
-        this.createExperience(obj);
-        this.experienceId++;
-        break;
-      case 'Education':
-        obj['id'] = this.experienceId;
-        obj['type'] = 'Education';
-        obj['username'] = this.userService.getHost().username;
-        this.createExperience(obj);
-        this.experienceId++;
-        break;
-      case 'Skill':
-        obj['id'] = this.experienceId;
-        obj['type'] = 'Skill';
-        obj['username'] = this.userService.getHost().username;
-        this.createExperience(obj);
-        this.experienceId++;
-        break;
-      case 'PersonalInfo':
-        obj['username'] = this.userService.getHost().username;
-        this.updatePersonalInfo(obj);
-        break;
-      default:
-        throwError(() => new Error('Unknown type'));
-    }
+  public submit(submitable: Submitable): void {
+    submitable.submit();
   }
 
-  public getEmploymentHistory(): Observable<Experience[]> {
-    return this.getExperiences('Employment');
-  }
-
-  public getPersonalInfo(): Observable<PersonalInfo> {
-    return interval(1000).pipe(
-      startWith(0),
-      switchMap(() => {
-        this.userService.fetchUser(this.userService.getUser().username);
-        let personalInfo: PersonalInfo = {
-          username: this.userService.getUser().username,
-          userEmail: this.userService.getUser().email,
-          userLinkedInUrl: this.userService.getUser().linkedInURL,
-          userPhoneNumber: this.userService.getUser().phone,
-          userAcademicDegree: undefined,
-          userAcademicDescription1: undefined,
-          userAcademicDescription2: undefined,
-          userUniversity: this.userService.getUser().university
-        };
-        return of(personalInfo);
-      })
-    )
-  }
-
-  public getExperienceHistory(): Observable<Experience[]> {
-    return this.getExperiences('Experience');
-  }
-
-  public getEducationHistory(): Observable<Experience[]> {
-    return this.getExperiences('Education');
-  }
-
-  public getSkillList(): Observable<Experience[]> {
-    return this.getExperiences('Skill');
-  }
-
-  public getBlogs(): Observable<Blog[]> {
-    return interval(1000).pipe(
-      startWith(0),
-      switchMap(() => this.fetchBlogs())
-    );
-  }
-
-  private fetchBlogs(): Observable<Blog[]> {
-    let blogs = new Array<Blog>();
-    this.dataCollector.users.forEach(user => {
-      user.blogs.forEach(blog => {
-        blogs.push(blog);
-      });
-    });
-    return of(blogs);
-  }
-
-  public createBlog(blog: Blog): void {
-    let user = this.dataCollector.users.find(user => user.username == blog.username);
-    user.blogs.push(blog);
+  public createBlog(blog: Object): void {
+    this.http.post<any>(this.serverConfigService.getCreateBlogURL(), blog).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
   public deleteBlog(id: number): void {
-    this.dataCollector.users.forEach(user => {
-      user.blogs = user.blogs.filter(blog => blog.id !== id);
-    });
+    this.http.delete(this.serverConfigService.getDeleteBlogURL(id)).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
-  private getExperiences(type: string): Observable<Experience[]> {
-    return interval(1000).pipe(
-      startWith(0),
-      switchMap(() => this.fetchExperiences().pipe(
-        switchMap(experiences => of(experiences.filter(experience => experience.type === type)))
-      ))
-    );
+  public getBlogs(): Observable<Blog[]> {
+    return this.continuallyFetch<Blog[]>(1000, () => this.fetchBlogs());
   }
 
-  private fetchExperiences(): Observable<Experience[]> {
-    let user = this.dataCollector.users.find(user => user.username == this.userService.getUser().username);
-    return of(user.experiences);
+  private fetchBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL());
   }
 
   public createExperience(experience: Object): void {
-    let user = this.dataCollector.users.find(user => user.username == experience['username']);
-    user.experiences.push(experience as Experience);
-  }
-
-  public updatePersonalInfo(personalInfo: Object): void {
-    let user = this.dataCollector.users.find(user => user.username == this.userService.getUser().username);
-    user.linkedInURL = personalInfo['linkedInURL'];
-    user.phone = personalInfo['phone'];
-    user.university = personalInfo['university'];
+    this.http.post<any>(this.serverConfigService.getCreateExperienceURL(), experience).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
   }
 
   public deleteExperience(id: number): void {
-    this.dataCollector.users.forEach(user => {
-      user.experiences = user.experiences.filter(experience => experience.id !== id);
+    this.http.delete(this.serverConfigService.getDeleteExperienceURL(id)).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
+  public getEducationHistory(): Observable<Experience[]> {
+    return this.getExperiences(ExperienceType.EDUCATION);
+  }
+
+  public getEmploymentHistory(): Observable<Experience[]> {
+    return this.getExperiences(ExperienceType.EMPLOYMENT);
+  }
+
+  public getExperienceHistory(): Observable<Experience[]> {
+    return this.getExperiences(ExperienceType.EXPERIENCE);
+  }
+
+  public getSkillList(): Observable<Experience[]> {
+    return this.getExperiences(ExperienceType.SKILL);
+  }
+
+  private getExperiences(type: string): Observable<Experience[]> {
+    return this.continuallyFetch<Experience[]>(1000, () => this.fetchExperiences().pipe(
+      switchMap(experiences => of(experiences.filter(experience => experience.type === type)))
+    ));
+  }
+
+  private fetchExperiences(): Observable<Experience[]> {
+    return this.http.post<Experience[]>(this.serverConfigService.getAllExperiencesURL(), { username: this.userService.getCashedUser().username });
+  }
+
+  public getPersonalInfo(): Observable<PersonalInfo> {
+    return this.continuallyFetch<PersonalInfo>(1000, () => {
+      this.userService.fetchUser(this.userService.getCashedUser().username);
+      const targetUser = this.userService.getCashedUser();
+      let personalInfo: PersonalInfo = {} as PersonalInfo;
+      personalInfo.username = targetUser.username;
+      personalInfo.userEmail = targetUser.email;
+      personalInfo.userLinkedInUrl = targetUser.linkedInURL;
+      personalInfo.userPhoneNumber = targetUser.phone;
+      personalInfo.userUniversity = targetUser.university;
+      return of(personalInfo);
     });
+  }
+
+  public updatePersonalInfo(personalInfo: Object): void {
+    this.http.post<any>(this.serverConfigService.getUpdatePersonalInfoURL(), personalInfo).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
+  public resetPersonalInfo(username: string): void {
+    this.http.delete<any>(this.serverConfigService.getResetPersonalInfoURL(username)).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe();
+  }
+
+  private continuallyFetch<T>(period: number, fn: () => Observable<T>): any {
+    return interval(period).pipe(
+      startWith(0),
+      switchMap(fn)
+    );
   }
 
   private serverErrorHandler(err: HttpErrorResponse): Observable<any> {

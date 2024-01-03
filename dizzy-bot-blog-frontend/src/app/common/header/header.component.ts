@@ -1,54 +1,62 @@
-import { Component } from "@angular/core";
-import { LoginService } from "src/app/services/login.service";
-import { PageNavigationService } from "src/app/services/page-navigation.service";
-import { UserService } from "src/app/services/user.service";
-declare var $: any;
+import { Component, OnInit } from '@angular/core';
+import { LabelService } from 'src/app/pipes/label.service';
+import { LoginService } from 'src/app/services/login.service';
+import { PageNavigationService } from 'src/app/services/page-navigation.service';
+import { UserService } from 'src/app/services/user.service';
+import * as label from 'src/app/common/header/header.label.json';
+import { PageEnum } from 'src/app/enumerations/page.enum';
 
 @Component({
   selector: 'dzb-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  providers: [LabelService]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  // screen contents
-  protected blogTitle: string = 'DIZZY BOT BLOG';
-  protected searchBoxPlaceHolder: string = 'search...';
-
-  constructor(private pageNavigationService: PageNavigationService, private loginService: LoginService, private userService: UserService) { }
-
-  protected switchAboutMeActive(): void {
-    this.userService.fetchUser(this.userService.getHost().username);
-    this.pageNavigationService.setActive('AboutMe');
+  constructor(
+    private labelService: LabelService,
+    private loginService: LoginService,
+    private pageNavigationService: PageNavigationService, 
+    private userService: UserService,
+  ) {}
+  
+  public ngOnInit(): void {
+    this.labelService.loadScreenLabelConfiguration(label);
   }
 
-  protected switchHomeActive(): void {
-    this.pageNavigationService.setActive('Home');
+  protected isAboutMeActive(): string {
+    return this.getActiveScreen(PageEnum.ABOUT_ME) ? 'active' : '';
   }
 
-  protected isAboutMeActive(): boolean {
-    return this.pageNavigationService.isActive('AboutMe');
+  protected isHomeActive(): string {
+    return this.getActiveScreen(PageEnum.HOME) ? 'active' : '';
   }
 
-  protected isHomeActive(): boolean {
-    return this.pageNavigationService.isActive('Home');
+  private getActiveScreen(page: PageEnum): boolean {
+    return this.pageNavigationService.isActive(page);
+  }
+
+  protected setAboutMeActive(): void {
+    this.userService.fetchUser(this.userService.getCashedHost().username);
+    this.pageNavigationService.setActive(PageEnum.ABOUT_ME);
+  }
+
+  protected setHomeActive(): void {
+    this.pageNavigationService.setActive(PageEnum.HOME);
   }
 
   protected isLoggedIn(): boolean {
-    return this.loginService.getIsLoggedIn();
+    return this.loginService.isLoggedIn();
   }
 
   protected login(): void {
-    // [TODO] To be moved into pageNavigationService for consistency
-    $('#loginModal').modal('show');
-    this.loginService.reinitLoginModal();
+    this.loginService.openLoginModal();
   }
 
   protected logout(): void {
-    // [TODO] To be moved into pageNavigationService for consistency
     this.loginService.logout();
-    this.loginService.reinitLoginModal();
-    this.switchHomeActive();
+    this.setHomeActive();
   }
 
 }

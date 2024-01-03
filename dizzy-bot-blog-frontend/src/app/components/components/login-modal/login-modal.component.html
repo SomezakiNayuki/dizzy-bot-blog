@@ -2,46 +2,34 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">Login/Register</h1>
+        <h1 class="modal-title">{{ "login-modal.header.title" | translate }}</h1>
       </div>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="modal-body">
-            <div class="ui vertical segment">
-              <div class="ui input dzb-login-modal-input-box">
-                <input type="text" placeholder="Username" formControlName="username" required>
-              </div>
-            </div>
-            <div class="ui vertical segment">
-              <div class="ui input dzb-login-modal-input-box">
-                <input type="password" placeholder="Password" formControlName="password" required>
-              </div>
-            </div>
-            <div class="ui vertical segment" *ngIf="isRegistering">
-              <div class="ui input dzb-login-modal-input-box">
-                <input type="text" placeholder="Email" formControlName="email" required>
-              </div>
-            </div>
-            <div *ngIf="authenticationObservable$ | async as err">
-              <ng-container [ngSwitch]="err">
-                <div class="ui vertical segment" *ngSwitchCase="'404'">
-                  <div class="ui tertiary inverted red segment">
-                    <p>User not registered, please register</p>
-                  </div>
-                </div>
-                <div class="ui vertical segment" *ngSwitchCase="'500'">
-                  <div class="ui tertiary inverted red segment">
-                    <p>User already exists, wrong credentials</p>
-                  </div>
-                </div>
-              </ng-container>
-            </div>
+          <div class="ui input dzb-login-modal-input-box">
+            <input type="text" placeholder="Username" formControlName="username" required>
+          </div>
+          <div class="ui input dzb-login-modal-input-box">
+            <input type="password" placeholder="Password" formControlName="password" required>
+          </div>
+          <div *ngIf="isRegistering" class="ui input dzb-login-modal-input-box">
+            <input type="text" placeholder="Email" formControlName="email" required>
+          </div>
+          <div *ngIf="authenticationResponse$ | async as err">
+            <ng-container [ngSwitch]="err">
+              <dzb-error-message *ngSwitchCase="AUTH_NOT_FOUND" [message]="'login-modal.error.404' | translate"></dzb-error-message>
+              <dzb-error-message *ngSwitchCase="AUTH_ERROR" [message]="'login-modal.error.500' | translate"></dzb-error-message>
+            </ng-container>
+          </div>
         </div>
         <div class="modal-footer">
-          <button class="ui red basic button" type="button">Forgot password</button>
-          <button class="ui teal primary button" type="submit">{{ isRegistering ? 'Submit' : 'Login' }}</button>
-          <button class="ui button" type="button" (click)="register()">Register</button>
+          <button class="ui red basic button" type="button">{{ "login-modal.button.forgotPassword" | translate }}</button>
+          <button class="ui teal primary button" type="submit">
+            {{ (isRegistering ? "login-modal.button.submit" : "login-modal.button.login") | translate }}
+          </button>
+          <button class="ui button" type="button" (click)="register()">{{ "login-modal.button.register" | translate }}</button>
         </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>

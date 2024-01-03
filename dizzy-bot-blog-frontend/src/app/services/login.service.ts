@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, catchError, throwError } from 'rxjs';
-import { UserService } from './user.service';
-import { DataCollector } from './demo/data.collector';
+import { BehaviorSubject, Observable, Subject, catchError, throwError } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
+import { AuthenticationStatus } from 'src/app/enumerations/authentication.enum';
+import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
 declare var $: any;
 
 @Injectable({
@@ -10,95 +11,96 @@ declare var $: any;
 })
 export class LoginService {
 
-  // service configuration
-  // [TODO] To be replaced by server-configuration.json
-  private rootURL: string = 'http://localhost:8080/user';
+  private initLoginModal$ = new BehaviorSubject<void>(undefined);
+  private authenticationResponse$ = new Subject<AuthenticationStatus>();
 
-  // functional variables
-  private isLoggedIn: boolean = false;
+  constructor(
+    private http: HttpClient, 
+    private serverConfigService: ServerConfigurationService,
+    private userService: UserService
+  ) {}
 
-  // event observables
-  private loginServiceEventSubject$ = new Subject<any>();
+  public register(username: string, password: string, email: string) {
+    const payload = {
+      username: username,
+      password: password,
+      email: email,
+    };
 
-  // observables
-  private authenticationSubject$ = new Subject<any>();
+    const callbacks = [
+      () => { this.authenticationResponse$.next(AuthenticationStatus.OK); },
+      () => { this.closeLoginModal() },
+      () => { this.userService.fetchHost(username); },
+      () => { this.userService.fetchUser(username); },
+    ];
 
-  constructor(private http: HttpClient, private userService: UserService, private dataCollector: DataCollector) { }
+    this.authentication(this.serverConfigService.getRegisterURL(), payload, callbacks);
+  }
 
-  public login(username: string, password: string, email?: string): void {
-    if (email) {
-      let user = this.dataCollector.users.find(user => user.username == username || user.email == email);
-      if (user) {
-        this.loginErrorHandler(new HttpErrorResponse({
-          status: 500,
-          error: {
-            message: 'User already exists'
-          },
-        }));
-      } else {
-        this.dataCollector.users.push({
-          id: this.dataCollector.users.length,
-          username: username,
-          password: password,
-          email: email,
-          blogs: [],
-          experiences: []
-        });
-        this.authenticationSubject$.next('200');
-        $('#loginModal').modal('hide');
-        this.isLoggedIn = true;
-        this.userService.fetchUser(username, true);
-      }
-    } else {
-      let user = this.dataCollector.users.find(user => user.username == username && user.password == password);
-      if (user) {
-        this.authenticationSubject$.next('200');
-        $('#loginModal').modal('hide');
-        this.isLoggedIn = true;
-        this.userService.fetchUser(username, true);
-      } else {
-        this.loginErrorHandler(new HttpErrorResponse({
-          status: 404,
-          error: {
-            message: 'Credential error or user not exists'
-          },
-        }));
-      }
-    }
+  public login(username: string, password: string): void {
+    const payload = {
+      username: username,
+      password: password,
+    };
+
+    const callbacks = [
+      () => { this.authenticationResponse$.next(AuthenticationStatus.OK); },
+      () => { this.closeLoginModal() },
+      () => { this.userService.fetchHost(username); },
+      () => { this.userService.fetchUser(username); },
+    ];
+
+    this.authentication(this.serverConfigService.getLoginURL(), payload, callbacks);
   }
 
   public logout(): void {
-    this.isLoggedIn = false;
-    this.userService.setHost(undefined);
-    this.userService.setUser(undefined);
+    this.userService.clearCashedHost();
+    this.userService.clearCashedUser();
   }
 
-  private loginErrorHandler(err: HttpErrorResponse): Observable<any> {
+  private authentication(path: string, payload: Object, callbacks?: Function[]): void {
+    this.http.post<any>(path, payload).pipe(
+      catchError(error => this.authenticationErrorHandler(error)),
+    ).subscribe(() => {
+      callbacks?.forEach(fn => { fn(); });
+    });
+  }
+
+  private authenticationErrorHandler(err: HttpErrorResponse): Observable<any> {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${err.error.message}`;
     } else {
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.error.message}`;
-      this.authenticationSubject$.next(err.status);
+      this.authenticationResponse$.next(err.status);
     }
     return throwError(() => errorMessage);
   }
 
-  public getIsLoggedIn(): boolean {
-    return this.isLoggedIn;
+  public isLoggedIn(): boolean {
+    return this.userService.getCashedHost() !== undefined;
   }
 
-  public reinitLoginModal(): void {
-    this.loginServiceEventSubject$.next('reinit');
-    this.authenticationSubject$.next('200');
+  public getInitLoginModal$(): Subject<any> {
+    return this.initLoginModal$;
   }
 
-  public getLoginServiceEventSubject$(): Subject<any> {
-    return this.loginServiceEventSubject$;
+  public getAuthenticationResponse$(): Subject<any> {
+    return this.authenticationResponse$;
   }
 
-  public getAuthenticationSubject$(): Subject<any> {
-    return this.authenticationSubject$;
+  private reinitLoginModal(): void {
+    this.initLoginModal$.next();
+    this.authenticationResponse$.next(AuthenticationStatus.OK);
+  }
+
+  public openLoginModal(): void {
+    this.reinitLoginModal();
+    $('#loginModal').modal('show');
+  }
+
+  public closeLoginModal(): void {
+    $('#loginModal').modal('hide');
   }
 
 }

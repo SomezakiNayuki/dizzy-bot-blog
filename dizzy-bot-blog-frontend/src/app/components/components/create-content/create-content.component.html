@@ -4,26 +4,6 @@
   </button>
 </div>
 
-<div class="dzb-create-content-margin">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div *ngIf="isCreating">
-      <div *ngFor="let definition of formFields">
-        <ng-container [ngSwitch]="definition.htmlType">
-          <div class="ui segment dzb-create-content-segment-white" *ngSwitchCase="'input'">
-            <div class="ui input icon dzb-content-input-box">
-              <input type="text" placeholder="{{ definition.placeholder ? definition.placeholder : '' }}" [formControlName]="definition.formName" required="definition.isRequired">
-            </div>
-          </div>
-          <div class="ui segment dzb-create-content-segment-white" *ngSwitchCase="'textarea'">
-            <textarea class="dzb-content-input-box dzb-create-content-segment-white" rows="10" [formControlName]="definition.formName" required="definition.isRequired"></textarea>
-          </div>
-        </ng-container>
-      </div>
-      
-      <div class="dzb-create-content-confirmation-button-group">
-        <button class="ui teal primary button" type="submit">Submit</button>
-        <button class="ui button" (click)="discard()" type="button">Discard</button>
-      </div>
-    </div>
-  </form>
+<div *ngIf="isCreating" class="dzb-create-content-margin">
+  <formmy [formFields]="formFields" [submitable]="submitable" (eventEmitter)="discard()"></formmy>
 </div>

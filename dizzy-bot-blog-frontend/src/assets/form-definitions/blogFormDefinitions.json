@@ -1,25 +1,62 @@
 [
   {
-    "formName": "title",
-    "htmlType": "input",
-    "placeholder": "Title",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "title"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Title",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "subtitle",
-    "htmlType": "input",
-    "placeholder": "Subtitle",
-    "isRequired": false
+    "formDefinition": {
+      "formName": "subtitle"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Subtitle",
+      "validator": "",
+      "isRequired": false,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "image",
-    "htmlType": "input",
-    "placeholder": "image URL",
-    "isRequired": false
+    "formDefinition": {
+      "formName": "image"
+    },
+    "templateDefinition": {
+      "htmlType": "input",
+      "inputType": "text",
+      "placeholder": "Image URL",
+      "validator": "",
+      "isRequired": false,
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    },
+    "wrapper": {
+      "cssClass": "ui input icon dzb-formmy-content-input-box"
+    }
   },
   {
-    "formName": "content",
-    "htmlType": "textarea",
-    "isRequired": true
+    "formDefinition": {
+      "formName": "content"
+    },
+    "templateDefinition": {
+      "htmlType": "textarea",
+      "validator": "",
+      "isRequired": true,
+      "cssClass": "dzb-formmy-content-input-box dzb-formmy-create-content-segment-white",
+      "rows": 10
+    }
   }
 ]

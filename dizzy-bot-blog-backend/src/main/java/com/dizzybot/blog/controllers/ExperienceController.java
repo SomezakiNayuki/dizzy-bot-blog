@@ -26,8 +26,16 @@ public class ExperienceController {
     @PostMapping("/create")
     public ResponseEntity<Response> create(@RequestBody Map<String, String> body) {
         User user = userService.findByUsername(body.get("username"));
-        Experience experience = new Experience(body.get("period"), body.get("title"), body.get("institution"),
-                body.get("location"), body.get("description"), body.get("type"), user);
+
+        Experience experience = new Experience(
+                body.get("period"),
+                body.get("title"),
+                body.get("institution"),
+                body.get("location"),
+                body.get("description"),
+                body.get("type"),
+                user);
+
         experienceService.saveExperience(experience);
         return new ResponseEntity<>(new Response("Experience created"), HttpStatus.OK);
     }
@@ -42,11 +50,25 @@ public class ExperienceController {
     @PostMapping("/updatePersonalInfo")
     public ResponseEntity<Response> updatePersonalInfo(@RequestBody Map<String, String> body) {
         User user = userService.findByUsername(body.get("username"));
+
         user.setLinkedInURL(body.get("linkedInURL"));
         user.setUniversity(body.get("university"));
         user.setPhone(body.get("phone"));
+
         userService.saveUser(user);
         return new ResponseEntity<>(new Response("Personal information updated"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/resetPersonalInfo/{username}")
+    public ResponseEntity<Response> resetPersonalInfo(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+
+        user.setLinkedInURL(null);
+        user.setUniversity(null);
+        user.setPhone(null);
+
+        userService.saveUser(user);
+        return new ResponseEntity<>(new Response("Personal information reset"), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
