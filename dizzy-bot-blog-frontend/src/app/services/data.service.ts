@@ -8,6 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Submitable } from 'src/app/models/submitable';
 import { ExperienceType } from 'src/app/enumerations/experience.enum';
 import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
+import { DataCollector } from 'src/app/services/demo/data.collector';
 
 
 @Injectable({
@@ -18,7 +19,9 @@ export class DataService {
   constructor(
     private http: HttpClient, 
     private serverConfigService: ServerConfigurationService,
-    private userService: UserService
+    private userService: UserService,
+
+    private dataCollector: DataCollector
   ) {}
 
   public submit(submitable: Submitable): void {
@@ -26,15 +29,14 @@ export class DataService {
   }
 
   public createBlog(blog: Object): void {
-    this.http.post<any>(this.serverConfigService.getCreateBlogURL(), blog).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == blog['username']);
+    user.blogs.push(blog as Blog);
   }
 
   public deleteBlog(id: number): void {
-    this.http.delete(this.serverConfigService.getDeleteBlogURL(id)).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    this.dataCollector.users.forEach(user => {
+      user.blogs = user.blogs.filter(blog => blog.id !== id);
+    });
   }
 
   public getBlogs(): Observable<Blog[]> {
@@ -42,19 +44,24 @@ export class DataService {
   }
 
   private fetchBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL());
+    let blogs = new Array<Blog>();
+    this.dataCollector.users.forEach(user => {
+      user.blogs.forEach(blog => {
+        blogs.push(blog);
+      });
+    });
+    return of(blogs);
   }
 
   public createExperience(experience: Object): void {
-    this.http.post<any>(this.serverConfigService.getCreateExperienceURL(), experience).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == experience['username']);
+    user.experiences.push(experience as Experience);
   }
 
   public deleteExperience(id: number): void {
-    this.http.delete(this.serverConfigService.getDeleteExperienceURL(id)).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    this.dataCollector.users.forEach(user => {
+      user.experiences = user.experiences.filter(experience => experience.id !== id);
+    });
   }
 
   public getEducationHistory(): Observable<Experience[]> {
@@ -80,7 +87,8 @@ export class DataService {
   }
 
   private fetchExperiences(): Observable<Experience[]> {
-    return this.http.post<Experience[]>(this.serverConfigService.getAllExperiencesURL(), { username: this.userService.getCashedUser().username });
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    return of(user.experiences);
   }
 
   public getPersonalInfo(): Observable<PersonalInfo> {
@@ -98,15 +106,17 @@ export class DataService {
   }
 
   public updatePersonalInfo(personalInfo: Object): void {
-    this.http.post<any>(this.serverConfigService.getUpdatePersonalInfoURL(), personalInfo).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    user.linkedInURL = personalInfo['linkedInURL'];
+    user.phone = personalInfo['phone'];
+    user.university = personalInfo['university'];
   }
 
   public resetPersonalInfo(username: string): void {
-    this.http.delete<any>(this.serverConfigService.getResetPersonalInfoURL(username)).pipe(
-      catchError(this.serverErrorHandler),
-    ).subscribe();
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    user.linkedInURL = null;
+    user.phone = null;
+    user.university = null;
   }
 
   private continuallyFetch<T>(period: number, fn: () => Observable<T>): any {

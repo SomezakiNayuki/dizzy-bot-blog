@@ -9,7 +9,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class Experience implements Submitable {
 
-  public id: number;
+  public id: number = 0;
 
   public description?: string;
   public institution?: string;
@@ -32,6 +32,7 @@ export class Experience implements Submitable {
   public submit(): void {
     this.generateSubmitable();
     this._dataService.createExperience(this.toObject(this));
+    this.id++;
   }
 
   public toObject(object: Submitable): Object {

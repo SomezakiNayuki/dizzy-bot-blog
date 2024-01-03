@@ -2,6 +2,8 @@ import { Injectable, Injector } from '@angular/core';
 import { Experience } from 'src/app/models/experience';
 import { Blog } from 'src/app/models/blog';
 import { PersonalInfo } from 'src/app/models/personal-info';
+import { DataCollector } from 'src/app/services/demo/data.collector';
+import { UserService } from 'src/app/services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,10 @@ import { PersonalInfo } from 'src/app/models/personal-info';
 export class SubmitablFactory {
   
   constructor(
-    private injector: Injector
+    private injector: Injector,
+    private userService: UserService,
+
+    private dataCollector: DataCollector
   ) {}
 
   public getBlogInstance(): Blog {
@@ -34,6 +39,15 @@ export class SubmitablFactory {
     let obj: any = {};
     Object.assign(obj, src);
     this.copyMethods(src, obj);
+    this.dataCollector.users.forEach(user => {
+      if (user.username === this.userService.getCashedHost().username) {
+        if (src instanceof Blog) {
+          obj['id'] = user.blogs.length;
+        } else if (src instanceof Experience) {
+          obj['id'] = user.experiences.length;
+        }
+      }
+    });
     return obj as T;
   }
 

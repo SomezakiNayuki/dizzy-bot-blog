@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject, catchError, throwError } from 'rx
 import { UserService } from 'src/app/services/user.service';
 import { AuthenticationStatus } from 'src/app/enumerations/authentication.enum';
 import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
+import { DataCollector } from 'src/app/services/demo/data.collector';
 declare var $: any;
 
 @Injectable({
@@ -17,7 +18,9 @@ export class LoginService {
   constructor(
     private http: HttpClient, 
     private serverConfigService: ServerConfigurationService,
-    private userService: UserService
+    private userService: UserService,
+
+    private dataCollector: DataCollector
   ) {}
 
   public register(username: string, password: string, email: string) {
@@ -59,11 +62,39 @@ export class LoginService {
   }
 
   private authentication(path: string, payload: Object, callbacks?: Function[]): void {
-    this.http.post<any>(path, payload).pipe(
-      catchError(error => this.authenticationErrorHandler(error)),
-    ).subscribe(() => {
-      callbacks?.forEach(fn => { fn(); });
-    });
+    if (path === this.serverConfigService.getLoginURL()) {
+      let user = this.dataCollector.users.find(user => user.username == payload['username'] && user.password == payload['password']);
+      if (user) {
+        callbacks.forEach(fn => { fn() });
+      } else {
+        this.authenticationErrorHandler(new HttpErrorResponse({
+          status: AuthenticationStatus.NOT_FOUND,
+          error: {
+            message: 'Credential error or user not exists'
+          },
+        }));
+      }
+    } else if (path === this.serverConfigService.getRegisterURL()) {
+      let user = this.dataCollector.users.find(user => user.username == payload['username'] || user.email == payload['email']);
+      if (user) {
+        this.authenticationErrorHandler(new HttpErrorResponse({
+          status: AuthenticationStatus.OK,
+          error: {
+            message: 'User already exists'
+          },
+        }));
+      } else {
+        this.dataCollector.users.push({
+          id: this.dataCollector.users.length,
+          username: payload['username'],
+          password: payload['password'],
+          email: payload['email'],
+          blogs: [],
+          experiences: []
+        });
+        callbacks.forEach(fn => { fn() });
+      }
+    }
   }
 
   private authenticationErrorHandler(err: HttpErrorResponse): Observable<any> {

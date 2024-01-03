@@ -8,7 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class Blog implements Submitable {
 
-  public id: number;
+  public id: number = 0;
 
   public content: string;
   public date: string;
@@ -34,6 +34,7 @@ export class Blog implements Submitable {
   public submit(): void {
     this.generateSubmitable();
     this._dataService.createBlog(this.toObject(this));
+    this.id++;
   }
 
   public toObject(object: Submitable): Object {

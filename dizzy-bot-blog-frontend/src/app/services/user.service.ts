@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { ServerConfigurationService } from 'src/app/services/server-configuration.service';
+import { DataCollector } from './demo/data.collector';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private serverConfigService: ServerConfigurationService
+    private serverConfigService: ServerConfigurationService,
+
+    private dataCollector: DataCollector
   ) {}
 
   public getCashedHost(): User {
@@ -49,7 +52,8 @@ export class UserService {
   }
 
   private getUserInfo(username: string): Observable<User> {
-    return this.http.post<User>(this.serverConfigService.getUserInfoURL(), { username: username, });
+    let user = this.dataCollector.users.find(user => user.username == username);
+    return of(user);
   }
 
 }
