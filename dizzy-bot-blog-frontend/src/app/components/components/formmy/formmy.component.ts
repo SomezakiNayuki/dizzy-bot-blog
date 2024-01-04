@@ -122,10 +122,12 @@ export class FormmyComponent implements OnInit {
     let formControl = new FormControl('', null);
     this.form.addControl(definition.formDefinition.formName, formControl);
     this.renderer.listen(el, 'input', () => {
-      formControl.setValue(el.value);
+      let formName = el['[formControlName]'];
+      this.form.controls[formName].setValue(el.value);
+      this.form.controls[formName].updateValueAndValidity();
     });
     if (definition.templateDefinition.isRequired) {
-      this.form.controls[definition.formDefinition.formName].setValidators(this.nonNullValidator);
+      this.form.controls[definition.formDefinition.formName].setValidators([Validators.required, this.nonNullValidator]);
       this.form.controls[definition.formDefinition.formName].updateValueAndValidity();
     }
     this.cdr.detectChanges();
@@ -135,7 +137,7 @@ export class FormmyComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value as string;
   
-      if (value !== '' && value !== null && value !== undefined) {
+      if (value !== '') {
         return null;
       } else {
         return { customValidation: true };
