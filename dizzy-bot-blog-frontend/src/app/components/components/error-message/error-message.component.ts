@@ -8,14 +8,16 @@ import {ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 export class ErrorMessageComponent implements OnInit {
 
   @Input() public message: string;
-  @Input() public show: boolean;
+  @Input() public show: boolean = null;
 
   constructor(
     private cdr: ChangeDetectorRef
   ) {}
 
   public ngOnInit(): void {
-    this.show = false;
+    if (this.show === null) {
+      this.show = true;
+    }
   }
 
   public detectChange(): void {
