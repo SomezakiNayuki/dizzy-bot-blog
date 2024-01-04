@@ -17,8 +17,8 @@
           </div>
           <div *ngIf="authenticationResponse$ | async as err">
             <ng-container [ngSwitch]="err">
-              <dzb-error-message *ngSwitchCase="AUTH_NOT_FOUND" [show]="true" [message]="'login-modal.error.404' | translate"></dzb-error-message>
-              <dzb-error-message *ngSwitchCase="AUTH_ERROR" [show]="true" [message]="'login-modal.error.500' | translate"></dzb-error-message>
+              <dzb-error-message *ngSwitchCase="AUTH_NOT_FOUND" [message]="'login-modal.error.404' | translate"></dzb-error-message>
+              <dzb-error-message *ngSwitchCase="AUTH_ERROR" [message]="'login-modal.error.500' | translate"></dzb-error-message>
             </ng-container>
           </div>
         </div>

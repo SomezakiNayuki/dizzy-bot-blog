@@ -15,7 +15,7 @@ export class ErrorMessageComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    if (this.show != null) {
+    if (this.show === null) {
       this.show = true;
     }
   }

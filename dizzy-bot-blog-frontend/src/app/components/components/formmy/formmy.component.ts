@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FormDefinition } from 'src/app/models/form-definition';
 import { Submitable } from 'src/app/models/submitable';
 import { LabelService } from 'src/app/pipes/label.service';
@@ -110,6 +110,7 @@ export class FormmyComponent implements OnInit {
     if (definition.templateDefinition.isRequired) {
       const errorComponent = this.viewContainerRef.createComponent(ErrorMessageComponent);
       errorComponent.instance.message = "This field is required";
+      errorComponent.instance.show = false;
       errorComponent.instance.detectChange();
       this.errorComponents.push(errorComponent);
       const componentNativeElement = (errorComponent.hostView as any).rootNodes[0] as Node;
@@ -121,12 +122,27 @@ export class FormmyComponent implements OnInit {
     let formControl = new FormControl('', null);
     this.form.addControl(definition.formDefinition.formName, formControl);
     this.renderer.listen(el, 'input', () => {
-      formControl.setValue(el.value);
+      let formName = el['[formControlName]'];
+      this.form.controls[formName].setValue(el.value);
+      this.form.controls[formName].updateValueAndValidity();
     });
     if (definition.templateDefinition.isRequired) {
-      this.form.controls[definition.formDefinition.formName].addValidators(Validators.required);
+      this.form.controls[definition.formDefinition.formName].setValidators([Validators.required, this.nonNullValidator]);
+      this.form.controls[definition.formDefinition.formName].updateValueAndValidity();
     }
     this.cdr.detectChanges();
+  }
+
+  private nonNullValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+  
+      if (value !== '') {
+        return null;
+      } else {
+        return { customValidation: true };
+      }
+    };
   }
 
   protected onSubmit(): void {
