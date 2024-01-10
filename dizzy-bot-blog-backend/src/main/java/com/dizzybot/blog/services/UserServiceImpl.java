@@ -1,6 +1,8 @@
 package com.dizzybot.blog.services;
 
+import com.dizzybot.blog.entities.Blog;
 import com.dizzybot.blog.entities.User;
+import com.dizzybot.blog.repositories.BlogRepository;
 import com.dizzybot.blog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BlogService blogService;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public User saveUser(User user) {
@@ -29,6 +34,20 @@ public class UserServiceImpl implements UserService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public void archiveBlog(String username, Integer id) {
+        User user = userRepository.findByUsername(username);
+        Blog blog = blogService.findById(id);
+        user.archiveBlog(blog);
+        userRepository.save(user);
+    }
+
+    public void removeArchivedBlog(String username, Integer id) {
+        User user = userRepository.findByUsername(username);
+        Blog blog = blogService.findById(id);
+        user.removeArchivedBlog(blog);
+        userRepository.save(user);
     }
 
 }

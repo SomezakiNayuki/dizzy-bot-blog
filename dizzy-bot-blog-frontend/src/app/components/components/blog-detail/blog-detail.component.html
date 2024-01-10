@@ -1,0 +1,31 @@
+<div class="modal fade dzb-blog-detail-modal" id="blogDetailModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title dzb-blog-detail-title">{{ blog.title }}</h1>
+        <button class="circular ui icon button" (click)="closeBlogDetail()">
+          <i class="ui big orange close icon"></i>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img *ngIf="blog.image" [src]="blog.image" class="dzb-blog-detail-image">
+        <div class="description dzb-blog-detail-content">
+          {{ blog.content }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="ui input icon dzb-blog-comment-input-box">
+          <input type="text" [placeholder]="'blog-detail.footer.input' | translate">
+        </div>
+        <button type="button" class="ui pink button" (click)="archiveBlog(blog.id)">
+          <i class="{{ isArchived(blog.id) ? 'teal' : '' }} heart icon"></i>
+          {{ "blog-detail.footer.like" | translate }}
+        </button>
+        <button type="button" class="ui teal button">
+          <i class="comment icon"></i>
+          {{ "blog-detail.footer.comment" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

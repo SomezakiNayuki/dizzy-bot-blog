@@ -12,4 +12,8 @@ public interface UserService {
 
     public User findByEmail(String email);
 
+    public void archiveBlog(String username, Integer id);
+
+    public void removeArchivedBlog(String username, Integer id);
+
 }

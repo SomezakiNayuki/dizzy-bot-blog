@@ -9,10 +9,7 @@ import com.dizzybot.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -48,9 +45,9 @@ public class UserController {
 
     }
 
-    @PostMapping("/getInfo")
-    public ResponseEntity<User> getInfo(@RequestBody Map<String, String> body) {
-        User user = userService.findByUsername(body.get("username"));
+    @GetMapping("/getInfo")
+    public ResponseEntity<User> getInfo(@RequestHeader String username) {
+        User user = userService.findByUsername(username);
 
         User sanitisedUser = new User();
 
@@ -62,6 +59,7 @@ public class UserController {
         sanitisedUser.setLinkedInURL(user.getLinkedInURL());
         sanitisedUser.setPhone(user.getPhone());
         sanitisedUser.setUniversity(user.getUniversity());
+        sanitisedUser.setArchivedBlogs(user.getArchivedBlogs());
 
         return new ResponseEntity<>(sanitisedUser, HttpStatus.OK);
     }

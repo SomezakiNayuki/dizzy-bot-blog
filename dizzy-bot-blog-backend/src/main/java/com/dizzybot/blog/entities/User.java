@@ -39,12 +39,30 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Experience> experiences = new ArrayList<Experience>();
 
+    @ElementCollection
+    @CollectionTable(name = "archived_blogs", joinColumns = @JoinColumn(name = "user_id"))
+    private List<Blog> archivedBlogs = new ArrayList<Blog>();
+
     public User() {}
 
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public void archiveBlog(Blog blog) {
+        this.archivedBlogs.add(blog);
+    }
+
+    public void removeArchivedBlog(Blog blog) {
+        List<Blog> currentArchivedBlogs = new ArrayList<>(this.archivedBlogs);
+        for (Blog b : this.archivedBlogs) {
+            if (b.getId() == blog.getId()) {
+                currentArchivedBlogs.remove(b);
+            }
+        }
+        this.setArchivedBlogs(currentArchivedBlogs);
     }
 
 }

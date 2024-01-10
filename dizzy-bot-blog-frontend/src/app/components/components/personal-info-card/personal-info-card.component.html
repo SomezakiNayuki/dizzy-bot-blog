@@ -1,5 +1,5 @@
 <div *ngIf="personalInfo" class="ui segment dzb-profile">
-  <button class="ui red button" *ngIf="isEditting" (click)="delete(personalInfo.username)">
+  <button class="ui red button" *ngIf="isEditting" (click)="delete()">
     {{ "personal-info-card.description.reset" | translate }}
   </button>
   <h1 [innerText]="personalInfo.username" class="dzb-username"></h1>

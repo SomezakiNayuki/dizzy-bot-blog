@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Experience } from 'src/app/models/experience';
 import { PersonalInfo } from 'src/app/models/personal-info';
 import { Blog } from 'src/app/models/blog';
@@ -45,6 +45,24 @@ export class DataService {
     return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL());
   }
 
+  public archiveBlog(id: number): void {
+    const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
+    this.http.get<void>(this.serverConfigService.getArchiveBlogURL(id), { headers: headers }).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe(() => {
+      this.userService.fetchHost(this.userService.getCashedHost().username);
+    });
+  }
+
+  public removeArchivedBlog(id: number): void {
+    const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
+    this.http.delete<void>(this.serverConfigService.getRemoveArchiveBlogURL(id), { headers: headers }).pipe(
+      catchError(this.serverErrorHandler),
+    ).subscribe(() => {
+      this.userService.fetchHost(this.userService.getCashedHost().username);
+    });
+  }
+
   public createExperience(experience: Object): void {
     this.http.post<any>(this.serverConfigService.getCreateExperienceURL(), experience).pipe(
       catchError(this.serverErrorHandler),
@@ -80,7 +98,8 @@ export class DataService {
   }
 
   private fetchExperiences(): Observable<Experience[]> {
-    return this.http.post<Experience[]>(this.serverConfigService.getAllExperiencesURL(), { username: this.userService.getCashedUser().username });
+    const headers = new HttpHeaders().set('username', this.userService.getCashedUser().username);
+    return this.http.get<Experience[]>(this.serverConfigService.getAllExperiencesURL(), { headers: headers });
   }
 
   public getPersonalInfo(): Observable<PersonalInfo> {
@@ -103,8 +122,9 @@ export class DataService {
     ).subscribe();
   }
 
-  public resetPersonalInfo(username: string): void {
-    this.http.delete<any>(this.serverConfigService.getResetPersonalInfoURL(username)).pipe(
+  public resetPersonalInfo(): void {
+    const headers = new HttpHeaders().set('username', this.userService.getCashedUser().username);
+    this.http.delete<any>(this.serverConfigService.getResetPersonalInfoURL(), { headers: headers }).pipe(
       catchError(this.serverErrorHandler),
     ).subscribe();
   }

@@ -30,6 +30,7 @@ public class Blog {
     @Transient
     private String username;
 
+    @Lob
     private String content;
 
     private Integer likes;
@@ -49,6 +50,14 @@ public class Blog {
         this.likes = likes;
         this.date = date;
         this.image = image;
+    }
+
+    public void like() {
+        this.likes++;
+    }
+
+    public void unlike() {
+        this.likes--;
     }
 
 }
