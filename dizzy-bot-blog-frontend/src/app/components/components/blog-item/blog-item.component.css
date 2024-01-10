@@ -21,3 +21,7 @@
 .dzb-blog-delete-button {
   margin-bottom: 10px !important;
 }
+
+.dzb-blog-item-image {
+  max-height: 400px !important;
+}

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user';
@@ -49,7 +49,8 @@ export class UserService {
   }
 
   private getUserInfo(username: string): Observable<User> {
-    return this.http.post<User>(this.serverConfigService.getUserInfoURL(), { username: username, });
+    const headers = new HttpHeaders().set('username', username);
+    return this.http.get<User>(this.serverConfigService.getUserInfoURL(), { headers: headers });
   }
 
 }

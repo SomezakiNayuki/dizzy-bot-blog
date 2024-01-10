@@ -40,10 +40,10 @@ public class ExperienceController {
         return new ResponseEntity<>(new Response("Experience created"), HttpStatus.OK);
     }
 
-    @PostMapping("/getAll")
-    public ResponseEntity<List<Experience>> getAllExperiences(@RequestBody Map<String, String> body) {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Experience>> getAllExperiences(@RequestHeader String username) {
         return new ResponseEntity<>(
-                experienceService.findByUserId(userService.findByUsername(body.get("username")).getId()), HttpStatus.OK
+                experienceService.findByUserId(userService.findByUsername(username).getId()), HttpStatus.OK
         );
     }
 
@@ -59,8 +59,8 @@ public class ExperienceController {
         return new ResponseEntity<>(new Response("Personal information updated"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/resetPersonalInfo/{username}")
-    public ResponseEntity<Response> resetPersonalInfo(@PathVariable String username) {
+    @DeleteMapping("/resetPersonalInfo")
+    public ResponseEntity<Response> resetPersonalInfo(@RequestHeader String username) {
         User user = userService.findByUsername(username);
 
         user.setLinkedInURL(null);
