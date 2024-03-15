@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +35,7 @@ public class BlogController {
 
     @PostMapping("/create")
     public ResponseEntity<Response> create(@RequestBody Map<String, String> body) {
-        User user = userService.findByUsername(body.get("username"));
+        User user = userService.findByUsername((String) body.get("username"));
 
         String date = body.get("date");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -43,18 +46,53 @@ public class BlogController {
                 user,
                 body.get("content"),
                 Integer.parseInt(body.get("likes")),
-                LocalDateTime.parse(date, formatter),
-                body.get("image")
+                LocalDateTime.parse(date, formatter)
         );
 
-        blogService.saveBlog(blog);
-        return new ResponseEntity<>(new Response("Blog created"), HttpStatus.OK);
+        Blog blogSaved = blogService.saveBlog(blog);
+        return new ResponseEntity<>(new Response("Blog created", blogSaved), HttpStatus.OK);
+    }
+
+    @PostMapping("/uploadImage/{id}")
+    public ResponseEntity<Response> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
+        Blog blog = blogService.findById(id);
+        try {
+            blog.setImage(file.getBytes());
+            blogService.saveBlog(blog);
+            return new ResponseEntity<>(new Response("Image uploaded"), HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(new Response("Image upload failed", e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteBlog(@PathVariable Integer id) {
         blogService.deleteById(id);
         return new ResponseEntity<>(new Response("Blog " + id + " deleted"), HttpStatus.OK);
+    }
+
+    @GetMapping("/archive/{id}")
+    public ResponseEntity<Response> archiveBlog(@PathVariable Integer id, @RequestHeader("username") String username) {
+        blogService.likeBlog(id);
+        userService.archiveBlog(username, id);
+        return new ResponseEntity<>(new Response("Blog archived"), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/archive/remove/{id}")
+    public ResponseEntity<Response> removeArchiveBlog(@PathVariable Integer id, @RequestHeader("username") String username) {
+        blogService.unlikeBlog(id);
+        userService.removeArchivedBlog(username, id);
+        return new ResponseEntity<>(new Response("Blog archive removed"), HttpStatus.OK);
+    }
+
+    @GetMapping("/getArchivedBlogs")
+    public ResponseEntity<List<Blog>> getArchivedBlog(@RequestHeader("username") String username) {
+        List<Blog> blogs = new ArrayList<>();
+        User user = userService.findByUsername(username);
+        for (Blog blog: user.getArchivedBlogs()) {
+            blogs.add(blogService.findById(blog.getId()));
+        }
+        return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
 
 }

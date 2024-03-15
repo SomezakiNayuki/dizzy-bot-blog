@@ -21,8 +21,20 @@ export class ServerConfigurationService {
     return this.getBlogURL() + '/create';
   }
 
+  public getUploadImageURL(id: number): string {
+    return this.getBlogURL() + '/uploadImage/' + id;
+  }
+
   public getDeleteBlogURL(id: number): string {
     return this.getBlogURL() + '/delete/' + id;
+  }
+
+  public getArchiveBlogURL(id: number): string {
+    return this.getBlogURL() + '/archive/' + id;
+  }
+
+  public getRemoveArchiveBlogURL(id: number): string {
+    return this.getBlogURL() + '/archive/remove/' + id;
   }
 
   /* ---------------- Experience URL ---------------- */
@@ -47,8 +59,8 @@ export class ServerConfigurationService {
     return this.getExperienceURL() + '/updatePersonalInfo';
   }
 
-  public getResetPersonalInfoURL(username: string): string {
-    return this.getExperienceURL() + '/resetPersonalInfo/' + username;
+  public getResetPersonalInfoURL(): string {
+    return this.getExperienceURL() + '/resetPersonalInfo';
   }
 
   /* ---------------- User URL ---------------- */

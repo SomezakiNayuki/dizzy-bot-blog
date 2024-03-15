@@ -90,7 +90,8 @@ export class LoginService {
           password: payload['password'],
           email: payload['email'],
           blogs: [],
-          experiences: []
+          experiences: [],
+          archivedBlogs: []
         });
         callbacks.forEach(fn => { fn() });
       }

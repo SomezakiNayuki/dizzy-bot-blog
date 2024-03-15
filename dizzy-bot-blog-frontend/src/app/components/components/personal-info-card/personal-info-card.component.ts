@@ -24,8 +24,8 @@ export class PersonalInfoCardComponent implements OnInit {
     this.labelService.loadScreenLabelConfiguration(label);
   }
 
-  protected delete(username: string): void {
-    this.dataService.resetPersonalInfo(username);
+  protected delete(): void {
+    this.dataService.resetPersonalInfo();
   }
 
 }

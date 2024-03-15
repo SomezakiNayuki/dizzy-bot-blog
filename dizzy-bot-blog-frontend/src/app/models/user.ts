@@ -10,5 +10,6 @@ export interface User {
   experiences: Experience[],
   linkedInURL?: string,
   phone?: string,
-  university?: string
+  university?: string,
+  archivedBlogs: Blog[]
 }

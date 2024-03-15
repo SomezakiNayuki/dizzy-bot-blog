@@ -30,25 +30,41 @@ public class Blog {
     @Transient
     private String username;
 
+    @Lob
     private String content;
 
     private Integer likes;
 
+    @Lob
     @Nullable
-    private String image;
+    private byte[] image;
+
+    @Transient
+    private String imageURL;
 
     private LocalDateTime date;
 
     public Blog() {}
 
-    public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date, String image) {
+    public Blog(String title, String subtitle, User author, String content, Integer likes, LocalDateTime date) {
         this.title = title;
         this.subtitle = subtitle;
         this.author = author;
         this.content = content;
         this.likes = likes;
         this.date = date;
+    }
+
+    public void setImage(@Nullable byte[] image) {
         this.image = image;
+    }
+
+    public void like() {
+        this.likes++;
+    }
+
+    public void unlike() {
+        this.likes--;
     }
 
 }

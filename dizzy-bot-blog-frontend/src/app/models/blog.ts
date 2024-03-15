@@ -1,18 +1,14 @@
-import { Injectable } from '@angular/core';
 import { Submitable } from 'src/app/models/submitable';
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class Blog implements Submitable {
 
   public id: number = 0;
 
   public content: string;
   public date: string;
-  public image: string;
+  public image: File | string;
   public likes: number;
   public subtitle: string;
   public title: string;

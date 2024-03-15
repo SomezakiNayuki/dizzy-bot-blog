@@ -1,12 +1,8 @@
-import { Injectable } from '@angular/core';
 import { ExperienceType } from 'src/app/enumerations/experience.enum';
 import { UserService } from 'src/app/services/user.service';
 import { Submitable } from 'src/app/models/submitable';
 import { DataService } from 'src/app/services/data.service';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class Experience implements Submitable {
 
   public id: number = 0;
@@ -18,7 +14,6 @@ export class Experience implements Submitable {
   public type: ExperienceType;
   public title?: string;
   private username: string;
-
 
   constructor(
     private _dataService: DataService,

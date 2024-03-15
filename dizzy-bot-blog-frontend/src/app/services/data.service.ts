@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, interval, map, of, startWith, switchMap, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Experience } from 'src/app/models/experience';
 import { PersonalInfo } from 'src/app/models/personal-info';
 import { Blog } from 'src/app/models/blog';
@@ -47,10 +47,37 @@ export class DataService {
     let blogs = new Array<Blog>();
     this.dataCollector.users.forEach(user => {
       user.blogs.forEach(blog => {
+        if (blog.image instanceof File) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            blog.image = reader.result as string;
+          }
+          reader.readAsDataURL(blog.image as File);
+        }
         blogs.push(blog);
       });
     });
     return of(blogs);
+  }
+
+  public archiveBlog(id: number): void {
+    // const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
+    // this.http.get<void>(this.serverConfigService.getArchiveBlogURL(id), { headers: headers }).pipe(
+    //   catchError(this.serverErrorHandler),
+    // ).subscribe(() => {
+    //   this.userService.fetchHost(this.userService.getCashedHost().username);
+    // });
+    console.log('Not implemented');
+  }
+
+  public removeArchivedBlog(id: number): void {
+    // const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
+    // this.http.delete<void>(this.serverConfigService.getRemoveArchiveBlogURL(id), { headers: headers }).pipe(
+    //   catchError(this.serverErrorHandler),
+    // ).subscribe(() => {
+    //   this.userService.fetchHost(this.userService.getCashedHost().username);
+    // });
+    console.log('Not implemented');
   }
 
   public createExperience(experience: Object): void {
@@ -112,7 +139,7 @@ export class DataService {
     user.university = personalInfo['university'];
   }
 
-  public resetPersonalInfo(username: string): void {
+  public resetPersonalInfo(): void {
     let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
     user.linkedInURL = null;
     user.phone = null;

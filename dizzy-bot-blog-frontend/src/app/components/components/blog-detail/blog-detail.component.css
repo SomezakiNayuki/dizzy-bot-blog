@@ -1,0 +1,26 @@
+.dzb-blog-detail-content {
+  font-size: 30px !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  line-height: 1.5 !important;
+}
+
+.dzb-blog-detail-modal .modal-dialog {
+  max-width: 1000px; /* Set your desired width */
+  margin: 1.75rem auto; /* Adjust the margin as needed for centering */
+}
+
+.dzb-blog-detail-title {
+  font-size: 50px !important;
+}
+
+.dzb-blog-comment-input-box {
+  width: 50% !important;
+}
+
+.dzb-blog-detail-image {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}

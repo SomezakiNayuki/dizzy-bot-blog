@@ -19,6 +19,7 @@ import { LabelPipe } from 'src/app/pipes/label.pipe';
 import { TimePipe } from 'src/app/pipes/time.pipe';
 import { FormmyComponent } from './components/components/formmy/formmy.component';
 import { ErrorMessageComponent } from './components/components/error-message/error-message.component';
+import { BlogDetailComponent } from './components/components/blog-detail/blog-detail.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ErrorMessageComponent } from './components/components/error-message/err
     
     LabelPipe,
     TimePipe,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    BlogDetailComponent
   ],
   imports: [
     BrowserModule,
