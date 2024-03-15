@@ -23,5 +23,6 @@
 }
 
 .dzb-blog-item-image {
-  max-height: 400px !important;
+  height: 350px !important;
+  object-fit: contain !important;
 }

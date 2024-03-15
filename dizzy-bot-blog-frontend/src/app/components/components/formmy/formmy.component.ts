@@ -123,7 +123,7 @@ export class FormmyComponent implements OnInit {
     this.form.addControl(definition.formDefinition.formName, formControl);
     this.renderer.listen(el, 'input', () => {
       let formName = el['[formControlName]'];
-      this.form.controls[formName].setValue(el.value);
+      this.form.controls[formName].setValue(el.files ? el.files[0] : el.value);
       this.form.controls[formName].updateValueAndValidity();
     });
     if (definition.templateDefinition.isRequired) {

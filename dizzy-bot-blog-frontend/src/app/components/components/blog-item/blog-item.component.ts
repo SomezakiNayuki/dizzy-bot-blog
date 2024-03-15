@@ -17,6 +17,7 @@ declare var $: any;
 export class BlogItemComponent implements OnInit {
 
   @Input() public blogs: Blog[];
+  @Input() public filtered: boolean;
 
   protected activeBlog: Blog;
 
@@ -42,7 +43,7 @@ export class BlogItemComponent implements OnInit {
   }
 
   protected isBlogOwner(blog: Blog): boolean {
-    return blog.username === this.userService.getCashedHost()?.username;
+    return blog.username === this.userService.getCashedHost()?.username && this.filtered;
   }
 
   protected viewProfile(username: string): void {

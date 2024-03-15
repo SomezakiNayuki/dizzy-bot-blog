@@ -21,6 +21,10 @@ export class ServerConfigurationService {
     return this.getBlogURL() + '/create';
   }
 
+  public getUploadImageURL(id: number): string {
+    return this.getBlogURL() + '/uploadImage/' + id;
+  }
+
   public getDeleteBlogURL(id: number): string {
     return this.getBlogURL() + '/delete/' + id;
   }
