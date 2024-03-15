@@ -37,7 +37,7 @@
     },
     "templateDefinition": {
       "htmlType": "input",
-      "inputType": "text",
+      "inputType": "file",
       "placeholder": "Image URL",
       "validator": "",
       "isRequired": false,

@@ -1,11 +1,7 @@
-import { Injectable } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 import { Submitable } from 'src/app/models/submitable';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class PersonalInfo implements Submitable {
 
   public username: string;

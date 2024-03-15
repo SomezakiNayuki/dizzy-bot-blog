@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class BlogController {
 
     @PostMapping("/create")
     public ResponseEntity<Response> create(@RequestBody Map<String, String> body) {
-        User user = userService.findByUsername(body.get("username"));
+        User user = userService.findByUsername((String) body.get("username"));
 
         String date = body.get("date");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -44,12 +46,23 @@ public class BlogController {
                 user,
                 body.get("content"),
                 Integer.parseInt(body.get("likes")),
-                LocalDateTime.parse(date, formatter),
-                body.get("image")
+                LocalDateTime.parse(date, formatter)
         );
 
-        blogService.saveBlog(blog);
-        return new ResponseEntity<>(new Response("Blog created"), HttpStatus.OK);
+        Blog blogSaved = blogService.saveBlog(blog);
+        return new ResponseEntity<>(new Response("Blog created", blogSaved), HttpStatus.OK);
+    }
+
+    @PostMapping("/uploadImage/{id}")
+    public ResponseEntity<Response> uploadImage(@RequestParam("file") MultipartFile file, @PathVariable Integer id) {
+        Blog blog = blogService.findById(id);
+        try {
+            blog.setImage(file.getBytes());
+            blogService.saveBlog(blog);
+            return new ResponseEntity<>(new Response("Image uploaded"), HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(new Response("Image upload failed", e), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")

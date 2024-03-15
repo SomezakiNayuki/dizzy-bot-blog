@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, interval, of, startWith, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, interval, map, of, startWith, switchMap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Experience } from 'src/app/models/experience';
 import { PersonalInfo } from 'src/app/models/personal-info';
@@ -26,9 +26,15 @@ export class DataService {
   }
 
   public createBlog(blog: Object): void {
-    this.http.post<any>(this.serverConfigService.getCreateBlogURL(), blog).pipe(
+    this.http.post<any>(this.serverConfigService.getCreateBlogURL(), blog['body']).pipe(
       catchError(this.serverErrorHandler),
-    ).subscribe();
+    ).subscribe(response => {
+      const formData: FormData = new FormData();
+      formData.append('file', blog['image']);
+      this.http.post<any>(this.serverConfigService.getUploadImageURL(response['object']['id']), formData).pipe(
+        catchError(this.serverErrorHandler),
+      ).subscribe();
+    });
   }
 
   public deleteBlog(id: number): void {
@@ -42,7 +48,14 @@ export class DataService {
   }
 
   private fetchBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL());
+    return this.http.get<Blog[]>(this.serverConfigService.getAllBlogsURL()).pipe(
+      map(blogs => {
+        blogs.forEach(blog => {
+          blog.image = 'data:image/jpeg;base64,' + blog.image;
+        });
+        return blogs;
+      }),
+    );
   }
 
   public archiveBlog(id: number): void {

@@ -1,18 +1,14 @@
-import { Injectable } from '@angular/core';
 import { Submitable } from 'src/app/models/submitable';
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class Blog implements Submitable {
 
   public id: number;
 
   public content: string;
   public date: string;
-  public image: string;
+  public image: File | string;
   public likes: number;
   public subtitle: string;
   public title: string;
@@ -39,11 +35,11 @@ export class Blog implements Submitable {
   public toObject(object: Submitable): Object {
     let obj = {};
     Object.keys(object).forEach(key => {
-      if (key[0] !== '_') {
+      if (key[0] !== '_' && key !== 'image') {
         obj[key] = object[key];
       }
     });
-    return obj;
+    return { body:obj, image: this.image };
   }
 
 }
