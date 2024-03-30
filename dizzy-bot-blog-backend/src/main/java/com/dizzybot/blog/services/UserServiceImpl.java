@@ -2,7 +2,6 @@ package com.dizzybot.blog.services;
 
 import com.dizzybot.blog.entities.Blog;
 import com.dizzybot.blog.entities.User;
-import com.dizzybot.blog.repositories.BlogRepository;
 import com.dizzybot.blog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
