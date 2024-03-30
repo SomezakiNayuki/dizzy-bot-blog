@@ -65,35 +65,39 @@ export class DataService {
   }
 
   private fetchArchivedBlogs(): Observable<Blog[]> {
-    const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
-    return this.http.get<Blog[]>(this.serverConfigService.getArchivedBlogURL(), { headers }).pipe(
-      map(blogs => {
-        blogs.forEach(blog => {
-          blog.image = 'data:image/jpeg;base64,' + blog.image;
-        });
-        return blogs;
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    return this.getBlogs().pipe(
+      switchMap(allBlogs => {
+        const archiveBlogs = allBlogs.filter(blog => user.archivedBlogIds.some(id => {
+          return id === blog.id;
+        }));
+        return of(archiveBlogs);
       }),
     );
   }
 
   public archiveBlog(id: number): void {
-    // const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
-    // this.http.get<void>(this.serverConfigService.getArchiveBlogURL(id), { headers: headers }).pipe(
-    //   catchError(this.serverErrorHandler),
-    // ).subscribe(() => {
-    //   this.userService.fetchHost(this.userService.getCashedHost().username);
-    // });
-    console.log('Not implemented');
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    user.archivedBlogIds.push(id);
+    this.dataCollector.users.forEach(user => {
+      user.blogs.forEach(blog => {
+        if (blog.id === id) {
+          blog.likes += 1;
+        }
+      });
+    });
   }
 
   public removeArchivedBlog(id: number): void {
-    // const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
-    // this.http.delete<void>(this.serverConfigService.getRemoveArchiveBlogURL(id), { headers: headers }).pipe(
-    //   catchError(this.serverErrorHandler),
-    // ).subscribe(() => {
-    //   this.userService.fetchHost(this.userService.getCashedHost().username);
-    // });
-    console.log('Not implemented');
+    let user = this.dataCollector.users.find(user => user.username == this.userService.getCashedHost().username);
+    user.archivedBlogIds = user.archivedBlogIds.filter(blogId => blogId !== id);
+    this.dataCollector.users.forEach(user => {
+      user.blogs.forEach(blog => {
+        if (blog.id === id) {
+          blog.likes -= 1;
+        }
+      });
+    });
   }
 
   public createExperience(experience: Object): void {

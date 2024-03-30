@@ -63,9 +63,18 @@ export class LoginService {
 
   private authentication(path: string, payload: Object, callbacks?: Function[]): void {
     if (path === this.serverConfigService.getLoginURL()) {
-      let user = this.dataCollector.users.find(user => user.username == payload['username'] && user.password == payload['password']);
+      let user = this.dataCollector.users.find(user => user.username == payload['username']);
       if (user) {
-        callbacks.forEach(fn => { fn() });
+        if (user.password == payload['password']) {
+          callbacks.forEach(fn => { fn() });
+        } else {
+          this.authenticationErrorHandler(new HttpErrorResponse({
+            status: AuthenticationStatus.ERROR,
+            error: {
+              message: 'Credential error or user not exists'
+            },
+          }));
+        }
       } else {
         this.authenticationErrorHandler(new HttpErrorResponse({
           status: AuthenticationStatus.NOT_FOUND,
@@ -78,7 +87,7 @@ export class LoginService {
       let user = this.dataCollector.users.find(user => user.username == payload['username'] || user.email == payload['email']);
       if (user) {
         this.authenticationErrorHandler(new HttpErrorResponse({
-          status: AuthenticationStatus.OK,
+          status: AuthenticationStatus.ERROR,
           error: {
             message: 'User already exists'
           },
@@ -91,7 +100,7 @@ export class LoginService {
           email: payload['email'],
           blogs: [],
           experiences: [],
-          archivedBlogs: []
+          archivedBlogIds: []
         });
         callbacks.forEach(fn => { fn() });
       }

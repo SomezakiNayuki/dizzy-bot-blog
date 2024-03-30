@@ -40,7 +40,7 @@
       "inputType": "file",
       "placeholder": "Image URL",
       "validator": "",
-      "isRequired": false,
+      "isRequired": true,
       "cssClass": "ui input icon dzb-formmy-content-input-box"
     },
     "wrapper": {
