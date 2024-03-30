@@ -41,7 +41,8 @@ public class User {
 
     @ElementCollection
     @CollectionTable(name = "archived_blogs", joinColumns = @JoinColumn(name = "user_id"))
-    private List<Blog> archivedBlogs = new ArrayList<Blog>();
+    @Column(name = "blog_id")
+    private List<Integer> archivedBlogIds = new ArrayList<Integer>();
 
     public User() {}
 
@@ -51,18 +52,18 @@ public class User {
         this.email = email;
     }
 
-    public void archiveBlog(Blog blog) {
-        this.archivedBlogs.add(blog);
+    public void archiveBlog(Integer id) {
+        this.archivedBlogIds.add(id);
     }
 
-    public void removeArchivedBlog(Blog blog) {
-        List<Blog> currentArchivedBlogs = new ArrayList<>(this.archivedBlogs);
-        for (Blog b : this.archivedBlogs) {
-            if (b.getId() == blog.getId()) {
-                currentArchivedBlogs.remove(b);
+    public void removeArchivedBlog(Integer id) {
+        List<Integer> currentArchivedBlogIds = new ArrayList<>(this.archivedBlogIds);
+        for (Integer i : this.archivedBlogIds) {
+            if (i == id) {
+                currentArchivedBlogIds.remove(i);
             }
         }
-        this.setArchivedBlogs(currentArchivedBlogs);
+        this.setArchivedBlogIds(currentArchivedBlogIds);
     }
 
 }

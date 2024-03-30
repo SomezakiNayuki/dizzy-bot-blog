@@ -72,8 +72,8 @@ export class BlogItemComponent implements OnInit {
   }
 
   protected isArchived(id: number): boolean {
-    const test = this.userService.getCashedHost()?.archivedBlogs;
-    return this.userService.getCashedHost()?.archivedBlogs.find(blog => blog.id === id) != null;
+    const test = this.userService.getCashedHost()?.archivedBlogIds;
+    return this.userService.getCashedHost()?.archivedBlogIds.find(blogId => blogId === id) != null;
   }
 
 }

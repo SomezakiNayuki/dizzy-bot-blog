@@ -29,6 +29,10 @@ export class HeaderComponent implements OnInit {
     return this.getActiveScreen(PageEnum.ABOUT_ME) ? 'active' : '';
   }
 
+  protected isArchiveActive(): string {
+    return this.getActiveScreen(PageEnum.ARCHIVE) ? 'active' : '';
+  }
+
   protected isHomeActive(): string {
     return this.getActiveScreen(PageEnum.HOME) ? 'active' : '';
   }
@@ -40,6 +44,10 @@ export class HeaderComponent implements OnInit {
   protected setAboutMeActive(): void {
     this.userService.fetchUser(this.userService.getCashedHost().username);
     this.pageNavigationService.setActive(PageEnum.ABOUT_ME);
+  }
+
+  protected setArchiveActive(): void {
+    this.pageNavigationService.setActive(PageEnum.ARCHIVE);
   }
 
   protected setHomeActive(): void {

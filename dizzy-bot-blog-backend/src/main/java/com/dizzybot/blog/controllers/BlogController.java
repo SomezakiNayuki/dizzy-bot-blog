@@ -89,8 +89,10 @@ public class BlogController {
     public ResponseEntity<List<Blog>> getArchivedBlog(@RequestHeader("username") String username) {
         List<Blog> blogs = new ArrayList<>();
         User user = userService.findByUsername(username);
-        for (Blog blog: user.getArchivedBlogs()) {
-            blogs.add(blogService.findById(blog.getId()));
+        for (Integer id: user.getArchivedBlogIds()) {
+            Blog blog = blogService.findById(id);
+            blog.setUsername(blog.getAuthor().getUsername());
+            blogs.add(blog);
         }
         return new ResponseEntity<>(blogs, HttpStatus.OK);
     }

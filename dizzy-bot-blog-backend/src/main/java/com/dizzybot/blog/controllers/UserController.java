@@ -59,7 +59,7 @@ public class UserController {
         sanitisedUser.setLinkedInURL(user.getLinkedInURL());
         sanitisedUser.setPhone(user.getPhone());
         sanitisedUser.setUniversity(user.getUniversity());
-        sanitisedUser.setArchivedBlogs(user.getArchivedBlogs());
+        sanitisedUser.setArchivedBlogIds(user.getArchivedBlogIds());
 
         return new ResponseEntity<>(sanitisedUser, HttpStatus.OK);
     }
