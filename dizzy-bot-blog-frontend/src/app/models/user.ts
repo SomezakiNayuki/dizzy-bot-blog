@@ -11,5 +11,5 @@ export interface User {
   linkedInURL?: string,
   phone?: string,
   university?: string,
-  archivedBlogs: Blog[]
+  archivedBlogIds: number[]
 }

@@ -6,7 +6,7 @@
         <i class="black home icon"></i>
         {{ "header.menu.home" | translate }}
       </a>
-      <a class="item dzb-header-menu" *ngIf="isLoggedIn()">
+      <a class="item dzb-header-menu {{ isArchiveActive() }}" *ngIf="isLoggedIn()" (click)="setArchiveActive()">
         <i class="black clone icon"></i>
         {{ "header.menu.archive" | translate }}
       </a>

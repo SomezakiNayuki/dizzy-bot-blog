@@ -37,6 +37,10 @@ export class ServerConfigurationService {
     return this.getBlogURL() + '/archive/remove/' + id;
   }
 
+  public getArchivedBlogURL(): string {
+    return this.getBlogURL() + '/getArchivedBlogs';
+  }
+
   /* ---------------- Experience URL ---------------- */
 
   private getExperienceURL(): string {

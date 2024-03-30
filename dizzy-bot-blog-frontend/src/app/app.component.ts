@@ -18,6 +18,10 @@ export class AppComponent {
     return this.pageNavigationService.isActive(PageEnum.ABOUT_ME);
   }
 
+  protected isArchiveActive(): boolean {
+    return this.pageNavigationService.isActive(PageEnum.ARCHIVE);
+  }
+
   protected isHomeActive(): boolean {
     return this.pageNavigationService.isActive(PageEnum.HOME);
   }
