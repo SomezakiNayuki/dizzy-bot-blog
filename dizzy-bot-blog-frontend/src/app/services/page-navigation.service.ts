@@ -20,6 +20,10 @@ export class PageNavigationService {
         this.activeScreen = PageEnum.HOME;
         break;
       }
+      case PageEnum.ARCHIVE: {
+        this.activeScreen = PageEnum.ARCHIVE;
+        break;
+      }
       default: {
         this.activeScreen = PageEnum.HOME;
         break;

@@ -39,14 +39,14 @@ public class UserServiceImpl implements UserService {
     public void archiveBlog(String username, Integer id) {
         User user = userRepository.findByUsername(username);
         Blog blog = blogService.findById(id);
-        user.archiveBlog(blog);
+        user.archiveBlog(blog.getId());
         userRepository.save(user);
     }
 
     public void removeArchivedBlog(String username, Integer id) {
         User user = userRepository.findByUsername(username);
         Blog blog = blogService.findById(id);
-        user.removeArchivedBlog(blog);
+        user.removeArchivedBlog(blog.getId());
         userRepository.save(user);
     }
 

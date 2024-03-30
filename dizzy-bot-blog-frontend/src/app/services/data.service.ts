@@ -58,6 +58,22 @@ export class DataService {
     );
   }
 
+  public getArchivedBlogs(): Observable<Blog[]> {
+    return this.continuallyFetch<Blog[]>(1000, () => this.fetchArchivedBlogs());
+  }
+
+  private fetchArchivedBlogs(): Observable<Blog[]> {
+    const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
+    return this.http.get<Blog[]>(this.serverConfigService.getArchivedBlogURL(), { headers }).pipe(
+      map(blogs => {
+        blogs.forEach(blog => {
+          blog.image = 'data:image/jpeg;base64,' + blog.image;
+        });
+        return blogs;
+      }),
+    );
+  }
+
   public archiveBlog(id: number): void {
     const headers = new HttpHeaders().set('username', this.userService.getCashedHost().username);
     this.http.get<void>(this.serverConfigService.getArchiveBlogURL(id), { headers: headers }).pipe(
