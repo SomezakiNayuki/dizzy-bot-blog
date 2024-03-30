@@ -17,8 +17,11 @@ export class Experience implements Submitable {
 
   constructor(
     private _dataService: DataService,
-    private _userService: UserService
-  ) {}
+    private _userService: UserService,
+    private _id: number
+  ) {
+    this.id = _id;
+  }
 
   private generateSubmitable(): void {
     this.username = this._userService.getCashedHost().username;
@@ -27,7 +30,6 @@ export class Experience implements Submitable {
   public submit(): void {
     this.generateSubmitable();
     this._dataService.createExperience(this.toObject(this));
-    this.id++;
   }
 
   public toObject(object: Submitable): Object {

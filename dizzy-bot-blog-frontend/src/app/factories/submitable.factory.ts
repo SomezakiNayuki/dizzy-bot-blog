@@ -9,13 +9,17 @@ import { UserService } from '../services/user.service';
   providedIn: 'root'
 })
 export class SubmitablFactory {
+
+  private blogId: number = -1;
+  private expId: number = -1;
   
   constructor(
     private injector: Injector
   ) {}
 
   public getBlogInstance(): Blog {
-    return new Blog(this.injector.get(DataService), this.injector.get(UserService));
+    this.blogId++;
+    return new Blog(this.injector.get(DataService), this.injector.get(UserService), this.blogId);
   }
 
   public getPersonalInfoInstance(): PersonalInfo {
@@ -23,7 +27,8 @@ export class SubmitablFactory {
   }
 
   public getExperienceInstance(): Experience {
-    return new Experience(this.injector.get(DataService), this.injector.get(UserService));
+    this.expId++;
+    return new Experience(this.injector.get(DataService), this.injector.get(UserService), this.expId);
   }
 
 }

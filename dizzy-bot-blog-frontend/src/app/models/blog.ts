@@ -16,8 +16,11 @@ export class Blog implements Submitable {
 
   constructor(
     private _dataService: DataService,
-    private _userService: UserService
-  ) {}
+    private _userService: UserService,
+    private _id: number
+  ) {
+    this.id = _id;
+  }
 
   private generateSubmitable(): void {
     const date = new Date();
@@ -30,7 +33,6 @@ export class Blog implements Submitable {
   public submit(): void {
     this.generateSubmitable();
     this._dataService.createBlog(this.toObject(this));
-    this.id++;
   }
 
   public toObject(object: Submitable): Object {
